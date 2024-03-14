@@ -80,22 +80,23 @@ function WhatsNew() {
   ];
 
   return (
-    <section className="flex flex-col self-center px-5 mt-14 w-full max-w-[1170px] max-md:mt-10 max-md:max-w-full">
-      <h2 className="text-3xl tracking-widest text-black max-md:max-w-full">
-        What's New?
-      </h2>
-      <div className="mt-10 max-md:mt-10 max-md:max-w-full">
-        <ProductGrid products={products.slice(0, 4)} />
-      </div>
-      <div className="mt-9 max-md:max-w-full">
-        <ProductGrid products={products.slice(4)} />
-      </div>
-      <button className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
-        View all
-      </button>
-    </section>
+    <center>
+      <section className="flex flex-col self-center px-5 mt-14 w-full max-w-[1170px] max-md:mt-10 max-md:max-w-full">
+        <h2 className="text-3xl tracking-widest text-black max-md:max-w-full">
+          What's New?
+        </h2>
+        <div className="mt-10 max-md:mt-10 max-md:max-w-full">
+          <ProductGrid products={products.slice(0, 4)} />
+        </div>
+        <div className="mt-9 max-md:max-w-full">
+          <ProductGrid products={products.slice(4)} />
+        </div>
+        <button className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
+          View all
+        </button>
+      </section>{" "}
+    </center>
   );
 }
-
 
 export default WhatsNew;
