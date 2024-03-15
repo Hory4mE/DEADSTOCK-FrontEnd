@@ -8,7 +8,7 @@ import Root from "./Routes/root";
 import App from "./Pages/App";
 import ErrorPage from "./Pages/errorPage";
 import Products from "./Pages/Products";
-
+import ProductDetails from "./Pages/ProductDetail";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +18,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/product",
-    element: <Products/>,
+    element: <Products />,
     errorElement: <ErrorPage />,
-
-  }
+  },
+  {
+    path: "/productDetails",
+    element: <ProductDetails />,
+    errorElement: <ErrorPage />,
+  },
 ]);
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
