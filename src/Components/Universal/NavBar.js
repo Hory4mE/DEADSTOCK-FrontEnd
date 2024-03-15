@@ -39,14 +39,16 @@ const SearchBar = () => (
   </div>
 );
 
-const IconButton = ({ src, alt }) => (
+const IconButton = ({ src, alt, href }) => (
   <button>
-    <img
-      loading="lazy"
-      src={src}
-      alt={alt}
-      className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
-    />
+    <a href={href}>
+      <img
+        loading="lazy"
+        src={src}
+        alt={alt}
+        className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
+      />
+    </a>
   </button>
 );
 
@@ -71,10 +73,12 @@ function Header() {
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="User profile"
+            href="/login"
           />
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/e3be0dbe071019cdd38d2d5fea243d0b5d03b797052b9cb7708b862fd40b2671?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Shopping cart"
+            href="/cart"
           />
         </div>
       </div>

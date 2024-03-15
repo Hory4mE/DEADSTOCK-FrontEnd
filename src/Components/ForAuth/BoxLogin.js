@@ -1,6 +1,9 @@
-import * as React from "react";
+import React, { useState } from "react";
 
 function LoginForm() {
+  const [encrypted, setEncrypted] = useState(null); // State to store encrypted data
+  const [formData, setFormData] = useState({ email: "", password: "" }); // State to store form data
+
   const inputFields = [
     {
       label: "Email",
@@ -14,15 +17,39 @@ function LoginForm() {
     },
   ];
 
+  const handleInputChange = (e, fieldId) => {
+    const { value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [fieldId]: value,
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // Encrypt the form data and store it in encrypted state
+    const encryptedData = JSON.stringify(formData);
+    console.log("Encrypted data:", encryptedData);
+    setEncrypted(encryptedData);
+    // Clear form data after encryption
+    setFormData({ email: "", password: "" });
+  };
+  
+
   return (
     <center>
       <div className="flex flex-col max-w-[447px]">
         <h1 className="self-center text-4xl text-black tracking-[2px]">
           Login
         </h1>
-        <form className="mt-10">
+        <form className="mt-10" onSubmit={handleFormSubmit}>
           {inputFields.map((field) => (
-            <InputField key={field.id} {...field} />
+            <InputField
+              key={field.id}
+              {...field}
+              value={formData[field.id]}
+              onChange={(e) => handleInputChange(e, field.id)}
+            />
           ))}
           <div className="mt-3.5 w-full text-base tracking-wider text-black underline">
             Forgot password?
@@ -63,7 +90,7 @@ function LoginForm() {
   );
 }
 
-function InputField({ label, type, id }) {
+function InputField({ label, type, id, value, onChange }) {
   return (
     <div className="flex flex-col justify-center mb-6 w-full text-lg text-black whitespace-nowrap">
       <label htmlFor={id} className="sr-only">
@@ -75,6 +102,8 @@ function InputField({ label, type, id }) {
         placeholder={label}
         className="justify-center items-start py-4 pr-16 pl-6 w-full bg-white rounded-3xl border border-black border-solid"
         aria-label={label}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
