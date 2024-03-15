@@ -3,14 +3,14 @@ import * as React from "react";
 const Logo = () => (
   <button>
     <div className="grow self-stretch text-3xl font-bold tracking-widest">
-      <a href={`/product`}> DEADSTOCK</a>
+      <a href={`/`}> DEADSTOCK</a>
     </div>
   </button>
 );
 
-const NavItem = ({ children }) => (
+const NavItem = ({ children, href}) => (
   <button>
-    <div className="self-stretch my-auto">{children}</div>
+    <div className="self-stretch my-auto"><a href={href}>{children}</a></div>
   </button>
 );
 
@@ -63,6 +63,7 @@ function Header() {
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
+              href="{`/product`}"
             />
           </div>
           <NavItem>Shoes</NavItem>

@@ -11,7 +11,6 @@ function Login() {
       <WelcomeBanner />
       <NavBar />
       <LoginForm />
-      <Features />
       <Footer />
     </div>
   );
