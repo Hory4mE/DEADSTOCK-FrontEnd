@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Navigate } from 'react-router-dom';
 
+//BCRYPT FOR HASH
+const bcrypt = require ('bcrypt');
+
 function LoginForm() {
   const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -23,7 +26,12 @@ function LoginForm() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const encryptedData = JSON.stringify(formData);
+
+    //HASH the data
+    const encryptedData = bcrypt.hash(JSON.stringify(formData));
+    console.log(encryptedData)
+
+
     setEncrypted(encryptedData);
     setFormData({ email: "", password: "" });
 
