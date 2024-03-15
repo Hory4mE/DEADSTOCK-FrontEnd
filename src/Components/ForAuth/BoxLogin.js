@@ -5,6 +5,8 @@ import { Navigate } from "react-router-dom";
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
+  const [isWrongData, setIsWrongData] = useState(false);
 
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
@@ -34,10 +36,13 @@ function LoginForm() {
         localStorage.setItem("refresh_token", refresh_token);
         setValidated(true);
       } else {
+        setIsWrongData(true);
+        setErrMsg(response.data.message)
         console.error("have error");
         setValidated(false);
       }
     } catch (error) {
+      setIsWrongData(true);
       setValidated(false);
       console.error("Error:", error);
     }
@@ -109,6 +114,20 @@ function LoginForm() {
           Google
         </button>
       </div>
+      {isWrongData && (
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div className="bg-white p-8 rounded-xl text-center">
+          <h2 className="text-2xl font-bold mb-4">Auth Error</h2>
+          <p>Invalid Email or Password</p>
+          <button
+            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+            onClick={() => setIsWrongData(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
     </center>
   );
 }

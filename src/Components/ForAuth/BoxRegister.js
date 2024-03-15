@@ -3,6 +3,8 @@ import axios from "axios";
 
 function RegisterForm() {
   const [RegisComplete, setRegisComplete] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -86,21 +88,26 @@ function RegisterForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    //AXIOS
+  
     try {
       const response = await axios.post(
         `http://localhost:5000/user/register`,
         formData
       );
-      if (response.data !== null) {
-        console.log(response.data);
+  
+      if (response.status === 201) {
+        console.log("Registration successful");
         setRegisComplete(true);
       }
     } catch (error) {
-      setRegisComplete(false);
-      console.error("Error:", error);
+      if (error.response.status === 400) {
+        setIsError(true);
+        setErrorMsg(error.response.data.message);
+      } else {
+        console.error("Error:", error);
+      }
     }
+  
     setFormData({
       firstname: "",
       lastname: "",
@@ -109,7 +116,7 @@ function RegisterForm() {
     });
     setValidationErrors({});
   };
-
+  
   const hasErrors =
     Object.values(validationErrors).some((error) => error !== "") ||
     Object.values(formData).some((value) => value === "");
@@ -162,6 +169,20 @@ function RegisterForm() {
           <button
             className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
             onClick={() => setRegisComplete(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+          {isError && (
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div className="bg-white p-8 rounded-xl text-center">
+          <h2 className="text-2xl font-bold mb-4">Registration Failed!</h2>
+          <p>{errorMsg}</p>
+          <button
+            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+            onClick={() => setIsError(false)}
           >
             Close
           </button>
