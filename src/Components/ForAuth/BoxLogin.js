@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
-
-//BCRYPT FOR HASH
-const bcrypt = require ('bcrypt');
+import { Navigate } from "react-router-dom";
 
 function LoginForm() {
-  const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(false);
 
@@ -26,15 +22,6 @@ function LoginForm() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-
-    //HASH the data
-    const encryptedData = bcrypt.hash(JSON.stringify(formData));
-    console.log(encryptedData)
-
-
-    setEncrypted(encryptedData);
-    setFormData({ email: "", password: "" });
-
     try {
       const response = await axios.post(
         `http://localhost:5000/user/login`,
@@ -42,20 +29,19 @@ function LoginForm() {
       );
 
       if (response.data !== null) {
-        const { access_token , refresh_token } = response.data;
+        const { access_token, refresh_token } = response.data;
         localStorage.setItem("access_token", access_token);
-        localStorage.setItem("refresh_token", refresh_token);  
+        localStorage.setItem("refresh_token", refresh_token);
         setValidated(true);
-
       } else {
         console.error("have error");
         setValidated(false);
       }
-      
     } catch (error) {
       setValidated(false);
       console.error("Error:", error);
     }
+    setFormData({ email: "", password: "" });
   };
 
   const sanitizeInput = (input) => {
@@ -101,7 +87,9 @@ function LoginForm() {
                     >
                       Sign in
                     </button>
-                    <div className="mt-4 underline"><a href={`/register`}>Create account</a></div>
+                    <div className="mt-4 underline">
+                      <a href={`/register`}>Create account</a>
+                    </div>
                     <div className="self-center mt-8">OR</div>
                   </div>
                 </div>

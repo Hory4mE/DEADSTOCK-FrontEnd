@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+
 function RegisterForm() {
   const [RegisComplete, setRegisComplete] = useState(false);
-  const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -87,30 +87,27 @@ function RegisterForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    //ENCRYPT
-    const encryptedData = JSON.stringify(formData);
-    // console.log("Encrypted data:", encryptedData);
-    //USE STATE (encrypt , formdata)
-    setEncrypted(encryptedData);
+
+    //AXIOS
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/user/register`,
+        formData
+      );
+      if (response.data !== null) {
+        console.log(response.data);
+        setRegisComplete(true);
+      }
+    } catch (error) {
+      setRegisComplete(false);
+      console.error("Error:", error);
+    }
     setFormData({
       firstname: "",
       lastname: "",
       email: "",
       password: "",
     });
-    //AXIOS
-    try {
-      const response = await axios.post(`http://localhost:5000/user/register`, formData );
-      if(response.data !== null){
-        console.log(response.data);
-        setRegisComplete(true);
-      }
-
-    } catch (error) {
-      setRegisComplete(false);
-      console.error('Error:', error);
-     
-    }
     setValidationErrors({});
   };
 
