@@ -8,7 +8,13 @@ import Reviews from "../Components/ForHomePage/Reviews";
 import Footer from "../Components/Universal/Footer";
 
 
+import { useAuth } from '../context/AuthContext'
+
+
 function App() {
+  const { isLogin  , checkLoginStatus} = useAuth();
+  // checkLoginStatus();
+  // console.log(isLogin);
   return (
     <div>
       <WelcomeBanner />

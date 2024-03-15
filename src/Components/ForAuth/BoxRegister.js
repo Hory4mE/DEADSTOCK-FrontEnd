@@ -71,8 +71,7 @@ function RegisterForm() {
           errors[fieldId] += "Password must contain at least 1 number.\n";
         }
         if (value.length < 8) {
-          errors[fieldId] +=
-            "Password must be at least 8 characters long.\n";
+          errors[fieldId] += "Password must be at least 8 characters long.\n";
         }
         if (spaceRegex.test(value)) {
           errors[fieldId] += "Password must not contain any spaces.\n";
@@ -102,15 +101,15 @@ function RegisterForm() {
     //AXIOS
     try {
       const response = await axios.post(`http://localhost:5000/user/register`, formData );
-      if(response !== null){
-        const { message } = response.data
+      if(response.data !== null){
+        console.log(response.data);
         setRegisComplete(true);
       }
 
     } catch (error) {
       setRegisComplete(false);
       console.error('Error:', error);
-      
+     
     }
     setValidationErrors({});
   };

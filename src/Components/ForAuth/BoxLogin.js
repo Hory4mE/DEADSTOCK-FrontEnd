@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Navigate } from 'react-router-dom';
 
 function LoginForm() {
   const [encrypted, setEncrypted] = useState(null);
@@ -32,15 +33,17 @@ function LoginForm() {
         formData
       );
 
-      if (response !== null) {
-        const { accessToken, refreshToken } = response.data;
-        localStorage.setItem("access_token", accessToken);
-        localStorage.setItem("refresh_token", refreshToken);
+      if (response.data !== null) {
+        const { access_token , refresh_token } = response.data;
+        localStorage.setItem("access_token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);  
+        setValidated(true);
+
       } else {
         console.error("have error");
         setValidated(false);
       }
-      e.stopPropagation();
+      
     } catch (error) {
       setValidated(false);
       console.error("Error:", error);
@@ -57,6 +60,9 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
+  if (validated) {
+    return <Navigate to="/" />;
+  }
   return (
     <center>
       <div className="flex flex-col max-w-[447px]">

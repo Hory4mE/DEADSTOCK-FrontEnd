@@ -11,6 +11,9 @@ import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 
+//useContext
+import { AuthProvider } from './context/AuthContext';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +45,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
