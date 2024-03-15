@@ -87,7 +87,7 @@ function LoginForm() {
                     >
                       Sign in
                     </button>
-                    <div className="mt-4 underline">Create account</div>
+                    <div className="mt-4 underline"><a href={`/register`}>Create account</a></div>
                     <div className="self-center mt-8">OR</div>
                   </div>
                 </div>
