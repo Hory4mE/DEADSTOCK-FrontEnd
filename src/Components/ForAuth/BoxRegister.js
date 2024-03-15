@@ -10,6 +10,7 @@ function RegisterForm() {
     email: "",
     password: "",
   });
+  const [plainText , setPlainText] = useState('');
   //SET OF ERROR
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -31,7 +32,7 @@ function RegisterForm() {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#x27;")
       .replace(/\//g, "&#x2F;");
-  };
+    };
 
   const validateField = (fieldId, value) => {
     let errors = { ...validationErrors };
@@ -87,9 +88,10 @@ function RegisterForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     //ENCRYPT
     const encryptedData = JSON.stringify(formData);
-    // console.log("Encrypted data:", encryptedData);
+    
     //USE STATE (encrypt , formdata)
     setEncrypted(encryptedData);
     setFormData({
@@ -104,6 +106,10 @@ function RegisterForm() {
       if(response.data !== null){
         console.log(response.data);
         setRegisComplete(true);
+      }else if (response.data.error === "Email is already in use") {
+        // console.log("Email already exists");
+        setPlainText("Email already exists")
+        // Handle error message display here
       }
 
     } catch (error) {
@@ -120,6 +126,7 @@ function RegisterForm() {
 
   return (
     <center>
+      {plainText}
       <div className="flex flex-col text-lg text-black whitespace-nowrap max-w-[447px]">
         <h1 className="self-center text-4xl tracking-[2px]">Create account</h1>
         <form onSubmit={handleFormSubmit}>

@@ -3,12 +3,13 @@ import axios from "axios";
 import { Navigate } from 'react-router-dom';
 
 //BCRYPT FOR HASH
-const bcrypt = require ('bcrypt');
+// const bcrypt = require ('bcrypt');
 
 function LoginForm() {
   const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(false);
+  const [plainText , setPlainText] = useState('');
 
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
@@ -27,8 +28,8 @@ function LoginForm() {
     e.preventDefault();
 
 
-    //HASH the data
-    const encryptedData = bcrypt.hash(JSON.stringify(formData));
+    //HASH the data bcrypt.hash(
+    const encryptedData = JSON.stringify(formData);
     console.log(encryptedData)
 
 
@@ -46,8 +47,15 @@ function LoginForm() {
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("refresh_token", refresh_token);  
         setValidated(true);
-
-      } else {
+           
+      } 
+      else if (response.data.error === "Username or password incorrect") {
+        // console.log("Email already exists");
+        setPlainText("Username or password incorrect")
+        // Handle error message display here
+      }
+    
+      else {
         console.error("have error");
         setValidated(false);
       }
@@ -73,6 +81,7 @@ function LoginForm() {
   }
   return (
     <center>
+      {plainText}
       <div className="flex flex-col max-w-[447px]">
         <h1 className="self-center text-4xl text-black tracking-[2px]">
           Login
