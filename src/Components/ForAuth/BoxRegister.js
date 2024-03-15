@@ -1,36 +1,123 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function RegisterForm() {
-  const [encrypted, setEncrypted] = useState(null); // State to store encrypted data
+  const [RegisComplete, setRegisComplete] = useState(false);
+  const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-  }); // State to store form data
+  });
+  //SET OF ERROR
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = (e, fieldId) => {
     const { value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [fieldId]: value,
+      [fieldId]: sanitizeInput(value),
     }));
+    validateField(fieldId, value);
   };
 
-  const handleFormSubmit = (e) => {
+  const sanitizeInput = (input) => {
+    // Replace special characters with HTML entities
+    return input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;")
+      .replace(/\//g, "&#x2F;");
+  };
+
+  const validateField = (fieldId, value) => {
+    let errors = { ...validationErrors };
+
+    switch (fieldId) {
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(value)) {
+          errors[fieldId] = "Invalid email address.";
+        } else {
+          errors[fieldId] = "";
+        }
+        break;
+      case "password":
+        const capitalRegex = /[A-Z]/;
+        const nonCapitalRegex = /[a-z]/;
+        const specialCharRegex = /[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/;
+        const numberRegex = /[0-9]/;
+        const spaceRegex = /\s/;
+
+        errors[fieldId] = "";
+
+        if (!capitalRegex.test(value)) {
+          errors[fieldId] +=
+            "Password must contain at least 1 capital letter.\n";
+        }
+        if (!nonCapitalRegex.test(value)) {
+          errors[fieldId] +=
+            "Password must contain at least 1 non-capital letter.\n";
+        }
+        if (!specialCharRegex.test(value)) {
+          errors[fieldId] +=
+            "Password must contain at least 1 special character.\n";
+        }
+        if (!numberRegex.test(value)) {
+          errors[fieldId] += "Password must contain at least 1 number.\n";
+        }
+        if (value.length < 8) {
+          errors[fieldId] +=
+            "Password must be at least 8 characters long.\n";
+        }
+        if (spaceRegex.test(value)) {
+          errors[fieldId] += "Password must not contain any spaces.\n";
+        }
+        break;
+      default:
+        errors[fieldId] = "";
+        break;
+    }
+
+    setValidationErrors(errors);
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Encrypt the form data and store it in encrypted state
+    //ENCRYPT
     const encryptedData = JSON.stringify(formData);
-    console.log("Encrypted data:", encryptedData);
+    // console.log("Encrypted data:", encryptedData);
+    //USE STATE (encrypt , formdata)
     setEncrypted(encryptedData);
-    // Clear form data after encryption
     setFormData({
       firstName: "",
       lastName: "",
       email: "",
       password: "",
     });
+    //AXIOS
+    try {
+      const response = await axios.post(`http://localhost:5000/user/register`, formData );
+      if(response !== null){
+        const { message } = response.data
+        setRegisComplete(true);
+      }
+
+    } catch (error) {
+      setRegisComplete(false);
+      console.error('Error:', error);
+      
+    }
+    setValidationErrors({});
   };
+
+  const hasErrors =
+    Object.values(validationErrors).some((error) => error !== "") ||
+    Object.values(formData).some((value) => value === "");
 
   return (
     <center>
@@ -52,17 +139,20 @@ function RegisterForm() {
             type="email"
             value={formData.email}
             onChange={(e) => handleInputChange(e, "email")}
+            errorMessage={validationErrors["email"]}
           />
           <InputField
             label="Password"
             type="password"
             value={formData.password}
             onChange={(e) => handleInputChange(e, "password")}
+            errorMessage={validationErrors["password"]}
           />
           <div className="flex flex-col justify-center self-center mt-6 max-w-full text-base tracking-wider text-white w-[120px]">
             <button
               type="submit"
               className="justify-center px-10 py-4 bg-black rounded-3xl border border-black border-solid"
+              disabled={hasErrors}
             >
               Create
             </button>
@@ -73,7 +163,17 @@ function RegisterForm() {
   );
 }
 
-function InputField({ label, type = "text", value, onChange }) {
+function InputField({ label, type = "text", value, onChange, errorMessage }) {
+  const [isValid, setIsValid] = useState(true);
+
+  const handleValidation = () => {
+    if (errorMessage) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center mt-6 w-full">
       <input
@@ -81,8 +181,18 @@ function InputField({ label, type = "text", value, onChange }) {
         placeholder={label}
         value={value}
         onChange={onChange}
-        className="justify-center items-start py-4 pr-16 pl-6 w-full bg-white rounded-3xl border border-black border-solid"
+        onBlur={handleValidation}
+        className={`justify-center items-start py-4 pr-16 pl-6 w-full bg-${
+          isValid ? "white" : "gray-200"
+        } rounded-3xl border border-black border-solid`}
       />
+      {errorMessage && (
+        <div className="text-red-500 mt-1 text-sm">
+          {errorMessage.split("\n").map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

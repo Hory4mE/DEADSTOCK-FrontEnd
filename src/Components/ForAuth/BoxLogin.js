@@ -1,40 +1,61 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function LoginForm() {
-  const [encrypted, setEncrypted] = useState(null); // State to store encrypted data
-  const [formData, setFormData] = useState({ email: "", password: "" }); // State to store form data
+  const [encrypted, setEncrypted] = useState(null);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [validated, setValidated] = useState(false);
 
   const inputFields = [
-    {
-      label: "Email",
-      type: "email",
-      id: "email",
-    },
-    {
-      label: "Password",
-      type: "password",
-      id: "password",
-    },
+    { label: "Email", type: "email", id: "email" },
+    { label: "Password", type: "password", id: "password" },
   ];
 
   const handleInputChange = (e, fieldId) => {
     const { value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [fieldId]: value,
+      [fieldId]: sanitizeInput(value),
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Encrypt the form data and store it in encrypted state
+
     const encryptedData = JSON.stringify(formData);
-    console.log("Encrypted data:", encryptedData);
     setEncrypted(encryptedData);
-    // Clear form data after encryption
     setFormData({ email: "", password: "" });
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/user/login`,
+        formData
+      );
+
+      if (response !== null) {
+        const { accessToken, refreshToken } = response.data;
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
+      } else {
+        console.error("have error");
+        setValidated(false);
+      }
+      e.stopPropagation();
+    } catch (error) {
+      setValidated(false);
+      console.error("Error:", error);
+    }
   };
-  
+
+  const sanitizeInput = (input) => {
+    return input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;")
+      .replace(/\//g, "&#x2F;");
+  };
 
   return (
     <center>
