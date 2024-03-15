@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-
 function RegisterForm() {
   const [RegisComplete, setRegisComplete] = useState(false);
   const [formData, setFormData] = useState({
@@ -155,6 +154,20 @@ function RegisterForm() {
           </div>
         </form>
       </div>
+      {RegisComplete && (
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div className="bg-white p-8 rounded-xl text-center">
+          <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
+          <p>Your account has been created.</p>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            onClick={() => setRegisComplete(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
     </center>
   );
 }
