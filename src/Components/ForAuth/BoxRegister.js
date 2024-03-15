@@ -5,8 +5,8 @@ function RegisterForm() {
   const [RegisComplete, setRegisComplete] = useState(false);
   const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
   });
@@ -94,8 +94,8 @@ function RegisterForm() {
     //USE STATE (encrypt , formdata)
     setEncrypted(encryptedData);
     setFormData({
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
     });
@@ -126,13 +126,13 @@ function RegisterForm() {
         <form onSubmit={handleFormSubmit}>
           <InputField
             label="First name"
-            value={formData.firstName}
-            onChange={(e) => handleInputChange(e, "firstName")}
+            value={formData.firstname}
+            onChange={(e) => handleInputChange(e, "firstname")}
           />
           <InputField
             label="Last name"
-            value={formData.lastName}
-            onChange={(e) => handleInputChange(e, "lastName")}
+            value={formData.lastname}
+            onChange={(e) => handleInputChange(e, "lastname")}
           />
           <InputField
             label="Email"
