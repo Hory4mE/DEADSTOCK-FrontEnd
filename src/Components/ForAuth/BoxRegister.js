@@ -160,7 +160,7 @@ function RegisterForm() {
           <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
           <p>Your account has been created.</p>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
             onClick={() => setRegisComplete(false)}
           >
             Close
