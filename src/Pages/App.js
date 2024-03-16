@@ -13,7 +13,7 @@ import { useAuth } from '../context/AuthContext'
 
 function App() {
   const { isLogin  , checkLoginStatus} = useAuth();
-  // checkLoginStatus();
+  checkLoginStatus();
   // console.log(isLogin);
   return (
     <div>

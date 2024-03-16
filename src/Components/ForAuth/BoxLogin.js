@@ -7,6 +7,7 @@ function LoginForm() {
   const [validated, setValidated] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [isWrongData, setIsWrongData] = useState(false);
+  const [plainText , setPlainText] = useState('');
 
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
@@ -23,6 +24,15 @@ function LoginForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+
+    //HASH the data
+    const encryptedData = bcrypt.hash(JSON.stringify(formData));
+    console.log(encryptedData)
+
+
+    setEncrypted(encryptedData);
+    setFormData({ email: "", password: "" });
 
     try {
       const response = await axios.post(
@@ -64,6 +74,7 @@ function LoginForm() {
   }
   return (
     <center>
+      {plainText}
       <div className="flex flex-col max-w-[447px]">
         <h1 className="self-center text-4xl text-black tracking-[2px]">
           Login

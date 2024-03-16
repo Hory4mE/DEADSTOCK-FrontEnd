@@ -11,6 +11,7 @@ function RegisterForm() {
     email: "",
     password: "",
   });
+  const [plainText , setPlainText] = useState('');
   //SET OF ERROR
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -32,7 +33,7 @@ function RegisterForm() {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#x27;")
       .replace(/\//g, "&#x2F;");
-  };
+    };
 
   const validateField = (fieldId, value) => {
     let errors = { ...validationErrors };
@@ -114,6 +115,19 @@ function RegisterForm() {
       email: "",
       password: "",
     });
+    //AXIOS
+    try {
+      const response = await axios.post(`http://localhost:5000/user/register`, formData );
+      if(response.data !== null){
+        console.log(response.data);
+        setRegisComplete(true);
+      }
+
+    } catch (error) {
+      setRegisComplete(false);
+      console.error('Error:', error);
+     
+    }
     setValidationErrors({});
   };
   
@@ -123,6 +137,7 @@ function RegisterForm() {
 
   return (
     <center>
+      {plainText}
       <div className="flex flex-col text-lg text-black whitespace-nowrap max-w-[447px]">
         <h1 className="self-center text-4xl tracking-[2px]">Create account</h1>
         <form onSubmit={handleFormSubmit}>
