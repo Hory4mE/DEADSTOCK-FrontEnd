@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 
 const Logo = () => (
   <button>
@@ -8,9 +8,11 @@ const Logo = () => (
   </button>
 );
 
-const NavItem = ({ children, href}) => (
+const NavItem = ({ children, href }) => (
   <button>
-    <div className="self-stretch my-auto"><a href={href}>{children}</a></div>
+    <div className="self-stretch my-auto">
+      <a href={href}>{children}</a>
+    </div>
   </button>
 );
 
@@ -39,18 +41,65 @@ const SearchBar = () => (
   </div>
 );
 
-const IconButton = ({ src, alt, href }) => (
-  <button>
-    <a href={href}>
-      <img
-        loading="lazy"
-        src={src}
-        alt={alt}
-        className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
-      />
-    </a>
-  </button>
-);
+const IconButton = ({ src, alt, href }) => {
+  return (
+    <button>
+      <a href={href}>
+        <img
+          loading="lazy"
+          src={src}
+          alt={alt}
+          className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
+        />
+      </a>
+    </button>
+  );
+};
+
+const DropdownMenu = ({ items, onMouseEnter, onMouseLeave }) => {
+  return (
+    <div
+      className="absolute z-10 top-full left-0 w-36 mt-2 py-2 bg-white rounded shadow-lg"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {items.map((item, index) => (
+        <div key={index} className="px-4 py-2 hover:bg-gray-100">
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setShowDropdown(true)}
+    >
+      <button>
+        <a href={href}>
+          <img
+            loading="lazy"
+            src={src}
+            alt={alt}
+            className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
+          />
+        </a>
+      </button>
+      {showDropdown && (
+        <DropdownMenu
+          items={dropdownItems}
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        />
+      )}
+    </div>
+  );
+};
 
 function Header() {
   return (
@@ -59,15 +108,22 @@ function Header() {
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
           <div className="flex gap-2 self-stretch my-auto">
-            <NavItem>clothing</NavItem>
-            <IconButton
+            <NavItem alt="Clothing" href="/product">
+              Clothing
+            </NavItem>
+            <DropDownIconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
-              href="{`/product`}"
+              href="/product"
+              dropdownItems={["Shirt", "Jacket"]}
             />
           </div>
-          <NavItem>Shoes</NavItem>
-          <NavItem>Accessories</NavItem>
+          <NavItem alt="Shoes" href="/product">
+            Shoes
+          </NavItem>
+          <NavItem alt="Accessories" href="/product">
+            Accessories
+          </NavItem>
         </nav>
         <div className="flex gap-5 justify-between items-center">
           <SearchBar />

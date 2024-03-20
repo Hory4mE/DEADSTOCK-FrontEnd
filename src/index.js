@@ -10,6 +10,7 @@ import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import CartPage from "./Pages/Cart";
 
 //useContext
 import { AuthProvider } from './context/AuthContext';
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
     errorElement: <ErrorPage />,
   },
 ]);
