@@ -145,31 +145,35 @@ function ProductList() {
             </div>
             <div className="mt-5 flex justify-center items-center">
               <div>
-                <button
-                  className="px-4 py-2 mr-2 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 hover:bg-gray-400"
-                  disabled={page === 1}
-                  onClick={handlePrevPage}
-                >
-                  Previous
-                </button>
+                {page !== 1 && (
+                  <button
+                    className="px-4 py-2 mr-2 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 hover:bg-gray-400"
+                    onClick={handlePrevPage}
+                  >
+                    Previous
+                  </button>
+                )}
                 {pageNumbers.map((pageNumber) => (
                   <button
                     key={pageNumber}
-                    className={`px-4 py-2 mx-1 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 hover:bg-gray-400 ${
-                      pageNumber === page ? "bg-blue-500 text-white" : ""
+                    className={`px-4 py-2 mx-1 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 ${
+                      pageNumber === page
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-gray-400"
                     }`}
                     onClick={() => handlePageClick(pageNumber)}
                   >
                     {pageNumber}
                   </button>
                 ))}
-                <button
-                  className="px-4 py-2 ml-2 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 hover:bg-gray-400"
-                  disabled={page === totalPages}
-                  onClick={handleNextPage}
-                >
-                  Next
-                </button>
+                {page !== totalPages && (
+                  <button
+                    className="px-4 py-2 ml-2 bg-gray-300 text-gray-700 rounded-md transition-colors duration-300 hover:bg-gray-400"
+                    onClick={handleNextPage}
+                  >
+                    Next
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -178,6 +182,5 @@ function ProductList() {
     </center>
   );
 }
-
 
 export default ProductList;
