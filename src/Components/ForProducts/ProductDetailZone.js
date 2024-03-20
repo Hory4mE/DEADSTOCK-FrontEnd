@@ -9,7 +9,10 @@ function ProductDetails() {
     description: "Vintage Dolce & Gabbana 'Pump It Up' Sweater",
     link: "/cart",
     brand: "Dolce & Gabbana ",
-    details: "sweater in black color. Minor signs of wear. See photos for a detailed look.",
+    details:
+      "sweater in black color. Minor signs of wear. See photos for a detailed look.",
+    measurements: "Tagged L Length: 73 cm\n Width: 58 cm\n Sleeve: 80 cm",
+    additionalInfo: "xxxxx",
   };
 
   return (
@@ -20,6 +23,9 @@ function ProductDetails() {
 }
 
 function Products({ product }) {
+  // Splitting measurement details into an array of lines
+  const measurementLines = product.measurements.split("\n");
+
   return (
     <section className="flex flex-col self-center px-5 mt-16 w-full max-w-[1153px] max-md:mt-10 max-md:max-w-full">
       <div className="max-md:max-w-full">
@@ -37,11 +43,11 @@ function Products({ product }) {
               <h2 className="text-5xl max-md:max-w-full max-md:text-4xl">
                 {product.name}
               </h2>
-              <div className="mt-6 text-xl max-md:max-w-full">
+              <div className="mt-6 text-2xl max-md:max-w-full">
                 {product.price} ฿
               </div>
               <div className="flex flex-col mt-10 max-md:max-w-full">
-                <button className="justify-center items-center px-16 py-4 text-base tracking-wider bg-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
+                <button className="justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
                   Add to cart
                 </button>
                 <h3 className="mt-14 mr-6 text-lg font-semibold max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
@@ -66,11 +72,14 @@ function Products({ product }) {
                   alt=""
                   className="shrink-0 aspect-square w-[18px]"
                 />
-                <h4 className="flex-auto">Measurements</h4>
+                <h4 className="flex-auto text-2xl text-black">Measurements</h4>
               </div>
-              <p className="mt-5 text-xl max-md:max-w-full">
-                <br /> {product.measurements}
-              </p>
+              {/* Rendering each line of measurement */}
+              {measurementLines.map((line, index) => (
+                <p key={index} className="mt-5 text-xl max-md:max-w-full">
+                  {line}
+                </p>
+              ))}
               <div className="self-end mt-14 text-3xl text-white max-md:mt-10">
                 {product.additionalInfo}
               </div>
