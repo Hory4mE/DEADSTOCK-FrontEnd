@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
@@ -12,9 +13,12 @@ function HeroSection() {
             The all-in-one platform to buy & sell vintage and designer fashion securely.
           </p>
         </header>
-        <button className="justify-center self-start px-10 py-3.5 mt-3.5 text-xs font-medium tracking-wide text-black whitespace-nowrap bg-white rounded-3xl max-md:px-5">
+        <Link
+          to="/product"
+          className="justify-center self-start px-10 py-3.5 mt-3.5 text-xs font-medium tracking-wide text-black whitespace-nowrap bg-white rounded-3xl max-md:px-5"
+        >
           SHOP NOW
-        </button>
+        </Link>
       </div>
     </section>
   );

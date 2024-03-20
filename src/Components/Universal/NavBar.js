@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { handleSearchInput } from "../../context/security";
+import ErrorModal from "./ErrorModal";
 
 const Logo = () => (
   <button>
@@ -16,31 +19,61 @@ const NavItem = ({ children, href }) => (
   </button>
 );
 
-const SearchBar = () => (
-  <div className="flex flex-col flex-1 justify-center self-stretch">
-    <label htmlFor="search" className="sr-only">
-      Search
-    </label>
-    <div className="flex gap-5 justify-between px-5 py-1.5 bg-white rounded-2xl border border-black border-solid">
-      <input
-        type="text"
-        id="search"
-        placeholder="Search"
-        className="my-auto"
-        aria-label="Search"
-      />
-      <button>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/9c0aa996fc4584d547a77379de1f22e4cb30e4900b5b7d1f5c7ceed493d66ec8?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-          alt=""
-          className="shrink-0 aspect-square w-[18px]"
-        />
-      </button>
-    </div>
-  </div>
-);
+const SearchBar = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const navigate = useNavigate();
 
+  const handleSearch = () => {
+    try {
+      // Pass the searchQuery and navigate function to handleSearchInput
+      handleSearchInput(searchQuery, (sanitizedQuery) => {
+        // Navigate to the product page with the sanitized search query as a parameter
+        navigate(`/product?search=${sanitizedQuery}`);
+      });
+    } catch (error) {
+      console.error("Error:", error.message);
+      setShowErrorModal(true); // Show the error modal
+    }
+  };
+
+  const dismissErrorModal = () => {
+    setShowErrorModal(false); // Hide the error modal
+  };
+
+  return (
+    <div className="flex flex-col flex-1 justify-center self-stretch">
+      {showErrorModal && (
+        <ErrorModal
+          errorMessage="Invalid keyword"
+          onClose={dismissErrorModal}
+        />
+      )}
+      <label htmlFor="search" className="sr-only">
+        Search
+      </label>
+      <div className="flex gap-5 justify-between px-5 py-1.5 bg-white rounded-2xl border border-black border-solid">
+        <input
+          type="text"
+          id="search"
+          placeholder="Search"
+          className="my-auto"
+          aria-label="Search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearch}>
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/9c0aa996fc4584d547a77379de1f22e4cb30e4900b5b7d1f5c7ceed493d66ec8?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+            alt=""
+            className="shrink-0 aspect-square w-[18px]"
+          />
+        </button>
+      </div>
+    </div>
+  );
+};
 const IconButton = ({ src, alt, href }) => {
   return (
     <button>
@@ -76,10 +109,7 @@ const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setShowDropdown(true)}
-    >
+    <div className="relative" onMouseEnter={() => setShowDropdown(true)}>
       <button>
         <a href={href}>
           <img
