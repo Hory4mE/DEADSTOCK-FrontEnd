@@ -49,13 +49,13 @@ function FashionWebsite() {
         </div>
         <div className="flex gap-5 justify-between self-center px-5 mt-16 w-full text-base max-w-[1153px] text-neutral-500 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
           <div className="flex gap-2.5 self-start whitespace-nowrap">
-            <img
+            {/* <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/4faec16c35582902258a584fee8e5da17a50d8e3a62b7f1055563fe7cb7874c4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Filter icon"
               className="shrink-0 self-start aspect-square w-[18px]"
             />
-            <div className="grow">Filter and sort</div>
+            <div className="grow">Filter and sort</div> */}
           </div>
           <div>8 product</div>
         </div>

@@ -168,7 +168,12 @@ function RegisterForm() {
           <p>Your account has been created.</p>
           <button
             className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => setRegisComplete(false)}
+            onClick={() => {
+              setRegisComplete(false);
+              if (validated) {
+                return <Navigate to="/" />;
+              }
+            }}
           >
             Close
           </button>

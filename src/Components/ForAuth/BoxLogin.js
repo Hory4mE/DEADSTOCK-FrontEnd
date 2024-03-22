@@ -24,14 +24,6 @@ function LoginForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-
-    //HASH the data
-    const encryptedData = bcrypt.hash(JSON.stringify(formData));
-    console.log(encryptedData)
-
-
-    setEncrypted(encryptedData);
     setFormData({ email: "", password: "" });
 
     try {
@@ -69,9 +61,7 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
-  if (validated) {
-    return <Navigate to="/" />;
-  }
+
   return (
     <center>
       {plainText}

@@ -148,7 +148,7 @@ function Header() {
               dropdownItems={["Shirt", "Jacket"]}
             />
           </div>
-          <NavItem alt="Shoes" href="/product">
+          <NavItem alt="Shoes" href="/product?category=shoes">
             Shoes
           </NavItem>
           <NavItem alt="Accessories" href="/product">

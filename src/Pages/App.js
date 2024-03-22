@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState , useEffect} from "react";
 import NavBar from "../Components/Universal/NavBar";
 import WelcomeBanner from "../Components/Universal/WelcomeBanner";
 import HeroSection from "../Components/ForHomePage/HeroSection";
@@ -8,12 +8,11 @@ import Reviews from "../Components/ForHomePage/Reviews";
 import Footer from "../Components/Universal/Footer";
 
 
-import { useAuth } from '../context/AuthContext'
+// import { useAuth } from '../context/AuthContext'
 
 
 function App() {
-  const { isLogin  , checkLoginStatus} = useAuth();
-  checkLoginStatus();
+
   // console.log(isLogin);
   return (
     <div>
