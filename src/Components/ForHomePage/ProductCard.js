@@ -1,13 +1,15 @@
 import React , {useState ,useEffect} from "react";
 import axios from "axios";
 
+
 function ProductCard({ product }) {
   return (
     <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow text-black max-md:mt-9">
         <img
           loading="lazy"
-          src={product.image}
+          // src={product.image}
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
           alt={product.name}
           className="w-full aspect-[0.77]"
         />
@@ -117,7 +119,7 @@ function WhatsNew() {
         <div className="mt-9 max-md:max-w-full">
           <ProductGrid products={products.slice(4)} />
         </div>
-        <button className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
+        <button onClick={() => navigate(`/product`)} className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
           View all
         </button>
       </section>{" "}

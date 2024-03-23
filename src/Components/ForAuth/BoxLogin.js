@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+
 
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -61,6 +61,31 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
+  const authGoogleHandler = async (e) => {
+    e.preventDefault();
+    try {
+
+      const response = axios.get('http://localhost:5000/user/');
+  
+      // if (response.status === 200) {
+      //   console.log('Successfully authenticated with Google');
+      
+      //   const accessToken = response.headers['access_token'];
+      //   const refreshToken = response.headers['refresh_token'];
+
+      //   console.log('Access token:', accessToken);
+      //   console.log('Refresh token:', refreshToken);
+
+
+      // } else {
+      //   console.error('Failed to authenticate with Google');
+
+      // }
+    } catch (error) {
+      console.error('Error while authenticating with Google:', error);
+
+    }
+  };
 
   return (
     <center>
@@ -106,7 +131,7 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <button className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
+        <button onClick={authGoogleHandler} className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/4a8f47a17ad7f8a0a09584de79fccd4f4bb56cc4429e30672c0847ef4f260c1a?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Google logo"

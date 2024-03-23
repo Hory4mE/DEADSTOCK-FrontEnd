@@ -95,14 +95,26 @@ function ProductList() {
   const [page, setPage] = useState(1);
   const [initialProducts, setInitialProducts] = useState([]);
   const location = useLocation();
+
   const searchParams = new URLSearchParams(location.search);
+
   const category = searchParams.get('category');
 
   console.log(category);
+  const queryString = searchParams.get('search');
+  console.log(queryString);
+
+
+  /* fix SearchBar */
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataBySearch = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/category/get-product-category/${category}`);
+        if (!queryString) {
+          return; 
+        }
+
+        const response = await axios.get(`http://localhost:5000/product/search?search=${queryString}`);
+  
         if (response.data) {
           setInitialProducts(response.data);
           console.log('Fetch all Products Success');
@@ -113,27 +125,34 @@ function ProductList() {
         console.error('Error fetching products:', error);
       } 
     };
+  
+    fetchDataBySearch();
+    console.log('work1');
+  }, [queryString]); 
+  
+  console.log(category);
+  useEffect(() => {
+    const fetchDataByCategory = async () => {
+      try {
+        if (!category) {
+          return;
+        }
 
-    fetchData();
-  }, [category]); 
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:5000/category/get-product-category/${category}`);
-  //       if (response.data) {
-  //         setInitialProducts(response.data);
-  //         console.log('Fetch all Products Success');
-  //       } else {
-  //         console.log('No data received from the API.');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching products:', error);
-  //     } 
-  //   };
-
-  //   fetchData();
-  // }, []); 
+        const response = await axios.get(`http://localhost:5000/category/get-product-category?category=${category}`);
+        if (response.data) {
+          setInitialProducts(response.data);
+          console.log('Fetch all Products Success');
+        } else {
+          console.log('No data received from the API.');
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } 
+    };
+  
+    fetchDataByCategory();
+    console.log('work2');
+  }, [category]);
 
   const productsPerPage = 6;
   const startIndex = (page - 1) * productsPerPage;
@@ -177,7 +196,8 @@ function ProductList() {
                 visibleProducts.map((product, index) => (
                   <Product
                     key={index}
-                    imageUrl={product.imageUrl}
+                    // imageUrl={product.imageUrl}
+                    imageUrl={'https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&'}
                     description={product.description}
                     price={product.price}
                   />

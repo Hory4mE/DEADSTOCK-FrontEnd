@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { handleSearchInput } from "../../context/security";
 import ErrorModal from "./ErrorModal";
 
+
 const Logo = () => (
   <button>
     <div className="grow self-stretch text-3xl font-bold tracking-widest">
@@ -57,7 +58,7 @@ const SearchBar = () => {
           type="text"
           id="search"
           placeholder="Search"
-          className="my-auto"
+          className="my-auto input-without-border"
           aria-label="Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
