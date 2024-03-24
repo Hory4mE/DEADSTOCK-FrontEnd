@@ -170,7 +170,7 @@ function RegisterForm() {
             className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
             onClick={() => {
               setRegisComplete(false);
-              if (validated) {
+              if (RegisComplete) {
                 return <Navigate to="/" />;
               }
             }}

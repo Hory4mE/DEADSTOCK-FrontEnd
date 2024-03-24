@@ -8,14 +8,13 @@ function ProductCard({ product }) {
       <div className="flex flex-col grow text-black max-md:mt-9">
         <img
           loading="lazy"
-          // src={product.image}
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-          alt={product.name}
+          src={product.image_url}     
+          alt={product.product_name}
           className="w-full aspect-[0.77]"
         />
-        <div className="mt-2 text-lg tracking-wider">{product.name}</div>
+        <div className="mt-2 text-lg tracking-wider">{product.product_name} ({product.size})</div>
         <div className="mt-5 text-base font-medium tracking-wider">
-          {product.price}
+          {product.price} $
         </div>
       </div>
     </div>
@@ -38,7 +37,7 @@ function WhatsNew() {
   //     name: "PUMA SWEATER (XXS)",
   //     price: "1950.00 $",
   //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/6a259e885fcf42171c345c322c7db06acc8ab6cea9804a402360ba0eef368d46?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
   //   },
   //   {
   //     name: "PUMA SWEATER (XXS)",

@@ -1,10 +1,12 @@
 import React , {useState , useEffect} from "react";
 import axios from "axios";
 
+
 const CartZone = () => {
 
   const [items , setItems] = useState(null);
   const [cartItems , setCartItems] = useState([]);
+
 
   // items = [
   //   // ลบทิ้งถ้ามีข้อมูลมาแทนแล้ว
@@ -39,6 +41,7 @@ const CartZone = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const accessToken = localStorage.getItem("access_token");
         const response = await axios.get(
           `http://localhost:5000/user/cart`,

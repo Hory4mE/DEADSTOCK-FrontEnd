@@ -33,9 +33,10 @@ function LoginForm() {
       );
 
       if (response.data !== null) {
-        const { access_token, refresh_token } = response.data;
-        localStorage.setItem("access_token", access_token);
-        localStorage.setItem("refresh_token", refresh_token);
+        // const { access_token, refresh_token } = response.data;
+        console.log(response.data)
+        // localStorage.setItem("access_token", access_token);
+        // localStorage.setItem("refresh_token", refresh_token);
         setValidated(true);
       } else {
         setIsWrongData(true);
@@ -61,31 +62,28 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
-  const authGoogleHandler = async (e) => {
-    e.preventDefault();
+  const redirectToGoogleAuth =async() => {
     try {
+      // const response = await axios.get(
+      //   `http://localhost:5000/user/google`
 
-      const response = axios.get('http://localhost:5000/user/');
-  
-      // if (response.status === 200) {
-      //   console.log('Successfully authenticated with Google');
-      
-      //   const accessToken = response.headers['access_token'];
-      //   const refreshToken = response.headers['refresh_token'];
-
-      //   console.log('Access token:', accessToken);
-      //   console.log('Refresh token:', refreshToken);
-
-
-      // } else {
-      //   console.error('Failed to authenticate with Google');
-
-      // }
+      // );
+      if (validateURL('http://localhost:5000/user/google')) {
+ 
+        window.location.href = 'http://localhost:5000/user/google';
+      }
     } catch (error) {
-      console.error('Error while authenticating with Google:', error);
-
+      console.error('Error while redirecting to Google Auth:', error);
     }
   };
+  
+  function validateURL(url) {
+    const pattern = /^(http|https):\/\/[^ "]+$/;
+    return pattern.test(url);
+  }
+  
+
+
 
   return (
     <center>
@@ -131,7 +129,7 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <button onClick={authGoogleHandler} className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
+        <button onClick={redirectToGoogleAuth} className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/4a8f47a17ad7f8a0a09584de79fccd4f4bb56cc4429e30672c0847ef4f260c1a?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Google logo"
