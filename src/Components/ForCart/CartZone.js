@@ -179,7 +179,7 @@ const CartZone = () => {
                     {/* Clickable bin icon */}
                     <img
                       loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9f6ee43231a571b35f4c7e108b332ddf15bf79c386b6cde035bdefee2234cdd?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+                      src={item.image_url}
                       alt=""
                       className="shrink-0 my-auto w-7 aspect-[0.9] cursor-pointer"
                       onClick={() => handleRemoveItem(item.id)}

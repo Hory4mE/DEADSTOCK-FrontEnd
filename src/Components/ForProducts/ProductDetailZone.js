@@ -1,6 +1,10 @@
 import React from "react";
+import axios from "axios";
+import { redirect } from "react-router";
+
 
 function ProductDetails() {
+  const [validated , setValidated] = useState(false);
   const product = {
     imageUrl:
       "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
@@ -8,11 +12,11 @@ function ProductDetails() {
     price: 1799,
     description: "Vintage Dolce & Gabbana 'Pump It Up' Sweater",
     link: "/cart",
-    brand: "Dolce & Gabbana ",
-    details:
-      "sweater in black color. Minor signs of wear. See photos for a detailed look.",
+    // brand: "Dolce & Gabbana ",
+    // details:
+    //   "sweater in black color. Minor signs of wear. See photos for a detailed look.",
     measurements: "Tagged L Length: 73 cm\n Width: 58 cm\n Sleeve: 80 cm",
-    additionalInfo: "xxxxx",
+    // additionalInfo: "xxxxx",
   };
 
   return (
@@ -25,6 +29,15 @@ function ProductDetails() {
 function Products({ product }) {
   // Splitting measurement details into an array of lines
   const measurementLines = product.measurements.split("\n");
+  
+  const handleAddCart = () => {
+    const response = axios.post(`http://localhost:5000/user/add-cart`, {product_id: product.product_id, quantity: product.quantity});
+    if(response.status === 200){
+      setValidated(true);
+      <Navigate to="/cart" />;
+    }
+    // Handle response or errors here
+  }
 
   return (
     <section className="flex flex-col self-center px-5 mt-16 w-full max-w-[1153px] max-md:mt-10 max-md:max-w-full">
@@ -41,15 +54,28 @@ function Products({ product }) {
           <div className="flex flex-col ml-5 w-[44%] max-md:ml-0 max-md:w-full">
             <div className="flex flex-col self-stretch my-auto text-black max-md:mt-10 max-md:max-w-full">
               <h2 className="text-5xl max-md:max-w-full max-md:text-4xl">
-                {product.name}
+                {product.product_name}
               </h2>
               <div className="mt-6 text-2xl max-md:max-w-full">
                 {product.price} ฿
               </div>
               <div className="flex flex-col mt-10 max-md:max-w-full">
-                <button className="justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
-                  Add to cart
-                </button>
+                {product.on_hand_quantity === 0 ?
+                    (
+                      <button onClick={handleAddCart} disabled className="btn-seconary justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
+                        Out of Stock.
+                      </button>
+                    )
+
+                  :
+
+                    (
+                      <button onClick={handleAddCart} className="justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
+                      Add to cart
+                      </button>
+                    )
+                }
+                
                 <h3 className="mt-14 mr-6 text-lg font-semibold max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
                   {product.description}
                 </h3>
