@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { Navigate } from 'react-router-dom';
+import { useUserData } from '../../context/AuthContext';
 
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [validated, setValidated] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [isWrongData, setIsWrongData] = useState(false);
   const [plainText , setPlainText] = useState('');
-
+  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
+ 
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
     { label: "Password", type: "password", id: "password" },
@@ -33,20 +35,26 @@ function LoginForm() {
       );
 
       if (response.data !== null) {
-        // const { access_token, refresh_token } = response.data;
-        console.log(response.data)
-        // localStorage.setItem("access_token", access_token);
-        // localStorage.setItem("refresh_token", refresh_token);
-        setValidated(true);
+        console.log(response.data);
+        localStorage.setItem('access_token' , response.data.access_token);
+        localStorage.setItem('refresh_token' , response.data.refresh_token);      
+
+        setIsLoginModalOpen(true);
+        console.log(isLoginModalOpen);
+        if(isLoginModalOpen){
+          <Navigate to="/" />
+        }
       } else {
         setIsWrongData(true);
-        setErrMsg(response.data.message)
+        setErrMsg(response.data.message);
         console.error("have error");
-        setValidated(false);
+        // setIsLogin(false);
+        setIsLoginModalOpen(true);
       }
     } catch (error) {
       setIsWrongData(true);
-      setValidated(false);
+      // setIsLogin(false);
+      setIsLoginModalOpen(true);
       console.error("Error:", error);
     }
     setFormData({ email: "", password: "" });
@@ -62,14 +70,9 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
-  const redirectToGoogleAuth =async() => {
+  const redirectToGoogleAuth = async () => {
     try {
-      // const response = await axios.get(
-      //   `http://localhost:5000/user/google`
-
-      // );
       if (validateURL('http://localhost:5000/user/google')) {
- 
         window.location.href = 'http://localhost:5000/user/google';
       }
     } catch (error) {
@@ -81,9 +84,6 @@ function LoginForm() {
     const pattern = /^(http|https):\/\/[^ "]+$/;
     return pattern.test(url);
   }
-  
-
-
 
   return (
     <center>
@@ -129,7 +129,10 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <button onClick={redirectToGoogleAuth} className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
+        <button 
+          onClick={redirectToGoogleAuth} 
+          className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid"
+        >
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/4a8f47a17ad7f8a0a09584de79fccd4f4bb56cc4429e30672c0847ef4f260c1a?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Google logo"
@@ -139,19 +142,19 @@ function LoginForm() {
         </button>
       </div>
       {isWrongData && (
-      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
-        <div className="bg-white p-8 rounded-xl text-center">
-          <h2 className="text-2xl font-bold mb-4">Auth Error</h2>
-          <p>Invalid Email or Password</p>
-          <button
-            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => setIsWrongData(false)}
-          >
-            Close
-          </button>
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-xl text-center">
+            <h2 className="text-2xl font-bold mb-4">Auth Error</h2>
+            <p>Invalid Email or Password</p>
+            <button
+              className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => setIsWrongData(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </center>
   );
 }

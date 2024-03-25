@@ -6,10 +6,7 @@ import WhatsNew from "../Components/ForHomePage/ProductCard";
 import Features from "../Components/ForHomePage/Features";
 import Reviews from "../Components/ForHomePage/Reviews";
 import Footer from "../Components/Universal/Footer";
-
-
-
-// import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext';
 
 
 function App() {
@@ -24,6 +21,7 @@ function App() {
     localStorage.setItem('refresh_token', refreshToken);
     window.location.href = 'http://localhost:3000'
   }
+
 
 
   return (
