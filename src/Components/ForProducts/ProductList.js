@@ -176,6 +176,7 @@ function ProductList() {
       <div className="flex flex-col bg-white">
         <section>
           <div className="self-start mt-16 ml-32 text-4xl font-light text-black max-md:mt-10 max-md:max-w-full">
+            {/* {initialProducts.length ? initialProducts.data.Product} */}
             Vintage & Second Hand Designer Outwear
           </div>
           <div className="flex gap-5 justify-between self-center px-5 mt-16 w-full text-base max-w-[1153px] text-neutral-500 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
@@ -203,7 +204,9 @@ function ProductList() {
                   />
                 ))
               ) : (
-                <div className="text-lg text-gray-500">Sorry, No Products</div>
+                <div className="w-full flex items-center justify-center">
+                  <p className="text-lg text-gray-500">Sorry, No Products Found</p>
+                </div>
               )}
             </div>
             {totalPages > 1 && ( // Show pagination only if there are more than 1 page

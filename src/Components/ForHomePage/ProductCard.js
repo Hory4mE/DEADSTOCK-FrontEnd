@@ -118,9 +118,18 @@ function WhatsNew() {
         <div className="mt-9 max-md:max-w-full">
           <ProductGrid products={products.slice(4)} />
         </div>
+        {
+        products.length > 0 ?
         <button onClick={() => navigate(`/product`)} className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
           View all
         </button>
+        :
+        <>
+          <p>No Products Found!</p>
+        </>
+       
+      }
+  
       </section>{" "}
     </center>
   );

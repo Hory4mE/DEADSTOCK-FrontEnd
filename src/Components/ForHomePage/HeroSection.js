@@ -1,7 +1,8 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function HeroSection() {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <section className="flex relative flex-col justify-center items-start px-16 py-20 mix-blend-darken bg-black bg-opacity-50 max-md:px-5 max-md:max-w-full">
       <div className="flex flex-col mt-32 mb-28 ml-44 max-w-full w-[480px] max-md:my-10">
@@ -15,7 +16,9 @@ function HeroSection() {
         </header>
         <Link
           to="/product"
-          className="justify-center self-start px-10 py-3.5 mt-3.5 text-xs font-medium tracking-wide text-black whitespace-nowrap bg-white rounded-3xl max-md:px-5"
+          className={`justify-center self-start px-10 py-3.5 mt-3.5 text-xs font-medium tracking-wide text-black whitespace-nowrap bg-white rounded-3xl max-md:px-5 ${isHovered ? 'hover:bg-gray-200' : ''}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           SHOP NOW
         </Link>
