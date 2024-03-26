@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleSearchInput } from "../../context/security";
 import ErrorModal from "./ErrorModal";
+import { useUserData } from '../../context/AuthContext';
 
 
 const Logo = () => (
@@ -32,7 +33,7 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const navigate = useNavigate();
-
+ 
   const handleSearch = () => {
     try {
       // Pass the searchQuery and navigate function to handleSearchInput
@@ -141,10 +142,31 @@ const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
 };
 
 function Header() {
+  const { isLoginModalOpen } = useUserData();
   const [isProfileHovered, setIsProfileHovered] = useState(false);
   const [isCartHovered, setIsCartHovered] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset >= 200) { 
+      setIsScrolled(true);
+    } else if (offset < 200) { 
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="flex justify-center items-center px-16 py-8 w-full text-sm tracking-wider text-black whitespace-nowrap bg-white shadow-sm max-md:px-5 max-md:max-w-full">
+    <header style={{ backgroundColor: 'white' }} className={`flex justify-center items-center px-16 py-8 w-full text-sm tracking-wider text-black whitespace-nowrap shadow-sm max-md:px-5 max-md:max-w-full transition-transform duration-500 ${isScrolled ? '-translate-y-full top-0 ' : 'translate-y-[-10]'}`}>
       <div className="flex gap-5 justify-between w-full max-w-[1147px] max-md:flex-wrap max-md:max-w-full">
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
@@ -167,15 +189,28 @@ function Header() {
           </NavItem>
         </nav>
         <div className="flex gap-5 justify-between items-center">
-          <SearchBar />
-          <IconButton
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-            alt="User profile"
-            href="/login"
-            style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
-            onMouseEnter={() => setIsProfileHovered(true)}
-            onMouseLeave={() => setIsProfileHovered(false)}
-          />
+          <SearchBar />  
+          {
+            isLoginModalOpen ? 
+            <IconButton
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+              alt="User profile"
+              href="/hello"
+              style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
+              onMouseEnter={() => setIsProfileHovered(true)}
+              onMouseLeave={() => setIsProfileHovered(false)}
+            />
+            :
+            <IconButton
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+              alt="User profile"
+              href="/login"
+              style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
+              onMouseEnter={() => setIsProfileHovered(true)}
+              onMouseLeave={() => setIsProfileHovered(false)}
+            />
+            
+          }
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/e3be0dbe071019cdd38d2d5fea243d0b5d03b797052b9cb7708b862fd40b2671?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Shopping cart"

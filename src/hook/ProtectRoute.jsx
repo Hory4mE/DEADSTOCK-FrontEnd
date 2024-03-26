@@ -9,18 +9,18 @@ const ProtectRoute = ({ children, requireRoles = [] }) => {
     const fetchData = async () => {
     try {
         const userData = await fetchCurrentUser();
-        setCurrentUser(userData);
 
-   
         if (!userData|| !userData.role) {
-          return <Navigate to="/login" replace />;
+          return <Navigate to="/login" />;
         }
       
         const userRole = userData.role;
+        setCurrentUser(userData);
+        console.log('check role');
         const matchRoles = !requireRoles.length || requireRoles.includes(userRole);
       
         if (!matchRoles) {
-          return <Navigate to="/" replace />;
+          return <Navigate to="/" />;
         }
       
         console.log('Fetched user data:', userData);

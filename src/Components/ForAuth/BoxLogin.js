@@ -88,8 +88,8 @@ function LoginForm() {
   return (
     <center>
       {plainText}
-      <div className="flex flex-col max-w-[447px]">
-        <h1 className="self-center text-4xl text-black tracking-[2px]">
+      <div className="flex flex-col max-w-[447px] mt-10">
+        <h1 className="self-center text-3xl text-black tracking-[2px]">
           Login
         </h1>
         <form className="mt-10" onSubmit={handleFormSubmit}>

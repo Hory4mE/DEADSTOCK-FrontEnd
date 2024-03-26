@@ -1,52 +1,80 @@
-import React from "react";
+
+import React , {useState , useEffect} from "react";
 import axios from "axios";
-import { redirect } from "react-router";
+import { useLocation } from 'react-router-dom';
 
 
 function ProductDetails() {
   const [validated , setValidated] = useState(false);
-  const product = {
-    imageUrl:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    name: "DOLCE & GABBANA Sweater (L)",
-    price: 1799,
-    description: "Vintage Dolce & Gabbana 'Pump It Up' Sweater",
-    link: "/cart",
-    // brand: "Dolce & Gabbana ",
-    // details:
-    //   "sweater in black color. Minor signs of wear. See photos for a detailed look.",
-    measurements: "Tagged L Length: 73 cm\n Width: 58 cm\n Sleeve: 80 cm",
-    // additionalInfo: "xxxxx",
-  };
+  const [product, setProduct] = useState([]);
 
-  return (
-    <center>
-      <Products product={product} />
-    </center>
-  );
-}
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const productId = searchParams.get('product');
 
-function Products({ product }) {
-  // Splitting measurement details into an array of lines
-  const measurementLines = product.measurements.split("\n");
+  useEffect(() => {
+    const fetchProduct = async () => {
+      
+      console.log(productId);
+      try {
+        const response = await axios.get(`http://localhost:5000/product/get-id/${productId}`);
+        if (response.data) {
+          setProduct(response.data);
+          setValidated(true);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+    fetchProduct();
+  }, [productId]);
+ 
+  const measurementLines = product.measurement;
   
-  const handleAddCart = () => {
-    const response = axios.post(`http://localhost:5000/user/add-cart`, {product_id: product.product_id, quantity: product.quantity});
-    if(response.status === 200){
-      setValidated(true);
-      <Navigate to="/cart" />;
+  const handleAddCart = async () => {
+    const cartData = {
+      cart: [
+        {
+          product_id: product.product_id, 
+          quantity: 1
+        }
+      ]
+    };
+  
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      const response = await axios.post(
+        'http://localhost:5000/user/add-cart',
+        cartData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      
+      console.log(response.status);
+      if (response.status === 200) {
+        window.location.href = "/cart";
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log("Access token expired.");
+      } else {
+        console.error("Error fetching cart products: ", error);
+      }
     }
-    // Handle response or errors here
   }
 
+
   return (
-    <section className="flex flex-col self-center px-5 mt-16 w-full max-w-[1153px] max-md:mt-10 max-md:max-w-full">
+    <section className="flex flex-col self-center px-5 mt-16 w-full max-w-[1153px] max-md:mt-10 max-md:max-w-full mx-auto">
       <div className="max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex flex-col w-[56%] max-md:ml-0 max-md:w-full">
             <img
               loading="lazy"
-              src={product.imageUrl}
+              src={product.image_url}
               alt={product.name}
               className="grow w-full aspect-[0.83] max-md:mt-10 max-md:max-w-full"
             />
@@ -62,19 +90,23 @@ function Products({ product }) {
               <div className="flex flex-col mt-10 max-md:max-w-full">
                 {product.on_hand_quantity === 0 ?
                     (
-                      <button onClick={handleAddCart} disabled className="btn-seconary justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
+                      <button onClick={handleAddCart} disabled className="btn btn-secondary justify-center items-center px-16 py-4 text-base tracking-wider text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
                         Out of Stock.
                       </button>
                     )
-
-                  :
-
+                    :
                     (
-                      <button onClick={handleAddCart} className="justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
-                      Add to cart
+                      <button
+                        onClick={handleAddCart}
+                        className="justify-center items-center px-16 py-4 text-base tracking-wider bg-black text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full hover:bg-gray-500"
+                      >
+                        Add to cart
                       </button>
                     )
                 }
+                <div className="mt-6 text-1xl max-md:max-w-full">
+                  In Stock {product.on_hand_quantity} 
+                </div>
                 
                 <h3 className="mt-14 mr-6 text-lg font-semibold max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
                   {product.description}
@@ -100,12 +132,9 @@ function Products({ product }) {
                 />
                 <h4 className="flex-auto text-2xl text-black">Measurements</h4>
               </div>
-              {/* Rendering each line of measurement */}
-              {measurementLines.map((line, index) => (
-                <p key={index} className="mt-5 text-xl max-md:max-w-full">
-                  {line}
-                </p>
-              ))}
+              {
+                measurementLines != null ? <p className="mt-5 text-xl max-md:max-w-full">{measurementLines}</p> : null
+              }
               <div className="self-end mt-14 text-3xl text-white max-md:mt-10">
                 {product.additionalInfo}
               </div>
@@ -118,3 +147,4 @@ function Products({ product }) {
 }
 
 export default ProductDetails;
+

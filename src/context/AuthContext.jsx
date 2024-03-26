@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
         console.log(access_token);
         console.log(refresh_token);
 
+        console.log(isLoginModalOpen);
+
         if (!refresh_token || !access_token) {
           throw new Error('No tokens found');
         }
@@ -55,6 +57,8 @@ export const AuthProvider = ({ children }) => {
       });
 
       localStorage.removeItem('refresh_token');
+      localStorage.removeItem('access_token');
+
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       console.log('Token refreshed successfully');

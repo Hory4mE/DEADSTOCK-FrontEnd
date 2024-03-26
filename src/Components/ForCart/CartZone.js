@@ -59,7 +59,7 @@ const CartZone = () => {
           const productsData = response.data.products.map((product) => ({
             id: product.id,
             name: product.name,
-            price: product.price, // เพิ่มคุณสมบัติ price
+            price: product.price,
             quantity: product.quantity,
             size:product.size,
             imageUrl: product.imageUrl,
@@ -130,15 +130,12 @@ const CartZone = () => {
   // Check if items is not defined or not an array
   if (!items || !Array.isArray(items) || items.length === 0) {
     return (
-      <div className="flex flex-col bg-white">
+      <div className="flex flex-col bg-white mt-5">
         <div className="flex flex-col pb-20 w-full text-sm tracking-wider max-md:max-w-full"></div>
         <main className="flex flex-col self-center px-5 mt-4 w-full max-w-[1181px] max-md:max-w-full">
           <div className="flex gap-5 w-full max-md:flex-wrap max-md:max-w-full">
-            <div className="flex flex-col">
-              <h1 className="text-4xl text-black">Your cart</h1>
-              <div className="mt-16 text-lg text-black text-opacity-60 max-md:mt-10">
-                Your Cart is Empty
-              </div>
+            <div className="flex flex-col mx-auto">
+              <h1 className="text-4xl text-black">Your cart is empty</h1>
             </div>
           </div>
         </main>
@@ -165,6 +162,7 @@ const CartZone = () => {
                 key={item.id}
                 className="mt-4 text-lg text-black text-opacity-60 max-md:mt-3 flex items-center"
               >
+                {console.log(item)}
                 <img
                   loading="lazy"
                   src={item.imageUrl}
@@ -183,7 +181,7 @@ const CartZone = () => {
                     {/* Clickable bin icon */}
                     <img
                       loading="lazy"
-                      src={item.image_url}
+                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9f6ee43231a571b35f4c7e108b332ddf15bf79c386b6cde035bdefee2234cdd?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
                       alt=""
                       className="shrink-0 my-auto w-7 aspect-[0.9] cursor-pointer"
                       onClick={() => handleRemoveItem(item.id)}
