@@ -1,0 +1,21 @@
+version: '3'
+services:
+  redis:
+    image: node:14-alpine
+    expose:
+      - 3000
+  app:
+    build: .
+    volumes:
+      - .:/src/
+      - dependencies:./node_modules
+    working_dir: /
+    depends_on:
+      - redis
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    command: npm run dev
+volumes:
+  dependencies:

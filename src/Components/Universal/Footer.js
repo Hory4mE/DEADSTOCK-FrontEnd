@@ -1,6 +1,7 @@
 function Footer() {
   return (
-    <footer className="flex justify-center items-center px-16 py-16 mt-24 w-full text-black bg-stone-50 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+    <footer className="flex flex-col items-center px-16 py-16 mt-24 w-full text-black bg-stone-50 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+      <div className="mt-8 text-3xl font-bold tracking-widest">DEADSTOCK</div>
       <div className="flex gap-5 justify-between items-start w-full max-w-[1021px] max-md:flex-wrap max-md:max-w-full">
         <div className="flex flex-col self-stretch">
           <h3 className="text-xl font-medium tracking-wider whitespace-nowrap">
@@ -32,9 +33,6 @@ function Footer() {
             Terms & Conditions <br />
             Legal notice
           </div>
-        </div>
-        <div className="flex-auto text-3xl font-bold tracking-widest">
-          DEADSTOCK
         </div>
       </div>
     </footer>

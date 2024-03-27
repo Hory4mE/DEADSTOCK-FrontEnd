@@ -1,19 +1,28 @@
+import React , {useState ,useEffect} from "react";
+import axios from "axios";
+import { Link } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
+
+
 function ProductCard({ product }) {
+  const productDetailsUrl = `/productDetails?product=${product.product_id}`;
+  
   return (
-    <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+    <Link to={productDetailsUrl} className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full transition-transform duration-300 transform hover:scale-110">
       <div className="flex flex-col grow text-black max-md:mt-9">
         <img
           loading="lazy"
-          src={product.image}
-          alt={product.name}
+          src={product.image_url}     
+          alt={product.product_name}
           className="w-full aspect-[0.77]"
         />
-        <div className="mt-2 text-lg tracking-wider">{product.name}</div>
+        <div className="mt-2 text-lg tracking-wider">{product.product_name} ({product.size})</div>
         <div className="mt-5 text-base font-medium tracking-wider">
-          {product.price}
+          {product.price} $
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -28,56 +37,82 @@ function ProductGrid({ products }) {
 }
 
 function WhatsNew() {
-  const products = [
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/6a259e885fcf42171c345c322c7db06acc8ab6cea9804a402360ba0eef368d46?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-    {
-      name: "PUMA SWEATER (XXS)",
-      price: "1950.00 $",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    },
-  ];
+  const navigate = useNavigate();
+  // const products = [
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  //   {
+  //     name: "PUMA SWEATER (XXS)",
+  //     price: "1950.00 $",
+  //     image:
+  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+  //   },
+  // ];
+  const [products, setProducts] = useState([]);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/product/get-all');
+        console.log(response.data.products);
+        if (response.data) {
+          setProducts(response.data.products);
+          console.log('Fetch all Products Success');
+        } else {
+          console.log('No data received from the API.');
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } 
+    };
+
+   
+    fetchData();
+  }, []); 
+
+  
+
 
   return (
     <center>
@@ -91,9 +126,22 @@ function WhatsNew() {
         <div className="mt-9 max-md:max-w-full">
           <ProductGrid products={products.slice(4)} />
         </div>
-        <button className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
-          View all
-        </button>
+        {
+          products.length > 0 ?
+          <button 
+            onClick={() => navigate('/product')} 
+            className={`justify-center self-center px-5 py-2 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10 ${isHovered ? 'hover:bg-gray-900 hover:text-md transform scale-110 transition duration-800' : 'transition duration-300'}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            View all
+          </button>
+          :
+          <>
+            <p>No Products Found!</p>
+          </>    
+        }
+  
       </section>{" "}
     </center>
   );

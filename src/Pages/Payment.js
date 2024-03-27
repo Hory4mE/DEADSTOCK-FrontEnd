@@ -2,17 +2,18 @@ import React from "react";
 import NavBar from "../Components/Universal/NavBar";
 import WelcomeBanner from "../Components/Universal/WelcomeBanner";
 import Footer from "../Components/Universal/Footer";
-import LoginForm from "../Components/ForAuth/BoxLogin";
+import PaymentForm from "../Components/ForPayment/PaymentForm";
 
-function Login() {
+
+function Payment() {
   return (
     <div>
       <WelcomeBanner />
       <NavBar />
-      <LoginForm />
+      <PaymentForm />
       <Footer />
     </div>
   );
 }
 
-export default Login;
+export default Payment;

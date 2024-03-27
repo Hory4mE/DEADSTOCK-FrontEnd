@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Navigate } from 'react-router-dom';
-
-//BCRYPT FOR HASH
-// const bcrypt = require ('bcrypt');
+import { useUserData } from '../../context/AuthContext';
 
 function LoginForm() {
-  const [encrypted, setEncrypted] = useState(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [validated, setValidated] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
+  const [isWrongData, setIsWrongData] = useState(false);
   const [plainText , setPlainText] = useState('');
-
+  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
+ 
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
     { label: "Password", type: "password", id: "password" },
@@ -26,14 +26,6 @@ function LoginForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-
-    //HASH the data bcrypt.hash(
-    const encryptedData = JSON.stringify(formData);
-    console.log(encryptedData)
-
-
-    setEncrypted(encryptedData);
     setFormData({ email: "", password: "" });
 
     try {
@@ -43,27 +35,29 @@ function LoginForm() {
       );
 
       if (response.data !== null) {
-        const { access_token , refresh_token } = response.data;
-        localStorage.setItem("access_token", access_token);
-        localStorage.setItem("refresh_token", refresh_token);  
-        setValidated(true);
-           
-      } 
-      else if (response.data.error === "Username or password incorrect") {
-        // console.log("Email already exists");
-        setPlainText("Username or password incorrect")
-        // Handle error message display here
-      }
-    
-      else {
+        console.log(response.data);
+        localStorage.setItem('access_token' , response.data.access_token);
+        localStorage.setItem('refresh_token' , response.data.refresh_token);      
+
+        setIsLoginModalOpen(true);
+        console.log(isLoginModalOpen);
+        if(isLoginModalOpen){
+          <Navigate to="/" />
+        }
+      } else {
+        setIsWrongData(true);
+        setErrMsg(response.data.message);
         console.error("have error");
-        setValidated(false);
+        // setIsLogin(false);
+        setIsLoginModalOpen(true);
       }
-      
     } catch (error) {
-      setValidated(false);
+      setIsWrongData(true);
+      // setIsLogin(false);
+      setIsLoginModalOpen(true);
       console.error("Error:", error);
     }
+    setFormData({ email: "", password: "" });
   };
 
   const sanitizeInput = (input) => {
@@ -76,14 +70,26 @@ function LoginForm() {
       .replace(/\//g, "&#x2F;");
   };
 
-  if (validated) {
-    return <Navigate to="/" />;
+  const redirectToGoogleAuth = async () => {
+    try {
+      if (validateURL('http://localhost:5000/user/google')) {
+        window.location.href = 'http://localhost:5000/user/google';
+      }
+    } catch (error) {
+      console.error('Error while redirecting to Google Auth:', error);
+    }
+  };
+  
+  function validateURL(url) {
+    const pattern = /^(http|https):\/\/[^ "]+$/;
+    return pattern.test(url);
   }
+
   return (
     <center>
       {plainText}
-      <div className="flex flex-col max-w-[447px]">
-        <h1 className="self-center text-4xl text-black tracking-[2px]">
+      <div className="flex flex-col max-w-[447px] mt-10">
+        <h1 className="self-center text-3xl text-black tracking-[2px]">
           Login
         </h1>
         <form className="mt-10" onSubmit={handleFormSubmit}>
@@ -110,7 +116,9 @@ function LoginForm() {
                     >
                       Sign in
                     </button>
-                    <div className="mt-4 underline"><a href={`/register`}>Create account</a></div>
+                    <div className="mt-4 underline">
+                      <a href={`/register`}>Create account</a>
+                    </div>
                     <div className="self-center mt-8">OR</div>
                   </div>
                 </div>
@@ -121,7 +129,10 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <button className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid">
+        <button 
+          onClick={redirectToGoogleAuth} 
+          className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid"
+        >
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/4a8f47a17ad7f8a0a09584de79fccd4f4bb56cc4429e30672c0847ef4f260c1a?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Google logo"
@@ -130,6 +141,20 @@ function LoginForm() {
           Google
         </button>
       </div>
+      {isWrongData && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-xl text-center">
+            <h2 className="text-2xl font-bold mb-4">Auth Error</h2>
+            <p>Invalid Email or Password</p>
+            <button
+              className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => setIsWrongData(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </center>
   );
 }

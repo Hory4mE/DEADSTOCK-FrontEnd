@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React , {useState} from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 
 // PAGES
@@ -10,43 +10,35 @@ import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import CartPage from "./Pages/Cart";
 
-//useContext
+// useContext
 import { AuthProvider } from './context/AuthContext';
+import ProtectRoute from './hook/ProtectRoute'; 
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/product",
-    element: <Products />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/productDetails",
-    element: <ProductDetails />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-    errorElement: <ErrorPage />,
-  },
-]);
+const root = document.getElementById("root");
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
+createRoot(root).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/product" element={<Products />} />
+          <Route path="/productDetails" element={<ProductDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/cart"
+            element={
+              <ProtectRoute requireRoles={['member']}>
+                <Cart/>
+              </ProtectRoute>
+            }
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>
 );
