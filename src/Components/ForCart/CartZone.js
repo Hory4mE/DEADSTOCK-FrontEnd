@@ -1,11 +1,12 @@
 import React , {useState , useEffect} from "react";
 import axios from "axios";
-
-
+import { useUserData } from '../../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 const CartZone = () => {
 
   const [items , setItems] = useState(null);
   const [cartItems , setCartItems] = useState([]);
+  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
 
 
   // items = [
@@ -58,7 +59,7 @@ const CartZone = () => {
           const productsData = response.data.products.map((product) => ({
             id: product.id,
             name: product.name,
-            price: product.price, // เพิ่มคุณสมบัติ price
+            price: product.price,
             quantity: product.quantity,
             size:product.size,
             imageUrl: product.imageUrl,
@@ -129,15 +130,12 @@ const CartZone = () => {
   // Check if items is not defined or not an array
   if (!items || !Array.isArray(items) || items.length === 0) {
     return (
-      <div className="flex flex-col bg-white">
+      <div className="flex flex-col bg-white mt-5">
         <div className="flex flex-col pb-20 w-full text-sm tracking-wider max-md:max-w-full"></div>
         <main className="flex flex-col self-center px-5 mt-4 w-full max-w-[1181px] max-md:max-w-full">
           <div className="flex gap-5 w-full max-md:flex-wrap max-md:max-w-full">
-            <div className="flex flex-col">
-              <h1 className="text-4xl text-black">Your cart</h1>
-              <div className="mt-16 text-lg text-black text-opacity-60 max-md:mt-10">
-                Your Cart is Empty
-              </div>
+            <div className="flex flex-col mx-auto">
+              <h1 className="text-4xl text-black">Your cart is empty</h1>
             </div>
           </div>
         </main>
@@ -150,6 +148,9 @@ const CartZone = () => {
 
   return (
     <div className="flex flex-col bg-white">
+      {
+        isLoginModalOpen ? <Navigate to="/login" /> : null
+      }
       {/* Your cart header and total UI */}
       <main className="flex flex-col self-center px-5 mt-4 w-full max-w-[1181px] max-md:max-w-full">
         <div className="flex gap-5 w-full max-md:flex-wrap max-md:max-w-full">
@@ -161,6 +162,7 @@ const CartZone = () => {
                 key={item.id}
                 className="mt-4 text-lg text-black text-opacity-60 max-md:mt-3 flex items-center"
               >
+                {console.log(item)}
                 <img
                   loading="lazy"
                   src={item.imageUrl}

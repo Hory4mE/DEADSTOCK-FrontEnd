@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleSearchInput } from "../../context/security";
 import ErrorModal from "./ErrorModal";
+import { useUserData } from '../../context/AuthContext';
 
 
 const Logo = () => (
@@ -12,19 +13,27 @@ const Logo = () => (
   </button>
 );
 
-const NavItem = ({ children, href }) => (
-  <button>
-    <div className="self-stretch my-auto">
-      <a href={href}>{children}</a>
-    </div>
-  </button>
-);
+const NavItem = ({ alt, href, children }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <a 
+      href={href}
+      alt={alt}
+      className="hover:underline"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ textDecoration: isHovered ? 'underline' : 'none' }}
+    >
+      {children}
+    </a>
+  );
+};
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const navigate = useNavigate();
-
+ 
   const handleSearch = () => {
     try {
       // Pass the searchQuery and navigate function to handleSearchInput
@@ -99,7 +108,7 @@ const DropdownMenu = ({ items, onMouseEnter, onMouseLeave }) => {
     >
       {items.map((item, index) => (
         <div key={index} className="px-4 py-2 hover:bg-gray-100">
-          {item}
+          <a href={'/product?category=' + item} alt="Shoes">{item}</a>
         </div>
       ))}
     </div>
@@ -133,13 +142,36 @@ const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
 };
 
 function Header() {
+  const { isLoginModalOpen } = useUserData();
+  const [isProfileHovered, setIsProfileHovered] = useState(false);
+  const [isCartHovered, setIsCartHovered] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset >= 200) { 
+      setIsScrolled(true);
+    } else if (offset < 200) { 
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="flex justify-center items-center px-16 py-8 w-full text-sm tracking-wider text-black whitespace-nowrap bg-white shadow-sm max-md:px-5 max-md:max-w-full">
+    <header style={{ backgroundColor: 'white' }} className={`flex justify-center items-center px-16 py-8 w-full text-sm tracking-wider text-black whitespace-nowrap shadow-sm max-md:px-5 max-md:max-w-full transition-transform duration-500 ${isScrolled ? '-translate-y-full top-0 ' : 'translate-y-[-10]'}`}>
       <div className="flex gap-5 justify-between w-full max-w-[1147px] max-md:flex-wrap max-md:max-w-full">
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
           <div className="flex gap-2 self-stretch my-auto">
-            <NavItem alt="Clothing" href="/product">
+            <NavItem alt="Clothing" href="/product?category=Clothing">
               Clothing
             </NavItem>
             <DropDownIconButton
@@ -149,24 +181,43 @@ function Header() {
               dropdownItems={["Shirt", "Jacket"]}
             />
           </div>
-          <NavItem alt="Shoes" href="/product?category=shoes">
+          <NavItem alt="Shoes" href="/product?category=Shoes">
             Shoes
           </NavItem>
-          <NavItem alt="Accessories" href="/product">
+          <NavItem alt="Accessories" href="/product?category=Accessories">
             Accessories
           </NavItem>
         </nav>
         <div className="flex gap-5 justify-between items-center">
-          <SearchBar />
-          <IconButton
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-            alt="User profile"
-            href="/login"
-          />
+          <SearchBar />  
+          {
+            isLoginModalOpen ? 
+            <IconButton
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+              alt="User profile"
+              href="/hello"
+              style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
+              onMouseEnter={() => setIsProfileHovered(true)}
+              onMouseLeave={() => setIsProfileHovered(false)}
+            />
+            :
+            <IconButton
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
+              alt="User profile"
+              href="/login"
+              style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
+              onMouseEnter={() => setIsProfileHovered(true)}
+              onMouseLeave={() => setIsProfileHovered(false)}
+            />
+            
+          }
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/e3be0dbe071019cdd38d2d5fea243d0b5d03b797052b9cb7708b862fd40b2671?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Shopping cart"
             href="/cart"
+            style={{ textDecoration: isCartHovered ? 'underline' : 'none' }}
+            onMouseEnter={() => setIsCartHovered(true)}
+            onMouseLeave={() => setIsCartHovered(false)}
           />
         </div>
       </div>

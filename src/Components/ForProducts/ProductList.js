@@ -1,6 +1,7 @@
 import React, { useState , useEffect } from "react";
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // /* BootStrap */
 // import { Spinner } from 'react-bootstrap'
@@ -74,20 +75,22 @@ import { useLocation } from 'react-router-dom';
 //   },
 // ];
 
-function Product({ imageUrl, description, price }) {
+function Product({ imageUrl, description, price , name, product_id }) {
+  const productDetailsUrl = `/productDetails?product=${product_id}`;
+
   return (
-    <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col grow text-black max:mt-7">
-        <img
-          loading="lazy"
-          src={imageUrl}
-          alt={description}
-          className="w-full aspect-[0.77]"
-        />
-        <div className="mt-2 text-lg tracking-wider">{description}</div>
-        <div className="mt-5 text-base font-medium tracking-wider">{price}</div>
-      </div>
-    </div>
+    <Link to={productDetailsUrl} className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full transition-transform duration-300 transform hover:scale-110">
+        <div className="flex flex-col grow text-black max:mt-7">
+          <img
+            loading="lazy"
+            src={imageUrl}
+            alt={description}
+            className="w-full aspect-[0.77]"
+          />
+          <div className="mt-2 text-lg tracking-wider">{name}</div>
+          <div className="mt-5 text-base font-medium tracking-wider">{price}</div>
+        </div>
+    </Link> 
   );
 }
 
@@ -97,13 +100,31 @@ function ProductList() {
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
-
   const category = searchParams.get('category');
-
-  console.log(category);
   const queryString = searchParams.get('search');
-  console.log(queryString);
+ 
 
+  if(!category && !queryString) {
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/product/get-all');
+          console.log(response.data.products);
+          if (response.data) {
+            setInitialProducts(response.data.products);
+            console.log('Fetch all Products Success');
+          } else {
+            console.log('No data received from the API.');
+          }
+        } catch (error) {
+          console.error('Error fetching products:', error);
+        } 
+      };
+  
+     
+      fetchData();
+    }, []); 
+  }
 
   /* fix SearchBar */
   useEffect(() => {
@@ -130,7 +151,6 @@ function ProductList() {
     console.log('work1');
   }, [queryString]); 
   
-  console.log(category);
   useEffect(() => {
     const fetchDataByCategory = async () => {
       try {
@@ -172,12 +192,15 @@ function ProductList() {
   // No need to handle page click function as we're showing only one page if no products or only one page available
 
   return (
-    <center>
-      <div className="flex flex-col bg-white">
+    <>
+    <div className="flex flex-col bg-white">
+      <section>
+        <div style={{ marginLeft: '170px' }} className="self-start mt-20 text-3xl font-light text-black max-md:mt-10 max-md:max-w-full text-left">
+          Vintage & Second Hand Designer Outwear
+        </div>
+      </section>
+      <center>
         <section>
-          <div className="self-start mt-16 ml-32 text-4xl font-light text-black max-md:mt-10 max-md:max-w-full">
-            Vintage & Second Hand Designer Outwear
-          </div>
           <div className="flex gap-5 justify-between self-center px-5 mt-16 w-full text-base max-w-[1153px] text-neutral-500 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
             <div className="flex gap-2.5 self-start whitespace-nowrap">
               {/* <img
@@ -196,14 +219,18 @@ function ProductList() {
                 visibleProducts.map((product, index) => (
                   <Product
                     key={index}
-                    // imageUrl={product.imageUrl}
-                    imageUrl={'https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&'}
+                    imageUrl={product.image_url}
+                    // imageUrl={'https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&'}
                     description={product.description}
                     price={product.price}
+                    name={product.product_name}
+                    product_id={product.product_id}
                   />
                 ))
               ) : (
-                <div className="text-lg text-gray-500">Sorry, No Products</div>
+                <div className="w-full flex items-center justify-center">
+                  <p className="text-lg text-gray-500">Sorry, No Products Found</p>
+                </div>
               )}
             </div>
             {totalPages > 1 && ( // Show pagination only if there are more than 1 page
@@ -237,8 +264,9 @@ function ProductList() {
             )}
           </div>
         </section>
-      </div>
-    </center>
+      </center>
+    </div>
+  </>
   );
 }
 

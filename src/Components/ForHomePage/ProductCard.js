@@ -1,10 +1,15 @@
 import React , {useState ,useEffect} from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
 
 
 function ProductCard({ product }) {
+  const productDetailsUrl = `/productDetails?product=${product.product_id}`;
+  
   return (
-    <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+    <Link to={productDetailsUrl} className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full transition-transform duration-300 transform hover:scale-110">
       <div className="flex flex-col grow text-black max-md:mt-9">
         <img
           loading="lazy"
@@ -17,7 +22,7 @@ function ProductCard({ product }) {
           {product.price} $
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -32,6 +37,7 @@ function ProductGrid({ products }) {
 }
 
 function WhatsNew() {
+  const navigate = useNavigate();
   // const products = [
   //   {
   //     name: "PUMA SWEATER (XXS)",
@@ -83,11 +89,12 @@ function WhatsNew() {
   //   },
   // ];
   const [products, setProducts] = useState([]);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/product/get-all`);
+        const response = await axios.get('http://localhost:5000/product/get-all');
         console.log(response.data.products);
         if (response.data) {
           setProducts(response.data.products);
@@ -100,6 +107,7 @@ function WhatsNew() {
       } 
     };
 
+   
     fetchData();
   }, []); 
 
@@ -118,9 +126,22 @@ function WhatsNew() {
         <div className="mt-9 max-md:max-w-full">
           <ProductGrid products={products.slice(4)} />
         </div>
-        <button onClick={() => navigate(`/product`)} className="justify-center self-center px-9 py-5 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10">
-          View all
-        </button>
+        {
+          products.length > 0 ?
+          <button 
+            onClick={() => navigate('/product')} 
+            className={`justify-center self-center px-5 py-2 mt-12 text-base font-medium tracking-wider text-center text-white whitespace-nowrap bg-black rounded-3xl max-md:px-5 max-md:mt-10 ${isHovered ? 'hover:bg-gray-900 hover:text-md transform scale-110 transition duration-800' : 'transition duration-300'}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            View all
+          </button>
+          :
+          <>
+            <p>No Products Found!</p>
+          </>    
+        }
+  
       </section>{" "}
     </center>
   );
