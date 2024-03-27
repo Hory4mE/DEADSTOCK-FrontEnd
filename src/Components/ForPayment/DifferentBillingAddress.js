@@ -1,14 +1,36 @@
 // DifferentBillingAddress.js
-import React from 'react';
+import React, { useState } from 'react';
 import InputBar from './InputField';
 
-const DifferentBillingAddress = () => {
+const DifferentBillingAddress = ({ onToggleBillingAddress, onToggleSameAddress }) => {
+    const [useSameAddress, setUseSameAddress] = useState(true);
+
+    const handleBillingAddressCheckboxChange = () => {
+        setUseSameAddress(false);
+        onToggleBillingAddress(true);
+        onToggleSameAddress(false);
+    };
+
+    const handleSameAddressCheckboxChange = () => {
+        setUseSameAddress(true);
+        onToggleBillingAddress(false);
+        onToggleSameAddress(true);
+    };
+
     return (
-        <div className="flex gap-4 p-4 bg-white rounded-xl border border-black border-solid max-md:flex-wrap">
-            <div className="flex flex-col justify-center items-center px-0.5 bg-white rounded-xl border border-black border-solid h-[15px] w-[15px]">
-                <div className="shrink-0 bg-black rounded-xl border border-black border-solid h-[11px] w-[11px]" />
+        <div>
+            <div className="flex flex-col gap-4 p-4 bg-white rounded-xl border border-black border-solid max-md:flex-wrap">
+                <div className="flex items-center">
+                    <input type="checkbox" checked={useSameAddress} onChange={handleSameAddressCheckboxChange} />
+                    <label className="text-base tracking-wider text-black">Use the same address as delivery address</label>
+                </div>
             </div>
-            <div className="flex-auto text-base tracking-wider text-black">Use a different billing address</div>
+            <div className="flex flex-col gap-4 p-4 bg-white rounded-xl border border-black border-solid max-md:flex-wrap ">
+                <div className="flex items-center">
+                    <input type="checkbox" checked={!useSameAddress} onChange={handleBillingAddressCheckboxChange} />
+                    <label className="text-base tracking-wider text-black">Use a different billing address</label>
+                </div>
+            </div>
         </div>
     );
 }
