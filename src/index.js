@@ -10,7 +10,8 @@ import Products from "./Pages/Products";
 import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import CartPage from "./Pages/Cart";
+import Cart from "./Pages/Cart";
+import Payment from "./Pages/Payment";
 
 // useContext
 import { AuthProvider } from './context/AuthContext';
@@ -28,6 +29,7 @@ createRoot(root).render(
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/payment" element={<Payment />} />
           <Route
             path="/cart"
             element={
