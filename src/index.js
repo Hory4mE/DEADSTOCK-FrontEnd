@@ -11,6 +11,7 @@ import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import CartPage from "./Pages/Cart";
+import Payment from "./Pages/Payment";
 
 //useContext
 import { AuthProvider } from './context/AuthContext';
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <CartPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/pay",
+    element: <Payment />,
     errorElement: <ErrorPage />,
   },
 ]);
