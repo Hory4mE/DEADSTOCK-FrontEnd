@@ -31,7 +31,7 @@ function PaymentForm(/*{ products } ตรงนี้เป็น dynamic*/) {
 
     return (
         <div className="max-w-screen-lg mx-auto px-10 mt-36 max-md:flex-wrap max-md:mt-10">
-            <div className="flex justify-between items-start" style={{ width: '60%' }}>
+            <div className="flex justify-between items-start" style={{ width: '100%' }}>
                 <div className="flex-3 mr-5">
                     <ContactSection />
                     <DeliverySection />

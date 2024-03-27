@@ -1,6 +1,5 @@
 // DifferentBillingAddress.js
 import React, { useState } from 'react';
-import InputBar from './InputField';
 
 const DifferentBillingAddress = ({ onToggleBillingAddress, onToggleSameAddress }) => {
     const [useSameAddress, setUseSameAddress] = useState(true);
