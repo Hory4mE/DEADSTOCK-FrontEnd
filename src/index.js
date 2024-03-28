@@ -12,7 +12,6 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
 import Payment from "./Pages/Payment";
-
 // useContext
 import { AuthProvider } from './context/AuthContext';
 import ProtectRoute from './hook/ProtectRoute'; 
