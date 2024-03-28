@@ -13,6 +13,7 @@ import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
 import Payment from "./Pages/Payment"
 import History from "./Pages/History";
+import Billing from "./Pages/Billing";
 
 // useContext
 import { AuthProvider } from './context/AuthContext';
@@ -31,7 +32,8 @@ createRoot(root).render(
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/history" element={<Payment />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/billing" element={<Billing />} />
           <Route
             path="/cart"
             element={
