@@ -156,14 +156,41 @@ function PaymentForm(/*{ products } ตรงนี้เป็น dynamic*/) {
     );
 }
 
-const SummarySection = ({ products }) => {
+const ProductItem = ({ product }) => {
+    return (
+        <div className="flex py-4 border-b border-gray-200">
+            <img src={product.image} alt={product.name} className="w-24 h-24 mr-4 rounded-lg object-cover" />
+            <div className="flex flex-col justify-between flex-1">
+                <div>
+                    <h2 className="text-gray-800 font-semibold">{product.name}</h2>
+                    <p className="text-gray-600 text-sm">halo{product.description}</p>
+                </div>
+                <div className="flex justify-between items-center mt-2">
+                    <span className="text-gray-700 font-bold">{product.size}</span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+const SummarySection = () => {
+    //static product
+    const products = [
+        {
+            id: 1,
+            name: "712Puma Sweater",
+            size: "XL",
+            image: "https://cdn.builder.io/api/v1/image/assets/TEMP/96b9fc1089ec1bec9b688e9d6466d82e10453b39411a53936e27c35e94da6853?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
+        },
+    ];
     return (
         <div>
             <div style={{ position: 'relative' }}>
                 <div className="shrink-0 mt-3 absolute top-0 border border-solid bg-black bg-opacity-30 border-black border-opacity-30 h-[859px]" style={{ left: '1rem' }} />
                 <div className="flex flex-col max-md:max-w-full" style={{ marginLeft: '2rem' }}>
                     {products.map((product) => (
-                        <h1 key={product.id} product={product} />
+                        <ProductItem key={product.id} product={product} />
                     ))}
                     <form className="flex flex-col max-md:max-w-full">
                         <div className="flex flex-col max-md:flex-row gap-5 items-start mt-5">
