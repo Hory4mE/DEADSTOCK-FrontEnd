@@ -1,5 +1,5 @@
 import React from 'react';
-import InputBar from './SmallComponents/InputBar';
+import InputBar from './InputField';
 import Checkbox from './Checkbox';
 
 const BillingAddressSection = ({ showBillingAddress }) => {

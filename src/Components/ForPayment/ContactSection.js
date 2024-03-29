@@ -1,6 +1,6 @@
 // ContactSection.js
 import React from 'react';
-import InputField from './SmallComponents/InputBar';
+import InputField from './InputField';
 import Checkbox from './Checkbox';
 
 const ContactSection = () => {
