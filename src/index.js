@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
@@ -13,10 +13,11 @@ import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
 import Payment from "./Pages/Payment"
 import History from "./Pages/History";
+import Billing from "./Pages/Billing";
 
 // useContext
 import { AuthProvider } from './context/AuthContext';
-import ProtectRoute from './hook/ProtectRoute'; 
+import ProtectRoute from './hook/ProtectRoute';
 
 const root = document.getElementById("root");
 
@@ -25,21 +26,46 @@ createRoot(root).render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* NO Authentication */}
           <Route path="/" element={<App />} />
           <Route path="/product" element={<Products />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/history" element={<Payment />} />
           <Route
             path="/cart"
             element={
               <ProtectRoute requireRoles={['member']}>
-                <Cart/>
+                <Cart />
               </ProtectRoute>
             }
           />
+          <Route
+            path="/payment"
+            element={
+              <ProtectRoute requireRoles={['member']}>
+                <Payment />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectRoute requireRoles={['member']}>
+                <History />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/billing"
+            element={
+              <ProtectRoute requireRoles={['member']}>
+                <Billing />
+              </ProtectRoute>
+            }
+          />
+          {/* Error Page Request / Authentication */}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
