@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputField from './SmallComponents/InputBar';
+import InputField from './InputField';
 import Checkbox from './Checkbox';
 
 const DeliverySection = () => {
