@@ -189,7 +189,6 @@ function ProductList() {
     setPage(prevPage => Math.max(prevPage - 1, 1)); // Ensure previous page doesn't go below 1
   };
 
-  // No need to handle page click function as we're showing only one page if no products or only one page available
 
   return (
     <>

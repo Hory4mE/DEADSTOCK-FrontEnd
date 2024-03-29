@@ -1,9 +1,10 @@
 import React , {useState , useEffect} from "react";
 import axios from "axios";
 import { useUserData } from '../../context/AuthContext';
-import { Navigate } from 'react-router-dom';
-const CartZone = () => {
+import { useNavigate } from 'react-router-dom';
 
+const CartZone = () => {
+const navigate = useNavigate();
   const [items , setItems] = useState(null);
   const [cartItems , setCartItems] = useState([]);
   const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
@@ -196,7 +197,10 @@ const CartZone = () => {
               Subtotal {totalPrice.toFixed(2)} ฿
             </div>
             <div className="flex flex-col justify-center self-end mt-4 max-w-full text-base tracking-wider text-white w-[379px]">
-              <button className="justify-center items-center px-16 py-4 bg-black rounded-3xl border border-black border-solid max-md:px-5">
+              <button
+                onClick={() => navigate("/payment")}
+                className="justify-center items-center px-16 py-4 bg-black rounded-3xl border border-black border-solid max-md:px-5 hover:bg-gray-500"
+              >
                 Check out
               </button>
             </div>
