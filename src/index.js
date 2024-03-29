@@ -32,8 +32,7 @@ createRoot(root).render(
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-          {/* HAVE Authentication */}
+          <Route path="/payment" element={<Payment />} />
           <Route
             path="/cart"
             element={
