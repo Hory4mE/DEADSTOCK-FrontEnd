@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
-
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   
     const fetchCurrentUser = async () => {
@@ -28,9 +27,9 @@ export const AuthProvider = ({ children }) => {
         });
         
         if (response.status === 200) {
-          console.log(response.data);
           if(response.data !== null){
             setCurrentUser(response.data);
+            setIsLoginModalOpen(true);
             return response.data;
           } 
         }    
@@ -58,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('access_token');
-
+      setIsLoginModalOpen(true);
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
       console.log('Token refreshed successfully');

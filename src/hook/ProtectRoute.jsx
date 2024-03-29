@@ -1,38 +1,41 @@
-import React , {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useUserData } from '../context/AuthContext';
 
 const ProtectRoute = ({ children, requireRoles = [] }) => {
-  const { setCurrentUser ,fetchCurrentUser } = useUserData();
+  const { currentUser, setCurrentUser, fetchCurrentUser } = useUserData();
+  const [redirectPath, setRedirectPath] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
-    try {
+      try {
         const userData = await fetchCurrentUser();
-
-        if (!userData|| !userData.role) {
-          return <Navigate to="/login" />;
-        }
-      
-        const userRole = userData.role;
-        setCurrentUser(userData);
-        console.log('check role');
-        const matchRoles = !requireRoles.length || requireRoles.includes(userRole);
-      
-        if (!matchRoles) {
-          return <Navigate to="/" />;
-        }
-      
         console.log('Fetched user data:', userData);
-    } catch (error) {
+
+        if (userData === undefined || userData === null) {        
+          setRedirectPath('/login');
+        } else {
+          console.log(userData.role);
+          const userRole = userData.role;
+          setCurrentUser(userData);
+          const matchRoles = !requireRoles.length || requireRoles.includes(userRole);
+          if (!matchRoles) {
+            setRedirectPath('/login');
+          }
+        }
+      } catch (error) {
         console.error('Error fetching user data:', error);
-    }
+      }
     };
 
     fetchData();
   }, []);
 
+  if (redirectPath) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
   return children;
 };
-export default ProtectRoute;
 
+export default ProtectRoute;

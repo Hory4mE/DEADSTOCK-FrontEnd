@@ -148,9 +148,6 @@ const CartZone = () => {
 
   return (
     <div className="flex flex-col bg-white">
-      {
-        isLoginModalOpen ? <Navigate to="/login" /> : null
-      }
       {/* Your cart header and total UI */}
       <main className="flex flex-col self-center px-5 mt-4 w-full max-w-[1181px] max-md:max-w-full">
         <div className="flex gap-5 w-full max-md:flex-wrap max-md:max-w-full">
