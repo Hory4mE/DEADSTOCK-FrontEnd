@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
+import { useNavigate } from "react-router-dom";
 import { handleSearchInput } from "../../context/security";
 import ErrorModal from "./ErrorModal";
 import { useUserData } from '../../context/AuthContext';
@@ -8,16 +8,16 @@ import { useUserData } from '../../context/AuthContext';
 const Logo = () => (
   <button>
     <div className="grow self-stretch text-3xl font-bold tracking-widest">
-      <Link to={`/`}> DEADSTOCK</Link> {/* Use Link instead of <a> */}
+      <a href={`/`}> DEADSTOCK</a>
     </div>
   </button>
 );
 
-const NavItem = ({ alt, to, children }) => { // Change href to to
+const NavItem = ({ alt, href, children }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
-    <Link 
-      to={to} // Change href to to
+    <a 
+      href={href}
       alt={alt}
       className="hover:underline"
       onMouseEnter={() => setIsHovered(true)}
@@ -25,7 +25,7 @@ const NavItem = ({ alt, to, children }) => { // Change href to to
       style={{ textDecoration: isHovered ? 'underline' : 'none' }}
     >
       {children}
-    </Link>
+    </a>
   );
 };
 
@@ -84,18 +84,17 @@ const SearchBar = () => {
     </div>
   );
 };
-
-const IconButton = ({ src, alt, to }) => { // Change href to to
+const IconButton = ({ src, alt, href }) => {
   return (
     <button>
-      <Link to={to}> {/* Use Link instead of <a> */}
+      <a href={href}>
         <img
           loading="lazy"
           src={src}
           alt={alt}
           className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
         />
-      </Link>
+      </a>
     </button>
   );
 };
@@ -109,27 +108,27 @@ const DropdownMenu = ({ items, onMouseEnter, onMouseLeave }) => {
     >
       {items.map((item, index) => (
         <div key={index} className="px-4 py-2 hover:bg-gray-100">
-          <Link to={`/product?category=${item}`} alt="Shoes">{item}</Link> {/* Use Link instead of <a> */}
+          <a href={'/product?category=' + item} alt="Shoes">{item}</a>
         </div>
       ))}
     </div>
   );
 };
 
-const DropDownIconButton = ({ src, alt, to, dropdownItems }) => { // Change href to to
+const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="relative" onMouseEnter={() => setShowDropdown(true)}>
       <button>
-        <Link to={to}> {/* Use Link instead of <a> */}
+        <a href={href}>
           <img
             loading="lazy"
             src={src}
             alt={alt}
             className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
           />
-        </Link>
+        </a>
       </button>
       {showDropdown && (
         <DropdownMenu
@@ -172,20 +171,20 @@ function Header() {
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
           <div className="flex gap-2 self-stretch my-auto">
-            <NavItem alt="Clothing" to="/product?category=Clothing"> {/* Change href to to */}
+            <NavItem alt="Clothing" href="/product?category=Clothing">
               Clothing
             </NavItem>
             <DropDownIconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
-              to="/product"
+              href="/product"
               dropdownItems={["Shirt", "Jacket"]}
             />
           </div>
-          <NavItem alt="Shoes" to="/product?category=Shoes"> {/* Change href to to */}
+          <NavItem alt="Shoes" href="/product?category=Shoes">
             Shoes
           </NavItem>
-          <NavItem alt="Accessories" to="/product?category=Accessories"> {/* Change href to to */}
+          <NavItem alt="Accessories" href="/product?category=Accessories">
             Accessories
           </NavItem>
         </nav>
@@ -205,7 +204,7 @@ function Header() {
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="User profile"
-              to="/login" // Change href to to
+              href="/login"
               style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
               onMouseEnter={() => setIsProfileHovered(true)}
               onMouseLeave={() => setIsProfileHovered(false)}
@@ -215,7 +214,7 @@ function Header() {
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/e3be0dbe071019cdd38d2d5fea243d0b5d03b797052b9cb7708b862fd40b2671?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Shopping cart"
-            to="/cart" // Change href to to
+            href="/cart"
             style={{ textDecoration: isCartHovered ? 'underline' : 'none' }}
             onMouseEnter={() => setIsCartHovered(true)}
             onMouseLeave={() => setIsCartHovered(false)}
