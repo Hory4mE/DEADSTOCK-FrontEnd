@@ -11,10 +11,11 @@ import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
-import Payment from "./Pages/Payment"
+import Payment from "./Pages/Payment";
 import Account from "./Pages/Account";
 import Billing from "./Pages/Billing";
 import ManageProducts from "./Pages/ManageProducts";
+import AddProductPage from "./Pages/AddProductsPage";
 
 // useContext
 import { AuthProvider } from "./context/AuthContext";
@@ -53,7 +54,7 @@ createRoot(root).render(
           <Route
             path="/account"
             element={
-              <ProtectRoute requireRoles={['member']}>
+              <ProtectRoute requireRoles={["member"]}>
                 <Account />
               </ProtectRoute>
             }
@@ -69,9 +70,20 @@ createRoot(root).render(
           <Route
             path="/ManageProducts"
             element={
-              // Remove "member" after test
-              <ProtectRoute requireRoles={["user_admin","super_admin","member"]}> 
+              <ProtectRoute
+                requireRoles={["user_admin", "super_admin", "member"]}
+              >
                 <ManageProducts />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/addProduct"
+            element={
+              <ProtectRoute
+                requireRoles={["user_admin", "super_admin", "member"]}
+              >
+                <AddProductPage />
               </ProtectRoute>
             }
           />
