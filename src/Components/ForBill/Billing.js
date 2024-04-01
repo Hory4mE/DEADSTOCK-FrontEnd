@@ -65,15 +65,6 @@ function Billing() {
         if (response.data && response.data.head) {
           // Convert the received data into items format
           const orderDetails = response.data.detail.map((order , index) => ({
-            
-            // confirmationNumber: "REC1234",
-            // customerName: "PHOOMRAPEE",
-            // contactEmail: "64050191@kmitl.ac.th",
-            // shippingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-            // paymentMethod: "Bank Deposit",
-            // billingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-            // shippingMethod: "Puma Express",
-
             confirmationNumber: index + 1,
             customerName:  `${order.first_name} ${order.last_name}`,
             contactEmail: order.email,
@@ -83,35 +74,7 @@ function Billing() {
             shippingMethod : "Puma Express"
           }));
 
-          // const orderItem = response.data.head.map((order , index) => ({
-            
-          //   // confirmationNumber: "REC1234",
-          //   // customerName: "PHOOMRAPEE",
-          //   // contactEmail: "64050191@kmitl.ac.th",
-          //   // shippingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-          //   // paymentMethod: "Bank Deposit",
-          //   // billingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-          //   // shippingMethod: "Puma Express",
-
-          //   confirmationNumber: index + 1,
-          //   customerName:  `${order.first_name} ${order.last_name}`,
-          //   contactEmail: order.email,
-          //   shippingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-          //   paymentMethod: "Credit Card",
-          //   billingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-          //   shippingMethod : "Puma Express"
-          // }));
-
-          const orderHeader = response.data.head.map((order , index) => ({
-            
-            // confirmationNumber: "REC1234",
-            // customerName: "PHOOMRAPEE",
-            // contactEmail: "64050191@kmitl.ac.th",
-            // shippingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-            // paymentMethod: "Bank Deposit",
-            // billingAddress: `เเทนนี้ เเทนนนั้น 456 Thailand 149/10 sarABURI Saraburi 18180 Thailand`,
-            // shippingMethod: "Puma Express",
-
+            const orderHeader = response.data.head.map((order , index) => ({           
             confirmationNumber: index + 1,
             customerName:  `${order.first_name} ${order.last_name}`,
             contactEmail: order.email,
@@ -132,8 +95,6 @@ function Billing() {
       }
     };
 
-    
-
     fetchData();
   }, []);
 
@@ -151,9 +112,6 @@ function Billing() {
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex flex-col w-[55%] max-md:ml-0 max-md:w-full">
           <header className="flex flex-col self-stretch my-auto max-md:mt-10 max-md:max-w-full">
-            <h1 className="self-center mt-24 text-4xl font-bold text-black tracking-[2px]">
-              DEADSTOCK
-            </h1>
             <div className="flex gap-5 self-start mt-16 text-lg font-medium text-neutral-500 max-md:mt-10">
               <img
                 loading="lazy"

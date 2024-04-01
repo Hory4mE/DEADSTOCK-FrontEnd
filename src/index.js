@@ -11,8 +11,8 @@ import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
-import Payment from "./Pages/Payment";
-import History from "./Pages/History";
+import Payment from "./Pages/Payment"
+import Account from "./Pages/Account";
 import Billing from "./Pages/Billing";
 import ManageProducts from "./Pages/ManageProducts";
 
@@ -51,10 +51,10 @@ createRoot(root).render(
             }
           />
           <Route
-            path="/history"
+            path="/account"
             element={
-              <ProtectRoute requireRoles={["member"]}>
-                <History />
+              <ProtectRoute requireRoles={['member']}>
+                <Account />
               </ProtectRoute>
             }
           />

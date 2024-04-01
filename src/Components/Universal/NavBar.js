@@ -33,13 +33,22 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const navigate = useNavigate();
+  const sanitizeInput = (input) => {
+    return input
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;")
+      .replace(/\//g, "&#x2F;");
+  };
  
   const handleSearch = () => {
     try {
       // Pass the searchQuery and navigate function to handleSearchInput
       handleSearchInput(searchQuery, (sanitizedQuery) => {
-        // Navigate to the product page with the sanitized search query as a parameter
-        navigate(`/product?search=${sanitizedQuery}`);
+    
+        navigate(`/product?search=${sanitizeInput(sanitizedQuery)}`);
       });
     } catch (error) {
       console.error("Error:", error.message);
@@ -193,7 +202,7 @@ function Header() {
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="User profile"
-              to="/history" // Change href to to
+              to="/account" // Change href to to
               style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
               onMouseEnter={() => setIsProfileHovered(true)}
               onMouseLeave={() => setIsProfileHovered(false)}

@@ -3,21 +3,23 @@ import NavBar from "../Components/Universal/NavBar";
 import WelcomeBanner from "../Components/Universal/WelcomeBanner";
 import Footer from "../Components/Universal/Footer";
 import OrderHistory from "../Components/ForHistory/OrderHistory";
-import AccountDetails from "../Components/ForHistory/AccountDetails";
+import AccountDetails from "../Components/ForHistory/AddressDetails";
+import AccountProfile from "../Components/ForHistory/AccountProfile";
 
 
-function History() { 
+function Account() { 
 
 
   return (
     <div>
       <WelcomeBanner />
       <NavBar />
-      <OrderHistory />
-      <AccountDetails />
+      <AccountProfile />
+      {/* <AccountDetails />
+      <OrderHistory />    */}
       <Footer />
     </div>
   );
 }
 
-export default History;
+export default Account;
