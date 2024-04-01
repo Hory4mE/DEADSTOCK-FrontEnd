@@ -93,7 +93,8 @@ function ProductDetails() {
               <div className="flex flex-col mt-10 max-md:max-w-full">
               { product.in_stock_quantity === 0 ?
                     (
-                      <button onClick={handleAddCart} disabled className="btn btn-secondary justify-center items-center px-16 py-4 text-base tracking-wider text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
+                      <button onClick={handleAddCart} disabled className="justify-center items-center px-16 py-4 text-base tracking-wider bg-gray-500 text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full"
+                      >
                         Out of Stock.
                       </button>
                     )

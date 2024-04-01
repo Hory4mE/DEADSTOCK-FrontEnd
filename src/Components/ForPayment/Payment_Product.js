@@ -11,4 +11,3 @@ function Payment_Product({ product }) {
 }
 
 export default Payment_Product;
-

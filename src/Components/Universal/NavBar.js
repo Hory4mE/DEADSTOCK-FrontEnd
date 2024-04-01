@@ -109,7 +109,7 @@ const DropdownMenu = ({ items, onMouseEnter, onMouseLeave }) => {
     >
       {items.map((item, index) => (
         <div key={index} className="px-4 py-2 hover:bg-gray-100">
-          <Link to={`/product?category=${item}`} alt="Shoes">{item}</Link> 
+          <Link to={`/product?category=${item}`} alt={item}>{item}</Link>
         </div>
       ))}
     </div>
@@ -121,7 +121,6 @@ const DropDownIconButton = ({ src, alt, to, dropdownItems }) => {
 
   return (
     <div className="relative" onMouseEnter={() => setShowDropdown(true)}>
-      <button>
         <Link to={to}> {/* Use Link instead of <a> */}
           <img
             loading="lazy"
@@ -130,7 +129,6 @@ const DropDownIconButton = ({ src, alt, to, dropdownItems }) => {
             className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
           />
         </Link>
-      </button>
       {showDropdown && (
         <DropdownMenu
           items={dropdownItems}
@@ -172,13 +170,12 @@ function Header() {
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
           <div className="flex gap-2 self-stretch my-auto">
-            <NavItem alt="Clothing" to="/product?category=Clothing"> {/* Change href to to */}
+            <NavItem alt="Clothing" to="/product?category=Clothing">
               Clothing
             </NavItem>
             <DropDownIconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
-              to="/product"
               dropdownItems={["Shirt", "Jacket"]}
             />
           </div>

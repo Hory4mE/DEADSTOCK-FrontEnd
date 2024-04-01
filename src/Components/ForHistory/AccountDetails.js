@@ -4,9 +4,6 @@ import React , {useState , useEffect} from "react";
 
 
 function AccountDetails() {
-
-    // STATIC DATA ACCOUNT
-
     const [address ,setAddress] = useState([])
     useEffect(() => {
         const fetchData = async () => {

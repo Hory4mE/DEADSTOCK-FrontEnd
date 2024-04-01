@@ -1,82 +1,221 @@
-import React, { useState , useEffect} from 'react';
-import ContactSection from './ContactSection';
-import DeliverySection from './DeliverySection';
-import BillingAddressSection from './BillingAddressSection';
-import SummarySection from './SummarySection';
-import DifferentBillingAddress from './DifferentBillingAddress';
+import React, { useState , useEffect } from 'react';
+import InputField from './SmallComponents/InputField';
+import Checkbox from './SmallComponents/Checkbox';
 import axios from 'axios';
-import InputField from './InputField';
+import { loadStripe } from '@stripe/stripe-js';
 
-
-function PaymentForm(/*{ products }*/) {
-
-    //static product
-    // const products = [
-    //     {
-    //         id: 1,
-    //         name: "712Puma Sweater",
-    //         size: "XL",
-    //         image: "https://cdn.builder.io/api/v1/image/assets/TEMP/96b9fc1089ec1bec9b688e9d6466d82e10453b39411a53936e27c35e94da6853?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-    //     },
-    // ];
-
-    // "products": [
-    //     {
-    //         "id": 11,
-    //         "name": "product1",
-    //         "price": 123,
-    //         "size": "M",
-    //         "quantity": 1,
-    //         "imageUrl": "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-    //     },
-    //     {
-    //         "id": 12,
-    //         "name": "12",
-    //         "price": 1233,
-    //         "size": "M",
-    //         "quantity": 1,
-    //         "imageUrl": "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-    //     }
-    // ]
-    const [products, setProducts] = useState([]);
-    const [showBillingAddress, setShowBillingAddress] = useState(false);
-    const [useSameAddress, setUseSameAddress] = useState(false);
-    const [deliveryFormData, setDeliveryFormData] = useState(null);
-
-    const handleToggleBillingAddress = (show) => {
-        setShowBillingAddress(show);
-    };
-
-    const handleToggleSameAddress = (same) => {
-        setUseSameAddress(same);
-    };
-
-    const [formData, setFormData] = useState({
-        shippingAddressData: [
-            {
-                firstName: "",
-                lastName: "",
-                address_line1: "",
-                address_line2: "",
-                city: "",
-                postal_code: "",
-                country: "",
-                phone_number: ""
-            }
-        ]
+const DeliverySection = () => {
+    const stripePromise = loadStripe('pk_test_51OyzLYJHd0FBaagmdsd179kXymr9MT5Dy9zyDFkJfqW3YXf9nPDWylE9la6qcUayOqImnI5We35gRz5e8zVaEDvI00tjbl3NBn');
+    // useState สำหรับข้อมูลการจัดส่ง (shippingData) และข้อมูลที่อยู่ในการเรียกใช้งาน (billingData)
+    const [shippingData, setShippingData] = useState({
+        country: '',
+        recipient_name: '',
+        address_line1: '',
+        address_line2: '',
+        city: '',
+        postal_code: '',
+        phone_number: ''
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            shippingAddressData: [
-                {
-                    ...prevState.shippingAddressData[0], 
-                    [name]: value
-                }
-            ]
-        }));
+
+    const [billingData, setBillingData] = useState({
+        country: '',
+        recipient_name: '',
+        address_line1: '',
+        address_line2: '',
+        city: '',
+        postal_code: '',
+        phone_number: ''
+    });
+
+    
+    const handleCompleteOrder = async () => {
+        console.log({
+            shippingAddressData: [shippingData],
+            billingAddressData: [billingData]
+        })
+        try {
+            const access_token = localStorage.getItem('access_token');
+            const response = await axios.post('http://localhost:5000/user/create-order', {
+                shippingAddressData: [shippingData],
+                billingAddressData: [billingData]
+            } ,
+            {
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                },
+            });
+            const session = response.data;
+            console.log(session);
+            const stripe = await stripePromise;
+            stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
+
+            console.log('Order completed:', response.data);
+        } catch (error) {
+            console.error('Error completing order:', error);
+        }
     };
+
+    useEffect(() => {
+        const loadStripeJs = async () => {
+          await stripePromise;
+        };
+        loadStripeJs();
+    }, []);
+  
+    const handleInputChange = (e, field) => {
+        const value = e.target.value;
+            setShippingData(prevData => ({
+                ...prevData,
+                [field]: value
+            }));
+        console.log('Check data shipping',shippingData);
+    };
+
+
+    const handleBillingChange = (e, field) => {
+        const value = e.target.value;
+            // For other fields, update normally
+            setBillingData(prevData => ({
+                ...prevData,
+                [field]: value
+            }));
+        console.log('Check data billing 1', billingData);
+    };
+
+  
+    return (
+        <>
+        <div className="flex-3 mr-5">
+            <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Delivery</h2>
+            <InputField label="Country / Region" onChange={(e) => handleInputChange(e, 'country')} />
+            <InputField label="Recipient Name" onChange={(e) => handleInputChange(e, 'recipient_name')} />
+            <InputField label="Address Line 1" onChange={(e) => handleInputChange(e, 'address_line1')} />
+            <InputField label="Address Line 2" onChange={(e) => handleInputChange(e, 'address_line2')} />
+            <InputField label="City" onChange={(e) => handleInputChange(e, 'city')} />
+            <InputField label="Postal Code" onChange={(e) => handleInputChange(e, 'postal_code')} />
+            <InputField label="Country" onChange={(e) => handleInputChange(e, 'country')} />
+            <InputField label="Phone Number" onChange={(e) => handleInputChange(e, 'phone_number')} />
+
+
+            <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Billing</h2>
+            <InputField label="Country / Region" onChange={(e) => handleBillingChange(e, 'country')} />
+            <InputField label="Recipient Name" onChange={(e) => handleBillingChange(e, 'recipient_name')} />
+            <InputField label="Address Line 1" onChange={(e) => handleBillingChange(e, 'address_line1')} />
+            <InputField label="Address Line 2" onChange={(e) => handleBillingChange(e, 'address_line2')} />
+            <InputField label="City" onChange={(e) => handleBillingChange(e, 'city')} />
+            <InputField label="Postal Code" onChange={(e) => handleBillingChange(e, 'postal_code')} />
+            <InputField label="Country" onChange={(e) => handleBillingChange(e, 'country')} />
+            <InputField label="Phone Number" onChange={(e) => handleBillingChange(e, 'phone_number')} />
+        </div>
+        <div className="flex-1">
+            <SummarySection />
+            <button onClick={handleCompleteOrder} className="justify-center items-center px-16 py-4 mt-20 ms-8 text-base tracking-wider text-white bg-black rounded-3xl max-md:px-5 max-md:mt-10 max-md:max-w-full">
+                Complete Order
+            </button>
+        </div>
+        </>
+
+       
+    );
+}
+
+const ProductItem = ({ product }) => {
+    return (
+        <div className="flex py-4 border-b border-gray-200">
+            <img src={product.imageUrl} alt={product.name} className="w-24 h-24 mr-4 rounded-lg object-cover" />
+            <div className="flex flex-col justify-between flex-1">
+                <div>
+                    <h2 className="text-gray-800 font-semibold">{product.name}</h2>
+                    <p className="text-gray-600 text-sm">{product.price} $</p>
+                </div>
+                <div className="flex justify-between items-center mt-2">
+                    <span className="text-gray-700 font-bold">Size {product.size}</span>
+                </div>
+            </div>
+        </div>
+    );0
+};
+
+
+const SummarySection = () => {
+   
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const accessToken = localStorage.getItem('access_token');
+    
+            try {
+                const response = await axios.get(`http://localhost:5000/user/cart`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                console.log(response.data.products)
+                if (response.data) {
+                    setProducts(response.data.products);
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error);
+            }
+        };
+        fetchProduct();
+    }, []);
+    return (
+        <div>
+            <div style={{ position: 'relative' }}>
+                <div className="shrink-0 mt-3 absolute top-0 border border-solid bg-black bg-opacity-30 border-black border-opacity-30 h-[980px]" style={{ left: '1rem' }} />
+                <div className="flex flex-col max-md:max-w-full" style={{ marginLeft: '2rem' }}>
+                    {products.map((product) => (
+                        <ProductItem key={product.id} product={product} />
+                    ))}
+                    <form className="flex flex-col max-md:max-w-full">
+                        <div className="flex flex-col max-md:flex-row gap-5 items-start mt-5">
+                            <label htmlFor="discountCode" className="sr-only">
+                                Discount Code
+                            </label>
+                            <input
+                                type="text"
+                                id="discountCode"
+                                placeholder="Discount Code"
+                                aria-label="Discount Code"
+                                className="flex-1 px-3.5 py-4 bg-white rounded-3xl border border-black border-solid max-md:pr-5"
+                            />
+                            <button type="submit" className="text-xl bg-zinc-300 px-7 py-4 rounded-xl max-md:px-5">
+                                Apply
+                            </button>
+                        </div>
+                    </form>
+                    {products.map((product) => (
+                        <div key={product.id}>
+                            <div className="flex justify-between gap-5 mt-12 max-md:max-w-full">
+                                <div className="text-lg">Subtotal</div>
+                                <div className="text-xl">{product.price.toFixed(2)} $</div>
+                            </div>
+                            <div className="flex justify-between gap-5 mt-6 max-md:max-w-full">
+                                <div className="text-lg">Shipping</div>
+                                <div className="text-xl">0.00 $</div>
+                            </div>
+                            <div className="flex justify-between gap-5 mt-5 font-medium max-md:max-w-full">
+                                <div className="text-lg">Total</div>
+                                <div className="text-xl">{product.price.toFixed(2)} $</div>
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function PaymentForm() {
+  
+    const [products, setProducts] = useState([]);
+
+
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -100,52 +239,15 @@ function PaymentForm(/*{ products }*/) {
     }, []);
 
 
-    // http://localhost:5000/user/create-order
-    // Sample data 
-    // {
-    //     "shippingAddressData": [
-    //       {
-    //         "recipient_name": "John Do2",
-    //         "address_line1": "123 Main St",
-    //         "address_line2": "Apt 101",
-    //         "city": "Cityville",
-    //         "postal_code": "12345",
-    //         "country": "Countryland",
-    //         "phone_number": "123-456-7890"
-    //       }
-    //     ],
-    //     "billingAddressData": [
-    //       {
-    //         "recipient_name": "Jane Doe",
-    //         "address_line1": "456 Oak St",
-    //         "city": "Townsville",
-    //         "postal_code": "54321",
-    //         "country": "Countryland",
-    //         "phone_number": "987-654-321123"
-    //       }
-    //     ]
-    //   }
-
     return (
-        <div className="max-w-screen-lg mx-auto px-10 mt-36 max-md:flex-wrap max-md:mt-10">
+        <div className="max-w-screen-lg mx-auto px-10 max-md:flex-wrap max-md:mt-15" style={{ marginTop:'55px' }}>
             <div className="flex justify-between items-start" style={{ width: '100%' }}>
-                <div className="flex-3 mr-5">
-                    <ContactSection />
-                    <DeliverySection />
-                    <DifferentBillingAddress
-                        onToggleBillingAddress={handleToggleBillingAddress}
-                        onToggleSameAddress={handleToggleSameAddress}
-                    />
-                    <BillingAddressSection
-                        showBillingAddress={showBillingAddress && !useSameAddress}
-                    />
-                </div>
-                <div className="flex-1">
-                    <SummarySection products={products} />
-                </div>
+                <DeliverySection />            
             </div>
         </div>
     );
 }
+
+
 
 export default PaymentForm;

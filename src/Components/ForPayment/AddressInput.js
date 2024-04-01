@@ -1,6 +1,6 @@
 // AddressInput.js
 import React from 'react';
-import InputBar from './InputBar';
+import InputBar from './SmallComponents/InputBar';
 
 const AddressInput = ({ label }) => {
     return (
