@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import { handleSearchInput } from "../../context/security";
 import ErrorModal from "./ErrorModal";
 import { useUserData } from '../../context/AuthContext';
@@ -8,24 +8,24 @@ import { useUserData } from '../../context/AuthContext';
 const Logo = () => (
   <button>
     <div className="grow self-stretch text-3xl font-bold tracking-widest">
-      <a href={`/`}> DEADSTOCK</a>
+      <Link to={`/`}> DEADSTOCK</Link>
     </div>
   </button>
 );
 
-const NavItem = ({ alt, href, children }) => {
+const NavItem = ({ alt, to, children }) => { 
   const [isHovered, setIsHovered] = useState(false);
   return (
-    <a 
-      href={href}
-      alt={alt}
-      className="hover:underline"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{ textDecoration: isHovered ? 'underline' : 'none' }}
-    >
+    <Link 
+      to={to} 
+        alt={alt}
+        className="hover:underline"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ textDecoration: isHovered ? 'underline' : 'none' }}
+      >
       {children}
-    </a>
+    </Link>
   );
 };
 
@@ -84,17 +84,18 @@ const SearchBar = () => {
     </div>
   );
 };
-const IconButton = ({ src, alt, href }) => {
+
+const IconButton = ({ src, alt, to }) => { 
   return (
     <button>
-      <a href={href}>
+      <Link to={to}> {/* Use Link instead of <a> */}
         <img
           loading="lazy"
           src={src}
           alt={alt}
           className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
         />
-      </a>
+      </Link>
     </button>
   );
 };
@@ -108,27 +109,27 @@ const DropdownMenu = ({ items, onMouseEnter, onMouseLeave }) => {
     >
       {items.map((item, index) => (
         <div key={index} className="px-4 py-2 hover:bg-gray-100">
-          <a href={'/product?category=' + item} alt="Shoes">{item}</a>
+          <Link to={`/product?category=${item}`} alt="Shoes">{item}</Link> 
         </div>
       ))}
     </div>
   );
 };
 
-const DropDownIconButton = ({ src, alt, href, dropdownItems }) => {
+const DropDownIconButton = ({ src, alt, to, dropdownItems }) => { 
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="relative" onMouseEnter={() => setShowDropdown(true)}>
       <button>
-        <a href={href}>
+        <Link to={to}> {/* Use Link instead of <a> */}
           <img
             loading="lazy"
             src={src}
             alt={alt}
             className="shrink-0 self-stretch my-auto aspect-square w-[18px]"
           />
-        </a>
+        </Link>
       </button>
       {showDropdown && (
         <DropdownMenu
@@ -171,20 +172,20 @@ function Header() {
         <nav className="flex gap-5 justify-between items-center my-auto max-md:flex-wrap max-md:max-w-full">
           <Logo />
           <div className="flex gap-2 self-stretch my-auto">
-            <NavItem alt="Clothing" href="/product?category=Clothing">
+            <NavItem alt="Clothing" to="/product?category=Clothing"> {/* Change href to to */}
               Clothing
             </NavItem>
             <DropDownIconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
-              href="/product"
+              to="/product"
               dropdownItems={["Shirt", "Jacket"]}
             />
           </div>
-          <NavItem alt="Shoes" href="/product?category=Shoes">
+          <NavItem alt="Shoes" to="/product?category=Shoes"> {/* Change href to to */}
             Shoes
           </NavItem>
-          <NavItem alt="Accessories" href="/product?category=Accessories">
+          <NavItem alt="Accessories" to="/product?category=Accessories"> {/* Change href to to */}
             Accessories
           </NavItem>
         </nav>
@@ -195,7 +196,7 @@ function Header() {
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="User profile"
-              to="/hello" // Change href to to
+              to="/history" // Change href to to
               style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
               onMouseEnter={() => setIsProfileHovered(true)}
               onMouseLeave={() => setIsProfileHovered(false)}
@@ -204,7 +205,7 @@ function Header() {
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="User profile"
-              href="/login"
+              to="/login" // Change href to to
               style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
               onMouseEnter={() => setIsProfileHovered(true)}
               onMouseLeave={() => setIsProfileHovered(false)}
@@ -214,7 +215,7 @@ function Header() {
           <IconButton
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/e3be0dbe071019cdd38d2d5fea243d0b5d03b797052b9cb7708b862fd40b2671?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
             alt="Shopping cart"
-            href="/cart"
+            to="/cart" // Change href to to
             style={{ textDecoration: isCartHovered ? 'underline' : 'none' }}
             onMouseEnter={() => setIsCartHovered(true)}
             onMouseLeave={() => setIsCartHovered(false)}
