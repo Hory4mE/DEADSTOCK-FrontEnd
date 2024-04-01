@@ -11,11 +11,14 @@ function Login() {
   const navigate = useNavigate();
   useEffect(() => {
     fetchCurrentUser();
-  },[isLoginModalOpen])
+  },[fetchCurrentUser])
 
-  if(isLoginModalOpen){
-    navigate("/")
-  }
+  useEffect(() => {
+    if (isLoginModalOpen) {
+      navigate('/');
+    }
+  }, [isLoginModalOpen, navigate]);
+
   return (
     <div>
       <WelcomeBanner />
