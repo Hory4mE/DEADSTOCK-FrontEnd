@@ -69,8 +69,9 @@ createRoot(root).render(
           <Route
             path="/ManageProducts"
             element={
-              <ProtectRoute requireRoles={["user_admin","super_admin"]}>
-                <Billing />
+              // Remove "member" after test
+              <ProtectRoute requireRoles={["user_admin","super_admin","member"]}> 
+                <ManageProducts />
               </ProtectRoute>
             }
           />

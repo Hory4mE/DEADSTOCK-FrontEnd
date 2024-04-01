@@ -87,7 +87,7 @@ function ProductItem({ product }) {
   );
 }
 
-function MyComponent() {
+function ManageProducts() {
   const products = [
     {
       name: "CASINO HOTEL SWEATER",
@@ -232,4 +232,4 @@ function MyComponent() {
   );
 }
 
-export default MyComponent;
+export default ManageProducts;
