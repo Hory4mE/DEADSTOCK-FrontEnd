@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
-import { useUserData } from '../../context/AuthContext';
+import { Link, useNavigate } from "react-router-dom";
+import { useUserData } from "../../context/AuthContext";
 
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLogin, setIsLogin] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [isWrongData, setIsWrongData] = useState(false);
-  const [plainText , setPlainText] = useState('');
-  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
- 
+  const [plainText, setPlainText] = useState("");
+  const { isLoginModalOpen, setIsLoginModalOpen } = useUserData();
+  const navigate = useNavigate();
+
   const inputFields = [
     { label: "Email", type: "email", id: "email" },
     { label: "Password", type: "password", id: "password" },
@@ -36,14 +37,12 @@ function LoginForm() {
 
       if (response.data !== null) {
         console.log(response.data);
-        localStorage.setItem('access_token' , response.data.access_token);
-        localStorage.setItem('refresh_token' , response.data.refresh_token);      
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
 
         setIsLoginModalOpen(true);
         console.log(isLoginModalOpen);
-        if(isLoginModalOpen){
-          <Navigate to="/" />
-        }
+        navigate('/');
       } else {
         setIsWrongData(true);
         setErrMsg(response.data.message);
@@ -72,14 +71,14 @@ function LoginForm() {
 
   const redirectToGoogleAuth = async () => {
     try {
-      if (validateURL('http://localhost:5000/user/google')) {
-        window.location.href = 'http://localhost:5000/user/google';
+      if (validateURL("http://localhost:5000/user/google")) {
+        window.location.href = "http://localhost:5000/user/google";
       }
     } catch (error) {
-      console.error('Error while redirecting to Google Auth:', error);
+      console.error("Error while redirecting to Google Auth:", error);
     }
   };
-  
+
   function validateURL(url) {
     const pattern = /^(http|https):\/\/[^ "]+$/;
     return pattern.test(url);
@@ -129,8 +128,8 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <button 
-          onClick={redirectToGoogleAuth} 
+        <button
+          onClick={redirectToGoogleAuth}
           className="flex justify-center items-center px-16 py-3 mt-11 w-full text-lg text-black whitespace-nowrap bg-white rounded-3xl border border-black border-solid"
         >
           <img
