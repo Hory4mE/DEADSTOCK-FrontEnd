@@ -4,7 +4,7 @@ import OrderHistory from "./OrderHistory";
 import { useNavigate } from 'react-router-dom';
 
 function AccountProfile() {
-  useNavigate
+  const navigate = useNavigate()
   return (
     <>
       <div>
