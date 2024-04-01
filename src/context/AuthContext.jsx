@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         
         if (response.status === 200) {
           if(response.data !== null){
+            setIsLoginModalOpen(true);
             setCurrentUser(response.data);
             setIsLoginModalOpen(true);
             return response.data;

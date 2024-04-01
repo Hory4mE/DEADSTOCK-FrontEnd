@@ -6,6 +6,7 @@ import PaymentForm from "../Components/ForPayment/PaymentForm";
 
 
 function Payment() {
+
   return (
     <div>
       <WelcomeBanner />

@@ -56,12 +56,15 @@ function ProductDetails() {
       console.log(response.status);
       if (response.status === 200) {
         window.location.href = "/cart";
+      } else {
+        window.location.href = "/login";
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.log("Access token expired.");
       } else {
         console.error("Error fetching cart products: ", error);
+        window.location.href = "/login";
       }
     }
   }
@@ -88,7 +91,7 @@ function ProductDetails() {
                 {product.price} ฿
               </div>
               <div className="flex flex-col mt-10 max-md:max-w-full">
-                {product.on_hand_quantity === 0 ?
+              { product.in_stock_quantity === 0 ?
                     (
                       <button onClick={handleAddCart} disabled className="btn btn-secondary justify-center items-center px-16 py-4 text-base tracking-wider text-white rounded-3xl border border-black border-solid max-md:px-5 max-md:max-w-full">
                         Out of Stock.
@@ -105,7 +108,7 @@ function ProductDetails() {
                     )
                 }
                 <div className="mt-6 text-1xl max-md:max-w-full">
-                  In Stock {product.on_hand_quantity} 
+                  In Stock {product.in_stock_quantity} 
                 </div>
                 
                 <h3 className="mt-14 mr-6 text-lg font-semibold max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">

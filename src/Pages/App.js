@@ -10,7 +10,7 @@ import { useUserData } from '../context/AuthContext';
 
 
 function App() {
-  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
+  const {fetchCurrentUser , setIsLoginModalOpen , isLoginModalOpen} = useUserData();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const accessToken = urlParams.get('access_token');
@@ -20,8 +20,13 @@ function App() {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
     setIsLoginModalOpen(true);
-    window.location.href = 'http://localhost:3000'
+    // window.location.href = 'http://localhost:3000'
   }
+
+  useEffect(() => {
+    fetchCurrentUser();
+  },[isLoginModalOpen])
+  
 
   return (
     <div>

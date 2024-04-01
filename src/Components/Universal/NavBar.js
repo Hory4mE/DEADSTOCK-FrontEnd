@@ -190,12 +190,13 @@ function Header() {
         </nav>
         <div className="flex gap-5 justify-between items-center">
           <SearchBar />  
+          {console.log(isLoginModalOpen)}
           {
             isLoginModalOpen ? 
             <IconButton
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/958a286ffd0e768cef7c402512f9df78b2526d5adad0c72e0dfb55b20703ff4c?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="User profile"
-              href="/hello"
+              href="/history"
               style={{ textDecoration: isProfileHovered ? 'underline' : 'none' }}
               onMouseEnter={() => setIsProfileHovered(true)}
               onMouseLeave={() => setIsProfileHovered(false)}

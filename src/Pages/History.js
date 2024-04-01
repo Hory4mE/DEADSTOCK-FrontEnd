@@ -6,7 +6,9 @@ import OrderHistory from "../Components/ForHistory/OrderHistory";
 import AccountDetails from "../Components/ForHistory/AccountDetails";
 
 
-function History() {
+function History() { 
+
+
   return (
     <div>
       <WelcomeBanner />
