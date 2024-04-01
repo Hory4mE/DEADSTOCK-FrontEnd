@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function RegisterForm() {
@@ -11,6 +12,8 @@ function RegisterForm() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+
   //SET OF ERROR
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -32,7 +35,7 @@ function RegisterForm() {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#x27;")
       .replace(/\//g, "&#x2F;");
-    };
+  };
 
   const validateField = (fieldId, value) => {
     let errors = { ...validationErrors };
@@ -88,13 +91,13 @@ function RegisterForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post(
         `http://localhost:5000/user/register`,
         formData
       );
-  
+
       if (response.status === 201) {
         console.log("Registration successful");
         setRegisComplete(true);
@@ -107,7 +110,7 @@ function RegisterForm() {
         console.error("Error:", error);
       }
     }
-  
+
     setFormData({
       firstname: "",
       lastname: "",
@@ -116,7 +119,7 @@ function RegisterForm() {
     });
     setValidationErrors({});
   };
-  
+
   const hasErrors =
     Object.values(validationErrors).some((error) => error !== "") ||
     Object.values(formData).some((value) => value === "");
@@ -162,38 +165,38 @@ function RegisterForm() {
         </form>
       </div>
       {RegisComplete && (
-      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
-        <div className="bg-white p-8 rounded-xl text-center">
-          <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
-          <p>Your account has been created.</p>
-          <button
-            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              setRegisComplete(false);
-              if (RegisComplete) {
-                return <Navigate to="/" />;
-              }
-            }}
-          >
-            Close
-          </button>
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-xl text-center">
+            <h2 className="text-2xl font-bold mb-4">
+              Registration Successful!
+            </h2>
+            <p>Your account has been created.</p>
+            <button
+              className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                setRegisComplete(false);
+                navigate("/"); // Navigate to root
+              }}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    )}
-          {isError && (
-      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
-        <div className="bg-white p-8 rounded-xl text-center">
-          <h2 className="text-2xl font-bold mb-4">Registration Failed!</h2>
-          <p>{errorMsg}</p>
-          <button
-            className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => setIsError(false)}
-          >
-            Close
-          </button>
+      )}
+      {isError && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-xl text-center">
+            <h2 className="text-2xl font-bold mb-4">Registration Failed!</h2>
+            <p>{errorMsg}</p>
+            <button
+              className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => setIsError(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </center>
   );
 }
