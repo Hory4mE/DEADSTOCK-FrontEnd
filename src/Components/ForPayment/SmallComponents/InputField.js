@@ -10,7 +10,7 @@ const InputField = ({ label, onChange }) => {
                 type="text"
                 className="w-full h-full bg-white rounded-2xl border border-black px-3"
                 placeholder={label}
-                onChange={onChange} // แก้ไขที่นี่เป็นการส่ง callback function โดยตรง
+                onChange={onChange} 
             />
         </div>
     );

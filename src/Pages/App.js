@@ -20,7 +20,7 @@ function App() {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
     setIsLoginModalOpen(true);
-    // window.location.href = 'http://localhost:3000'
+    window.location.href = 'http://localhost:3000'
   }
 
   useEffect(() => {

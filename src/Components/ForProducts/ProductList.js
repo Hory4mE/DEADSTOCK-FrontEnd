@@ -104,6 +104,7 @@ function ProductList() {
   const queryString = searchParams.get('search');
  
 
+  
   if(!category && !queryString) {
     useEffect(() => {
       const fetchData = async () => {
@@ -157,16 +158,18 @@ function ProductList() {
         if (!category) {
           return;
         }
-
+        console.log('5555',category)
         const response = await axios.get(`http://localhost:5000/category/get-product-category?category=${category}`);
         if (response.data) {
           setInitialProducts(response.data);
           console.log('Fetch all Products Success');
         } else {
+          setInitialProducts([]);
           console.log('No data received from the API.');
         }
       } catch (error) {
         console.error('Error fetching products:', error);
+        setInitialProducts([]);
       } 
     };
   

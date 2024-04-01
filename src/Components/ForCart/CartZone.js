@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const CartZone = () => {
 const navigate = useNavigate();
   const [items , setItems] = useState(null);
-  const [cartItems , setCartItems] = useState([]);
-  const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
+  // const [cartItems , setCartItems] = useState([]);
+  // const {isLoginModalOpen, setIsLoginModalOpen} = useUserData();
 
 
   // items = [
