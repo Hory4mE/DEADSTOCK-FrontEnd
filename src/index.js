@@ -11,13 +11,14 @@ import ProductDetails from "./Pages/ProductDetail";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Cart from "./Pages/Cart";
-import Payment from "./Pages/Payment"
+import Payment from "./Pages/Payment";
 import History from "./Pages/History";
 import Billing from "./Pages/Billing";
+import ManageProducts from "./Pages/ManageProducts";
 
 // useContext
-import { AuthProvider } from './context/AuthContext';
-import ProtectRoute from './hook/ProtectRoute';
+import { AuthProvider } from "./context/AuthContext";
+import ProtectRoute from "./hook/ProtectRoute";
 
 const root = document.getElementById("root");
 
@@ -36,7 +37,7 @@ createRoot(root).render(
           <Route
             path="/cart"
             element={
-              <ProtectRoute requireRoles={['member']}>
+              <ProtectRoute requireRoles={["member"]}>
                 <Cart />
               </ProtectRoute>
             }
@@ -44,7 +45,7 @@ createRoot(root).render(
           <Route
             path="/payment"
             element={
-              <ProtectRoute requireRoles={['member']}>
+              <ProtectRoute requireRoles={["member"]}>
                 <Payment />
               </ProtectRoute>
             }
@@ -52,7 +53,7 @@ createRoot(root).render(
           <Route
             path="/history"
             element={
-              <ProtectRoute requireRoles={['member']}>
+              <ProtectRoute requireRoles={["member"]}>
                 <History />
               </ProtectRoute>
             }
@@ -60,7 +61,15 @@ createRoot(root).render(
           <Route
             path="/billing"
             element={
-              <ProtectRoute requireRoles={['member']}>
+              <ProtectRoute requireRoles={["member"]}>
+                <Billing />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/ManageProducts"
+            element={
+              <ProtectRoute requireRoles={["user_admin","super_admin"]}>
                 <Billing />
               </ProtectRoute>
             }
