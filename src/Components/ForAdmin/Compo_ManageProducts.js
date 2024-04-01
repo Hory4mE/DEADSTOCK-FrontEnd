@@ -1,135 +1,44 @@
-import * as React from "react";
-
-function FilterSection() {
-  return (
-    <div className="flex flex-col w-[34%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col grow max-md:mt-4 max-md:max-w-full">
-        <div className="flex gap-5 justify-between px-7 py-11 text-black bg-white border border-black border-solid max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-          <h2 className="text-3xl">Filter</h2>
-          <button className="text-2xl underline">clear all</button>
-        </div>
-        <div className="flex z-10 flex-col items-start pt-5 pr-20 pb-10 pl-7 text-base text-black whitespace-nowrap bg-white border border-black border-solid max-md:px-5 max-md:max-w-full">
-          <h3 className="text-zinc-600">PRODUCTS</h3>
-          <div className="mt-8">Shoes</div>
-          <div className="mt-5">Clothes</div>
-          <div className="mt-5">Accessories</div>
-        </div>
-        <div className="flex flex-col py-5 pr-16 pl-7 bg-white border border-black border-solid max-md:px-5 max-md:max-w-full">
-          <h3 className="text-base text-zinc-600">PRICE</h3>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/30356f338c8bfb0a46c2e00886340eea218ca4068b3bce5749b7b0c68700855a?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-            alt="Price range slider"
-            className="mt-3.5 ml-6 max-w-full aspect-[10] w-[314px] max-md:ml-2.5"
-          />
-          <div className="flex gap-3 px-px mt-2">
-            <div className="flex flex-col justify-center">
-              <input
-                type="number"
-                className="shrink-0 bg-white border-2 border-solid border-stone-300 h-[29px]"
-                aria-label="Minimum price"
-              />
-            </div>
-            <div className="my-auto text-base text-zinc-600">to</div>
-            <div className="flex flex-col justify-center">
-              <input
-                type="number"
-                className="shrink-0 bg-white border-2 border-solid border-stone-300 h-[29px]"
-                aria-label="Maximum price"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col items-start py-5 pr-20 pl-7 whitespace-nowrap bg-white border border-black border-solid max-md:px-5 max-md:max-w-full">
-          <h3 className="text-base text-zinc-600">SIZES</h3>
-          <div className="flex gap-3.5 px-px mt-3.5 text-xs text-black">
-            {["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"].map((size) => (
-              <div key={size} className="flex flex-col flex-1 justify-center">
-                <div className="justify-center items-center px-1 rounded-full bg-zinc-300 h-[15px] w-[15px]">
-                  {size}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProductItem({ product }) {
-  return (
-    <>
-      <div className="flex gap-5 ml-4 max-w-full w-[804px] max-md:flex-wrap">
-        <div className="flex gap-2">
-          <img
-            loading="lazy"
-            src={product.image}
-            alt={product.name}
-            className="shrink-0 border border-black border-solid aspect-[0.71] w-[42px]"
-          />
-          <div className="flex flex-col self-start mt-1">
-            <h3 className="text-sm font-bold">{product.name}</h3>
-            <div className="mt-6 text-xs">Category : {product.category}</div>
-          </div>
-        </div>
-        <div className="flex flex-auto gap-5 justify-between my-auto text-xs max-md:flex-wrap max-md:max-w-full">
-          <div>{product.available}</div>
-          <div>{product.rating}</div>
-          <div>฿ {product.price}</div>
-          <div>{product.orders}</div>
-          <div>{product.publishDate}</div>
-          <div>...</div>
-        </div>
-      </div>
-      <div className="shrink-0 self-stretch mt-4 h-px border border-solid bg-zinc-200 border-zinc-200 max-md:max-w-full" />
-    </>
-  );
-}
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import FilterSection from "./FilterSection";
+import ProductItem from "./ProductItem";
 
 function ManageProducts() {
-  const products = [
-    {
-      name: "CASINO HOTEL SWEATER",
-      category: "Clothes",
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/4329d4a3e5387575844c83ab50da8342df52cbf9b44d4f3fe0598e3f6a322a48?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-      available: 1,
-      rating: 4.9,
-      price: 1250,
-      orders: 1,
-      publishDate: "12 Oct , 2021",
-    },
-    {
-      name: "NIKE Air force 1",
-      category: "Sneakers",
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/cd0b752760b48fc84b61c5e503a05365eb1b2255b44daa9aba126325902f56f1?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-      available: 1,
-      rating: 4.9,
-      price: 1250,
-      orders: 1,
-      publishDate: "12 Oct , 2021",
-    },
-    {
-      name: "CASINO HOTEL SWEATER",
-      category: "Sneakers",
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/bc7458715125a675f246a4e51991bed5cda45bff72c6c83e29a415eb367c7d37?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-      available: 1,
-      rating: 4.9,
-      price: 1150,
-      orders: 1,
-      publishDate: "12 Oct , 2021",
-    },
-    {
-      name: "STÜSSY T-Shirt (L)",
-      category: "Clothes",
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/a35a3e6f0bc765e2563bf3bd92535f10d4e6da63977befe577bbd08942d29863?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-      available: 1,
-      rating: 4.9,
-      price: 1150,
-      orders: 1,
-      publishDate: "12 Oct , 2021",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(5); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/product/get-all"
+        );
+        console.log(response.data.products);
+        if (response.data) {
+          setProducts(response.data.products);
+          console.log("Fetch all Products Success");
+        } else {
+          console.log("No data received from the API.");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+    // Calculate the index of the last product on the current page
+    const indexOfLastProduct = currentPage * productsPerPage;
+    // Calculate the index of the first product on the current page
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    // Slice the products array to get the products for the current page
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
 
   return (
     <div className="flex flex-col bg-white">
@@ -177,55 +86,49 @@ function ManageProducts() {
                 <button className="justify-center items-start px-4 py-3.5 max-w-full text-base text-white bg-blue-500 rounded-md border border-solid border-stone-300 w-[141px] max-md:pr-5">
                   + Add Product
                 </button>
-                <div className="flex gap-5 justify-between px-8 py-6 mt-8 w-full text-sm font-bold rounded-xl border border-solid bg-slate-100 border-stone-300 border-opacity-50 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                  <div>Product Name</div>
-                  <div className="flex gap-5 whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
-                    <div className="grow">Avaliable</div>
-                    <div>Rate</div>
-                    <div>Price</div>
-                    <div>Orders</div>
-                    <div>Publish</div>
-                    <div>Action</div>
-                  </div>
-                </div>
-                <div className="flex z-10 flex-col items-start py-4 border border-solid border-zinc-200 max-md:max-w-full">
-                  {products.map((product, index) => (
-                    <ProductItem key={index} product={product} />
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-gray-200">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 text-left border border-gray-200 font-bold">Product Name</th>
+                        <th className="px-6 py-3 text-left border border-gray-200 font-bold">Available</th>
+                        <th className="px-6 py-3 text-left border border-gray-200 font-bold">Price</th>
+                        <th className="px-6 py-3 text-left border border-gray-200 font-bold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((product, index) => (
+                        <tr key={index}>
+                          <ProductItem product={product} />
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
-      <footer className="flex gap-5 self-end mt-4 max-w-full w-[867px] max-md:flex-wrap">
-        <div className="flex-auto text-base text-zinc-600">
-          Showing 1 to 4 of 8 results
-        </div>
-        <nav className="flex flex-1 gap-2 items-start pr-0.5 -mr-px ml-52 text-xs text-black whitespace-nowrap">
-          <div className="flex flex-col justify-center">
-            <button className="justify-center px-1.5 py-2.5 ml-0 bg-white rounded-md border border-solid border-stone-300">
-              Previous
-            </button>
-          </div>
-          <div className="flex flex-col justify-center text-white">
-            <button
-              aria-current="page"
-              className="justify-center items-center px-2.5 ml-0 bg-indigo-500 rounded-md border border-solid border-stone-300 h-[25px] w-[25px]"
-            >
-              1
-            </button>
-          </div>
-          <div className="flex flex-col justify-center">
-            <button className="justify-center items-center px-2.5 ml-0 bg-white rounded-md border border-solid border-stone-300 h-[25px] w-[25px]">
-              2
-            </button>
-          </div>
-          <div className="flex flex-col justify-center">
-            <button className="justify-center px-3.5 py-2.5 ml-0 bg-white rounded-md border border-solid border-stone-300">
-              Next
-            </button>
-          </div>
+      <footer className="flex justify-between items-center px-6 py-3 bg-gray-50 border-t border-gray-200 sm:px-6">
+        <p className="text-sm text-gray-700">
+          Showing {indexOfFirstProduct + 1} to {indexOfLastProduct} of {products.length} results
+        </p>
+        <nav className="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={indexOfLastProduct >= products.length}
+            className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            Next
+          </button>
         </nav>
       </footer>
     </div>
