@@ -5,11 +5,8 @@ import { useUserData } from "../../context/AuthContext";
 
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [isLogin, setIsLogin] = useState(false);
-  const [errorMsg, setErrMsg] = useState("");
   const [isWrongData, setIsWrongData] = useState(false);
-  const [plainText, setPlainText] = useState("");
-  const { isLoginModalOpen, setIsLoginModalOpen } = useUserData();
+  const { setIsLoginModalOpen } = useUserData();
   const navigate = useNavigate();
 
   const inputFields = [
@@ -34,26 +31,22 @@ function LoginForm() {
         `http://localhost:5000/user/login`,
         formData
       );
-
-      if (response.data !== null) {
+      
+      console.log(response.status)
+      if (response.data !== null )  {
         console.log(response.data);
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
-
         setIsLoginModalOpen(true);
-        console.log(isLoginModalOpen);
         navigate('/');
       } else {
         setIsWrongData(true);
         setErrMsg(response.data.message);
         console.error("have error");
-        // setIsLogin(false);
         setIsLoginModalOpen(true);
       }
     } catch (error) {
       setIsWrongData(true);
-      // setIsLogin(false);
-      setIsLoginModalOpen(true);
       console.error("Error:", error);
     }
     setFormData({ email: "", password: "" });
@@ -86,7 +79,6 @@ function LoginForm() {
 
   return (
     <center>
-      {plainText}
       <div className="flex flex-col max-w-[447px] mt-10">
         <h1 className="self-center text-3xl text-black tracking-[2px]">
           Login
@@ -100,9 +92,9 @@ function LoginForm() {
               onChange={(e) => handleInputChange(e, field.id)}
             />
           ))}
-          <div className="mt-3.5 w-full text-base tracking-wider text-black underline">
+          {/* <div className="mt-3.5 w-full text-base tracking-wider text-black underline">
             Forgot password?
-          </div>
+          </div> */}
           <div className="mt-8 w-full">
             <div className="flex gap-5 max-md:flex-col max-md:gap-0">
               <div className="flex flex-col w-[64%] max-md:ml-0 max-md:w-full">

@@ -175,7 +175,7 @@ function RegisterForm() {
               className="bg-black text-white font-bold py-2 px-4 rounded mt-4"
               onClick={() => {
                 setRegisComplete(false);
-                navigate("/"); // Navigate to root
+                navigate("/login"); 
               }}
             >
               Close
