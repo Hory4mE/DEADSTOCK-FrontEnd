@@ -1,62 +1,39 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ProductInformation from "./ProductInformation";
 import ProductGallery from "./ProductGallery";
 import GeneralInformation from "./GeneralInformation";
-import PublishSection from "./PublishSection";
 
 function Compo_addProduct() {
-
   const [productData, setProductData] = useState({
-    productTitle: "",
-    productDescription: "",
-    productCategory: "",
-    manufacturerName: "",
-    manufacturerBrand: "",
-    stocks: "",
+    product_name: "",
+    description: "",
     price: "",
-    discount: "",
-    orders: "",
-    status: "",
-    visibility: "",
-    publishDateTime: "",
-    shortDescription: ""
+    imgage_url: "",
+    measurement: "",
   });
 
-
   const handleProductInfoChange = (info) => {
-    // Update the local state with a delay
+    // Update the local state with the new information
     setProductData((prevData) => ({
       ...prevData,
-      ...info
-    }));
-  };
-  
-  const handleFileChange = (info) => {
-    // Update the local state with a delay
-    setProductData((prevData) => ({
-      ...prevData,
-      ...info
+      ...info,
     }));
   };
 
-  const handleGeneralInfoChange = (info) => {
-    // Update the local state with a delay
-    setProductData((prevData) => ({
-      ...prevData,
-      ...info
-    }));
-  };
-
-
-  // UseEffect to log updated product data when it changes
-  useEffect(() => {
-    console.log("Product data updated:", productData);
-  }, [productData]); // Run this effect whenever productData changes
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Product data submitted:", productData);
-    // You can perform further actions with the productData object, like sending it to a server
+
+    try {
+      // Send productData to the backend
+      const response = await axios.post("http://localhost:5000/product/create", productData);
+      console.log("Product data saved to database:", response.data);
+      // Optionally, you can handle success or show a message to the user
+    } catch (error) {
+      console.error("Error saving product data:", error);
+      // Optionally, you can handle the error or show an error message to the user
+    }
   };
 
   return (
@@ -68,17 +45,14 @@ function Compo_addProduct() {
             <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
                 <ProductInformation onProductInfoChange={handleProductInfoChange} />
-                <ProductGallery onFileSelect={handleFileChange}/>
-                <GeneralInformation onGeneralInfoChange={handleGeneralInfoChange} />
+                <ProductGallery onFileSelect={handleProductInfoChange} />
+                <GeneralInformation onGeneralInfoChange={handleProductInfoChange} />
               </div>
             </div>
-            <aside className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-              <PublishSection />
-            </aside>
           </div>
           <div className="flex flex-col justify-center self-center mt-5 max-w-full text-base text-white whitespace-nowrap w-[132px]">
-            <button type="submit" className="justify-center px-10 py-4 bg-blue-500 rounded-md border border-solid border-stone-300 max-md:px-5">
-              SUBMIT
+            <button type="submit" className="justify-center py-4 bg-blue-500 rounded-md border border-solid border-stone-300 max-md:px-5">
+              CREATE
             </button>
           </div>
         </form>
