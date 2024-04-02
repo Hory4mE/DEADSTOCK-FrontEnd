@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function GeneralInformation({ onGeneralInfoChange }) {
     const [generalInfo, setGeneralInfo] = useState({
-        stocks: "",
+        in_stock_quantity: "",
         price: "",
-        discount: "",
+        measurement: "",
+        size:""
     });
 
     const handleInputChange = (e) => {
@@ -13,8 +14,13 @@ function GeneralInformation({ onGeneralInfoChange }) {
             ...prevInfo,
             [name]: value
         }));
-        onGeneralInfoChange(generalInfo);
     };
+
+    useEffect(() => {
+        console.log("General information updated:", generalInfo);
+        // Call onGeneralInfoChange with the updated generalInfo
+        onGeneralInfoChange(generalInfo);
+    }, [generalInfo]); // Run this effect whenever generalInfo changes or onGeneralInfoChange changes
 
     return (
         <div className="flex flex-col pt-5 pb-12 mt-9 border border-solid border-zinc-200 max-md:max-w-full">
@@ -36,15 +42,15 @@ function GeneralInformation({ onGeneralInfoChange }) {
                 </div>
                 <div className="flex gap-5 items-start mt-5 max-md:flex-wrap max-md:mr-2">
                     <div className="flex flex-col flex-1">
-                        <label htmlFor="stocks" className="text-sm font-bold text-black">
-                            Stocks
+                        <label htmlFor="in_stock_quantity" className="text-sm font-bold text-black">
+                            in_stock_quantity
                         </label>
                         <div className="flex flex-col justify-center mt-3.5">
                             <input
                                 type="number"
-                                id="stocks"
-                                name="stocks"
-                                value={generalInfo.stocks}
+                                id="in_stock_quantity"
+                                name="in_stock_quantity"
+                                value={generalInfo.in_stock_quantity}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />
@@ -67,14 +73,14 @@ function GeneralInformation({ onGeneralInfoChange }) {
                     </div>
                     <div className="flex flex-col flex-1">
                         <label htmlFor="discount" className="text-sm font-bold text-black">
-                            Discount (%)
+                            Measurement
                         </label>
                         <div className="flex flex-col justify-center mt-2.5">
                             <input
-                                type="number"
-                                id="discount"
-                                name="discount"
-                                value={generalInfo.discount}
+                                type="text"
+                                id="measurement"
+                                name="measurement"
+                                value={generalInfo.measurement}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />

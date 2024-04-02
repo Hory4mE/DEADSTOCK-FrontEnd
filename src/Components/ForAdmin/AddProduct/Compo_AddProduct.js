@@ -9,9 +9,30 @@ function Compo_addProduct() {
     product_name: "",
     description: "",
     price: "",
-    imgage_url: "",
+    image_url: "",
     measurement: "",
+    on_hand_quantity: "0",
+    reserved_quantity: "0",
+    in_stock_quantity: "",
+    size: "",
+    productCategory: "",
+    product_type_id: ""
   });
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/category/get-all");
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleProductInfoChange = (info) => {
     // Update the local state with the new information
@@ -24,8 +45,29 @@ function Compo_addProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Product data submitted:", productData);
-
+  
     try {
+      // Find the product_type_id based on the selected productCategory
+      const selectedCategory = categories.find(category => category.type_name === productData.productCategory);
+  
+      // If selectedCategory is not found, create a new category
+      if (!selectedCategory) {
+        // Send request to create a new category
+        const newCategoryResponse = await axios.post("http://localhost:5000/category/create", { type_name: productData.productCategory });
+        
+        // Set the product_type_id from the newly created category
+        productData.product_type_id = newCategoryResponse.data.id;
+      } else {
+        // Set the product_type_id from the existing category
+        productData.product_type_id = selectedCategory.product_type_id;
+      }
+  
+      // Check if the product_type_id is properly set
+      if (!productData.product_type_id) {
+        throw new Error("Product type ID is missing.");
+      }
+      // console.log(productData)
+  
       // Send productData to the backend
       const response = await axios.post("http://localhost:5000/product/create", productData);
       console.log("Product data saved to database:", response.data);
@@ -35,6 +77,8 @@ function Compo_addProduct() {
       // Optionally, you can handle the error or show an error message to the user
     }
   };
+  
+  
 
   return (
     <div className="flex flex-col px-16 mt-7 w-full max-md:px-5 max-md:max-w-full">

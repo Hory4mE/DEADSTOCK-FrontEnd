@@ -3,10 +3,13 @@ import React, { useState } from "react";
 function ProductGallery({ onFileSelect }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileName, setFileName] = useState("");
-    const [url, setUrl] = useState("");
+    const [image_url, setUrl] = useState({
+        image_url: ""
+    });
 
 
     const handleFileChange = (e) => {
+        e.preventDefault();
         const file = e.target.files;
         if (file) {
             setSelectedFile(file);
@@ -21,6 +24,7 @@ function ProductGallery({ onFileSelect }) {
     };
 
     const handleUpload = (file) => {
+        e.preventDefault();
         // Send the selected file to the parent component
         if (file) {
             onFileSelect(file);
@@ -35,12 +39,15 @@ function ProductGallery({ onFileSelect }) {
     };
 
     const handleUrlChange = (e) => {
-        const newUrl = e.target.value;
-        setUrl(newUrl);
-        onFileSelect({ url: newUrl });;
+        const { name, value } = e.target;
+        setUrl((prevInfo) => ({
+            ...prevInfo,
+            [name]: value
+        }));
+        onFileSelect({ image_url: value });;
     };
-    
-    
+
+
 
 
     return (
@@ -79,9 +86,9 @@ function ProductGallery({ onFileSelect }) {
                     </label>
                     <input
                         type="text"
-                        id="urlName"
-                        name="urlName"
-                        value={url.img_url}
+                        id="image_url"
+                        name="image_url"
+                        value={image_url.image_url}
                         onChange={handleUrlChange}
                         className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                         required />
