@@ -28,6 +28,8 @@ const DeliverySection = () => {
         phone_number: ''
     });
 
+
+
     
     const handleCompleteOrder = async () => {
         console.log({
@@ -57,6 +59,39 @@ const DeliverySection = () => {
             console.error('Error completing order:', error);
         }
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const accessToken = localStorage.getItem("access_token");
+                const response = await axios.get(
+                    `http://localhost:5000/user/get-address`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                );
+
+                if (response.data.address) {
+                    const firstAddress = response.data.address[0];
+                    setShippingData({
+                        address_line1: firstAddress.address_line1 || '',
+                        address_line2: firstAddress.address_line2 || '',
+                        city: firstAddress.city || '',
+                        postal_code: firstAddress.postal_code || '',
+                        country: firstAddress.country || ''
+                    });
+                } else {
+                    console.log("No data received from the API.");
+                }
+            } catch (error) {
+                console.error("Error fetching cart products: ", error);
+            }
+        };
+
+        fetchData();
+    }, [setShippingData]);
 
     useEffect(() => {
         const loadStripeJs = async () => {
@@ -90,18 +125,16 @@ const DeliverySection = () => {
         <>
         <div className="flex-3 mr-5">
             <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Delivery</h2>
-            <InputField label="Country / Region" onChange={(e) => handleInputChange(e, 'country')} />
-            <InputField label="Recipient Name" onChange={(e) => handleInputChange(e, 'recipient_name')} />
-            <InputField label="Address Line 1" onChange={(e) => handleInputChange(e, 'address_line1')} />
-            <InputField label="Address Line 2" onChange={(e) => handleInputChange(e, 'address_line2')} />
-            <InputField label="City" onChange={(e) => handleInputChange(e, 'city')} />
-            <InputField label="Postal Code" onChange={(e) => handleInputChange(e, 'postal_code')} />
-            <InputField label="Country" onChange={(e) => handleInputChange(e, 'country')} />
-            <InputField label="Phone Number" onChange={(e) => handleInputChange(e, 'phone_number')} />
+            <InputField label="Recipient Name" value={shippingData.recipient_name} onChange={(e) => handleInputChange(e, 'recipient_name')} />
+            <InputField label="Address Line 1" value={shippingData.address_line1} onChange={(e) => handleInputChange(e, 'address_line1')} />
+            <InputField label="Address Line 2" value={shippingData.address_line2} onChange={(e) => handleInputChange(e, 'address_line2')} />
+            <InputField label="City" value={shippingData.city} onChange={(e) => handleInputChange(e, 'city')} />
+            <InputField label="Postal Code" value={shippingData.postal_code} onChange={(e) => handleInputChange(e, 'postal_code')} />
+            <InputField label="Country" value={shippingData.country} onChange={(e) => handleInputChange(e, 'country')} />
+            <InputField label="Phone Number" value={shippingData.phone_number} onChange={(e) => handleInputChange(e, 'phone_number')} />
 
 
             <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Billing</h2>
-            <InputField label="Country / Region" onChange={(e) => handleBillingChange(e, 'country')} />
             <InputField label="Recipient Name" onChange={(e) => handleBillingChange(e, 'recipient_name')} />
             <InputField label="Address Line 1" onChange={(e) => handleBillingChange(e, 'address_line1')} />
             <InputField label="Address Line 2" onChange={(e) => handleBillingChange(e, 'address_line2')} />
