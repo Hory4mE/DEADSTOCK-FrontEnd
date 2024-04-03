@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import FilterSection from "./FilterSection";
 import ProductItem from "./ProductItem";
@@ -49,13 +49,14 @@ function ManageProducts() {
       <AdminNav />
       <main className="flex flex-col px-12 mt-11 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <div className="max-md:max-w-full">
-          <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-            <FilterSection />
+          <div class="flex gap-2 max-md:flex-col max-md:gap-2">
             <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow text-black max-md:mt-5 max-md:max-w-full">
-                <button className="justify-center items-start px-4 py-3.5 max-w-full text-base text-white bg-blue-500 rounded-md border border-solid border-stone-300 w-[141px] max-md:pr-5">
-                  <Link to={`/addProduct`}> Add Product</Link>
-                </button>
+                <Link to={`/addProduct`}>
+                  <button className="justify-center items-start px-4 py-3.5 max-w-full text-base text-white bg-blue-500 rounded-md border border-solid border-stone-300 w-[141px] max-md:pr-5">
+                    Add Product
+                  </button>
+                </Link>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse border border-gray-200">
                     <thead>
