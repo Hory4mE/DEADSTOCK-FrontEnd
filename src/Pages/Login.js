@@ -13,11 +13,11 @@ function Login() {
     fetchCurrentUser();
   },[fetchCurrentUser])
 
-  useEffect(() => {
-    if (isLoginModalOpen) {
-      navigate('/');
-    }
-  }, [isLoginModalOpen, navigate]);
+  // useEffect(() => {
+  //   if (isLoginModalOpen) {
+  //     navigate('/');
+  //   }
+  // }, [isLoginModalOpen, navigate]);
 
   return (
     <div>

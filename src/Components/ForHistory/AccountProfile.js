@@ -1,10 +1,13 @@
 import React from "react";
 import AddressDetails from "./AddressDetails";
 import OrderHistory from "./OrderHistory";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUserData } from '../../context/AuthContext';
 
 function AccountProfile() {
-  const navigate = useNavigate();
+  const { setIsLoginModalOpen , setCurrentUser } = useUserData();
+  const navigate = useNavigate()
+
   return (
     <>
       <div>
@@ -16,9 +19,12 @@ function AccountProfile() {
           onClick={() => {
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
+            setIsLoginModalOpen(false);
+            setCurrentUser([]);       
+            navigate('/');
           }}
         >
-          <Link to={`/`}>Logout</Link>
+          Logout
         </button>
       </div>
       <div className="flex flex-wrap mt-10">

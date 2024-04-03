@@ -4,7 +4,6 @@ import AddressInput from './AddressInput';
 
 
 function AccountDetails() {
-    const [addressData, setAddressData] = useState([]);
     const [validate , setValidate] = useState(false);
     const [formData, setFormData] = useState({
         address_line1: '',
@@ -38,8 +37,6 @@ function AccountDetails() {
                 );
 
                 if (response.data.address) {
-                    setAddressData(response.data.address);
-
                     const firstAddress = response.data.address[0];
                     setFormData({
                         address_line1: firstAddress.address_line1 || '',
@@ -57,7 +54,7 @@ function AccountDetails() {
         };
 
         fetchData();
-    }, [setAddressData]);
+    }, [setFormData]);
 
     const handleInputChange = (e, field) => {
         const value = e.target.value;
@@ -99,7 +96,7 @@ function AccountDetails() {
       <>
         <div className="flex flex-col self-start px-5" style={{ width: '500px' }}>
             <h2 className="text-lg font-medium text-black">Address details</h2>
-            <div className="mt-3 text-sm text-neutral-500">
+            <div className="text-sm text-neutral-500">
                 <br />
                 <form onSubmit={handleSubmit}>
                     <div>
