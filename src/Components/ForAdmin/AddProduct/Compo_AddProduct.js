@@ -3,6 +3,7 @@ import axios from "axios";
 import ProductInformation from "./ProductInformation";
 import ProductGallery from "./ProductGallery";
 import GeneralInformation from "./GeneralInformation";
+import AdminNav from "../NavBar/AdminNav"
 
 function Compo_addProduct() {
   const [productData, setProductData] = useState({
@@ -53,7 +54,7 @@ function Compo_addProduct() {
       // If selectedCategory is not found, create a new category
       if (!selectedCategory) {
         // Send request to create a new category
-        const newCategoryResponse = await axios.post("http://localhost:5000/category/create", { type_name: productData.productCategory });
+        const newCategoryResponse = await axios.post("http://localhost:5000/category/create-category", { type_name: productData.productCategory });
         
         // Set the product_type_id from the newly created category
         productData.product_type_id = newCategoryResponse.data.id;
@@ -82,6 +83,7 @@ function Compo_addProduct() {
 
   return (
     <div className="flex flex-col px-16 mt-7 w-full max-md:px-5 max-md:max-w-full">
+      <AdminNav />
       <h1 className="self-start ml-7 text-sm font-bold text-black max-md:ml-2.5">Create Product</h1>
       <div className="mt-6 max-md:max-w-full">
         <form onSubmit={handleSubmit}>

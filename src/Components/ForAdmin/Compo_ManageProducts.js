@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import FilterSection from "./FilterSection";
 import ProductItem from "./ProductItem";
-import AdminNav from "./AdminNav";
+import AdminNav from "./NavBar/AdminNav"
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);

@@ -16,6 +16,7 @@ import Account from "./Pages/Account";
 import Billing from "./Pages/Billing";
 import ManageProducts from "./Pages/ManageProducts";
 import AddProductPage from "./Pages/AddProductsPage";
+import OrderStatus from "./Pages/OrderStatus";
 
 // useContext
 import { AuthProvider } from "./context/AuthContext";
@@ -84,6 +85,16 @@ createRoot(root).render(
                 requireRoles={["user_admin", "super_admin", "member"]}
               >
                 <AddProductPage />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectRoute
+                requireRoles={["user_admin", "super_admin", "member"]}
+              >
+                <OrderStatus />
               </ProtectRoute>
             }
           />
