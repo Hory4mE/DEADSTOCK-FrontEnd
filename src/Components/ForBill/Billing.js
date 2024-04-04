@@ -175,7 +175,7 @@ function Billing() {
               <div className="flex flex-col flex-1">
                 <div>{orderItem.price} $</div>
                 <div className="mt-9">0.00 $</div>
-                <div className="mt-10">{vat} $</div>
+                <div className="mt-10">{vat.toFixed(2)} $</div>
               </div>
             </div>
             <hr className="shrink-0 mt-9 max-w-full h-px border border-solid bg-zinc-500 border-zinc-500 w-[415px] max-md:mr-1.5" />
