@@ -3,6 +3,7 @@ import axios from "axios";
 import ProductInformation from "./ProductInformation";
 import ProductGallery from "./ProductGallery";
 import GeneralInformation from "./GeneralInformation";
+import AdminNav from "../AdminNav";
 
 function Compo_addProduct() {
   const [productData, setProductData] = useState({
@@ -81,11 +82,11 @@ function Compo_addProduct() {
   
 
   return (
-    <div className="flex flex-col px-16 mt-7 w-full max-md:px-5 max-md:max-w-full">
-      <h1 className="self-start ml-7 text-sm font-bold text-black max-md:ml-2.5">Create Product</h1>
+    <div className="flex flex-col px-22 mt-7 w-full max-md:px-5 max-md:max-w-full py-5">
+      <h1 className="text-sm font-bold text-black max-md:ml-2.5" style={{ marginLeft: '268px' }}>Create Product</h1>
       <div className="mt-6 max-md:max-w-full">
         <form onSubmit={handleSubmit}>
-          <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+          <div className="flex gap-5 max-md:flex-col max-md:gap-0 justify-center items-center">
             <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
                 <ProductInformation onProductInfoChange={handleProductInfoChange} />
@@ -93,9 +94,9 @@ function Compo_addProduct() {
                 <GeneralInformation onGeneralInfoChange={handleProductInfoChange} />
               </div>
             </div>
-          </div>
-          <div className="flex flex-col justify-center self-center mt-5 max-w-full text-base text-white whitespace-nowrap w-[132px]">
-            <button type="submit" className="justify-center py-4 bg-blue-500 rounded-md border border-solid border-stone-300 max-md:px-5">
+          </div>       
+          <div className="flex flex-col justify-center self-center mt-5 max-w-full text-base text-white whitespace-nowrap w-[125px]" style={{ marginLeft: '268px' }}>
+            <button type="submit" className="justify-center py-3 bg-blue-500 rounded-md border border-solid border-stone-300 max-md:px-5">
               CREATE
             </button>
           </div>
