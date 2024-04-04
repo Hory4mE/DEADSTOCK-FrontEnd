@@ -1,6 +1,6 @@
 import * as React from "react";
 
-function EditOrderForm() {
+function EditOrderForm({ order }) {
   return (
     <form className="flex flex-col px-3.5 w-full text-xs text-black">
       <h2 className="text-sm font-bold">Edit Order</h2>
@@ -10,7 +10,7 @@ function EditOrderForm() {
       <input
         type="text"
         id="orderId"
-        value="#TBT11"
+        value={order.order_id}
         readOnly
         className="justify-center items-start px-3.5 py-3 mt-1.5 whitespace-nowrap bg-white rounded-md border border-solid border-stone-300"
       />
@@ -20,7 +20,7 @@ function EditOrderForm() {
       <input
         type="text"
         id="customerName"
-        value="Richard Jenkins"
+        value={order.user_id}
         readOnly
         className="justify-center items-start px-3.5 py-3 mt-1.5 bg-white rounded-md border border-solid border-stone-300"
       />
@@ -47,7 +47,7 @@ function CategorySelect() {
   );
 }
 
-function OrderDetails() {
+function OrderDetails({ order }) {
   return (
     <div className="flex gap-5 mt-4 text-xs text-black">
       <div className="flex flex-col flex-1 px-5">
@@ -55,7 +55,7 @@ function OrderDetails() {
         <input
           type="text"
           id="orderDate"
-          value="08 Oct, 2021"
+          value={order.order_date}
           readOnly
           className="justify-center items-start px-4 py-2.5 mt-1.5 bg-white rounded-md border border-solid border-stone-300"
         />
@@ -65,7 +65,7 @@ function OrderDetails() {
         <input
           type="text"
           id="amount"
-          value="฿203.65"
+          value={order.total_price}
           readOnly
           className="justify-center items-start px-3.5 py-2.5 mt-1.5 whitespace-nowrap bg-white rounded-md border border-solid border-stone-300"
         />
@@ -126,14 +126,14 @@ function EditOrderActions() {
   );
 }
 
-function EditOrder() {
+function EditOrder({ order }) {
   return (
     <div className="flex flex-col justify-center max-w-[370px]">
       <div className="flex flex-col pt-8 pb-2 w-full bg-white rounded-xl">
-        <EditOrderForm />
+        <EditOrderForm order={order} />
         <div className="flex flex-col py-0.5 mt-4 w-full">
           <CategorySelect />
-          <OrderDetails />
+          <OrderDetails order={order} />
           <DeliveryStatus />
           <EditOrderActions />
         </div>
