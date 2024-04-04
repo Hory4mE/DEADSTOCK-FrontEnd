@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DeliveryStatus({ initialStatus, onUpdateStatus, onClose }) {
+function DeliveryStatus({ initialStatus, onUpdateStatus, onClose, refresh }) {
   const [status, setStatus] = useState(initialStatus);
 
   const handleChange = (e) => {
@@ -9,6 +9,8 @@ function DeliveryStatus({ initialStatus, onUpdateStatus, onClose }) {
 
   const handleUpdateStatus = () => {
     onUpdateStatus(status);
+    onClose();
+    refresh();
   };
 
   return (
@@ -37,11 +39,21 @@ function DeliveryStatus({ initialStatus, onUpdateStatus, onClose }) {
           </div>
         </form>
         <div className="flex gap-5 justify-between self-end mt-5 whitespace-nowrap">
-          <button type="button" className="my-auto text-red-400" onClick={onClose}>
+          <button
+            type="button"
+            className="my-auto text-red-400"
+            onClick={onClose}
+          >
             Close
           </button>
-          <button type="submit" className="flex flex-col justify-center text-white" onClick={handleUpdateStatus}>
-            <div className="justify-center px-5 py-1.5 bg-blue-500 rounded-md">Update</div>
+          <button
+            type="submit"
+            className="flex flex-col justify-center text-white"
+            onClick={handleUpdateStatus}
+          >
+            <div className="justify-center px-5 py-1.5 bg-blue-500 rounded-md">
+              Update
+            </div>
           </button>
         </div>
       </div>

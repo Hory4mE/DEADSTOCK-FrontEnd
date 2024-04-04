@@ -10,6 +10,7 @@ const OrderRow = ({
   shipping_status,
   fullfill_status,
   total_price,
+  refresh
 }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -47,7 +48,7 @@ const OrderRow = ({
             className={`px-7 py-2 mx-auto ${
               shipping_status === "Pending"
                 ? "bg-orange-100"
-                : shipping_status === "Closed"
+                : shipping_status === "Canceled"
                 ? "bg-red-300"
                 : shipping_status === "Delivered"
                 ? "bg-teal-100"
@@ -89,6 +90,7 @@ const OrderRow = ({
           }}
           onUpdateStatus={updateOrderStatus}
           onClose={handlOnClose}
+          refresh={refresh}
         />
       )}
     </>

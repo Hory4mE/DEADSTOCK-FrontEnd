@@ -23,39 +23,28 @@ const OrderCard = ({ title, value, borderColor, bgColor }) => (
 );
 
 function Com_OrderStatus() {
-  const [orders, setOrders] = useState([
-    {
-      order_id: "",
-      user_id: "",
-      invoice_id: "",
-      order_date: "",
-      shipping_status: "",
-      fullfill_status: "",
-      total_price: "",
-      session_id: "",
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/user/get-all-orders"
-        );
-        if (response.data) {
-          setOrders(response.data);
-          //   console.log("Fetched Orders:", response.data);
-        } else {
-          console.log("No data received from the API.");
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-
     fetchOrders();
   }, []);
 
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/user/get-all-orders");
+      if (response.data) {
+        setOrders(response.data);
+      } else {
+        console.log("No data received from the API.");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  const refreshOrders = () => {
+    fetchOrders();
+  };
 
   return (
     <div className="flex flex-col pb-11 bg-white">
@@ -101,7 +90,7 @@ function Com_OrderStatus() {
               <tbody>
                 {orders && orders.length > 0 ? (
                   orders.map((order, index) => (
-                    <OrderRow key={index} {...order} />
+                    <OrderRow refresh={refreshOrders} key={index} {...order} />
                   ))
                 ) : (
                   <tr>
