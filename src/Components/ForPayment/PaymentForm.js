@@ -1,6 +1,5 @@
 import React, { useState , useEffect } from 'react';
 import InputField from './SmallComponents/InputField';
-import Checkbox from './SmallComponents/Checkbox';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -235,7 +234,6 @@ const SummarySection = () => {
                                 <div className="text-lg">Total</div>
                                 <div className="text-xl">{product.price.toFixed(2)} $</div>
                             </div>
-
                         </div>
                     ))}
                 </div>

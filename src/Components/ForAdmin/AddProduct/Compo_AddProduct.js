@@ -3,7 +3,6 @@ import axios from "axios";
 import ProductInformation from "./ProductInformation";
 import ProductGallery from "./ProductGallery";
 import GeneralInformation from "./GeneralInformation";
-import AdminNav from "../NavBar/AdminNav"
 
 function Compo_addProduct() {
   const [productData, setProductData] = useState({

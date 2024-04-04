@@ -1,8 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useUserData } from '../../context/AuthContext';
 
 export default function AdminNav() {
+    const navigate = useNavigate();
+    const { setIsLoginModalOpen , setCurrentUser } = useUserData();
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setIsLoginModalOpen(false);
+        setCurrentUser([]);       
+        navigate('/');
+
+    };
     return (
-      <header className="flex gap-5 px-20 py-5 w-full text-xl text-black whitespace-nowrap bg-white max-md:flex-wrap max-md:px-5 max-md:max-w-full shadow-md">
+      <header className="flex gap-14 px-20 py-5 w-full text-xl text-black whitespace-nowrap bg-white max-md:flex-wrap max-md:px-5 max-md:max-w-full shadow-md">
             <div className="flex gap-3.5 justify-center my-auto">
                 <Link to="/dashboard" className="flex items-center gap-1">
                     <img
@@ -35,6 +47,13 @@ export default function AdminNav() {
                     />
                     <div className="my-auto">Orders</div>
                 </Link>
+            </div>
+            <div className="flex gap-6 justify-center">
+                <div className="flex items-center gap-1">
+                    <button className="bg-black rounded-full shadow-md px-3 py-1 hover:bg-gray-400 transition duration-300 py-1.5 px-5" onClick={handleLogout}>
+                        <div className="my-auto text-white text-sm">Logout</div>
+                    </button>
+                </div>
             </div>
         </header>
     );

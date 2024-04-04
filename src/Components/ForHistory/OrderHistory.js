@@ -59,7 +59,7 @@ function OrderHistory() {
                     <div className="justify-center self-stretch px-2 py-2.5 text-xs bg-white border border-solid border-zinc-400">
                         {order.id}
                     </div>
-                    <div className="self-stretch my-auto">{order.date}</div>
+                    <div className="self-stretch my-auto">{new Date(order.date).toISOString().split('T')[0]}</div>
                     <div className="self-stretch my-auto">{order.paymentStatus}</div>
                     <div className="self-stretch my-auto">{order.fulfillmentStatus}</div>
                     <div className="self-stretch my-auto">{order.total}</div>

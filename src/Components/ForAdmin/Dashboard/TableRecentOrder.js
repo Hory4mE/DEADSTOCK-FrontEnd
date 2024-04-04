@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import OrderItem from "./OrderItem"
 
@@ -90,8 +89,8 @@ function TableRecentOrder() {
                     </thead>
                     <tbody>
                     {orders.map((order, index) => (
-                        <tr key={order.id}>
-                            <OrderItem key={order.id} order={order} index={index} />
+                        <tr key={order.id} >
+                            <OrderItem order={order} index={index} />
                         </tr>
                     ))}
                     </tbody>

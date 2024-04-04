@@ -25,55 +25,6 @@ function Billing() {
   })
   
  
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const accessToken = localStorage.getItem("access_token");
-  //       console.log(orderId);
-  //       const response = await axios.get(
-  //         `http://localhost:5000/user/get-order/${orderId}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //           },
-  //         }
-  //       );
-  
-  //       console.log(response.data);
-  //       if (response.data) {
-  //         setOrderDetails({
-  //           confirmationNumber: response.data.detail[0].order_id,
-  //           customerName: response.data.detail[0].first_name + ' ' + response.data.detail[0].last_name,
-  //           contactEmail: response.data.detail[0].email,
-  //           shippingAddress: response.data.shipping[0].address_line1,
-  //           paymentMethod: 'Card',
-  //           billingAddress: response.data.billing[0].address_line1,
-  //           shippingMethod: 'Puma Express',
-  //         });
-
-  //         setOrderItem({
-  //           name: response.data.detail[0].product_name,
-  //           size: response.data.detail[0].size,
-  //           price: response.data.detail[0].subtotal_price,
-  //           image: response.data.detail[0].image_url,
-  //           total: response.data.detail[0].total_price,
-  //         })
-
-  //         console.log("Fetch all cart Products Success");
-  //       } else {
-  //         console.log("No data received from the API.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching cart products: ", error);
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, [orderId]);
-
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -104,6 +55,14 @@ function Billing() {
             shippingMethod: 'Puma Express',
           });
 
+          setOrderItem({
+            name: response.data.detail[0].product_name,
+            size: response.data.detail[0].size,
+            price: response.data.detail[0].subtotal_price,
+            image: response.data.detail[0].image_url,
+            total: response.data.detail[0].total_price,
+          })
+
           console.log("Fetch all cart Products Success");
         } else {
           console.log("No data received from the API.");
@@ -116,6 +75,7 @@ function Billing() {
     fetchData();
   }, [orderId]);
 
+  
   const subtotal = parseFloat(orderItem.total);
   const vat = subtotal * 0.07;
   const totalPriceWithVAT = subtotal + vat;

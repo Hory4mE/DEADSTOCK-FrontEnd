@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import FilterSection from "./FilterSection";
 import ProductItem from "./ProductItem";
 import AdminNav from "./NavBar/AdminNav"
 
