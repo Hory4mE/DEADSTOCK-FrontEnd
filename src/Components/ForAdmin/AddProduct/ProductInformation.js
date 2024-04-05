@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function ProductInformation({ onProductInfoChange }) {
   const [productInfo, setProductInfo] = useState({
@@ -6,6 +6,7 @@ function ProductInformation({ onProductInfoChange }) {
     description: "",
     productCategory: ""
   });
+
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -15,6 +16,7 @@ function ProductInformation({ onProductInfoChange }) {
       [name]: value
     }));
     onProductInfoChange(productInfo);
+    console.log(name , value , productInfo)
   };
 
   return (
@@ -45,7 +47,12 @@ function ProductInformation({ onProductInfoChange }) {
             Product Category
           </label>
           <div className="flex flex-col justify-center mt-1.5 max-md:max-w-full">
-            <input type="text" id="productCategory" name="productCategory" value={productInfo.productCategory} onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required/>
+            <select id="productCategory" name="productCategory" value={productInfo.productCategory} onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required>
+              <option value="1">shoes</option>
+              <option value="2">accessories</option>
+              <option value="3">jacket</option>
+              <option value="4">shirt</option>
+            </select>
           </div>
         </div>
       </div>

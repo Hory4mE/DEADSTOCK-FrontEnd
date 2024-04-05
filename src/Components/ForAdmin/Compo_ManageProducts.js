@@ -48,7 +48,7 @@ function ManageProducts() {
       <AdminNav />
       <main className="flex flex-col px-12 mt-11 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <div className="max-md:max-w-full">
-          <div class="flex gap-2 max-md:flex-col max-md:gap-2">
+          <div className="flex gap-2 max-md:flex-col max-md:gap-2">
             <div className="flex flex-col ml-5 w-[100%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow text-black max-md:mt-5 max-md:max-w-full">
                   <Link to={`/addProduct`} className="flex justify-end">

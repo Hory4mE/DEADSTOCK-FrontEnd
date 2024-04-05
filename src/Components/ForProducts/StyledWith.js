@@ -45,36 +45,6 @@ function StyledWith() {
     fetchData();
   }, []); 
 
-
-
-  // const styledWithProducts = [
-  //   {
-  //     name: "PUMA SWEATER (XXS)",
-  //     price: "1950.00 $",
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-  //   },
-  //   {
-  //     name: "PUMA PANTS (XXS)",
-  //     price: "1950.00 $",
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-  //   },
-  //   {
-  //     name: "PUMA SHOES (XXS)",
-  //     price: "1950.00 $",
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-  //   },
-  //   {
-  //     name: "PUMA GLASSES (XXS)",
-  //     price: "1950.00 $",
-  //     image:
-  //       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-  //   },
-  // ];
-
-
   return (
     <>
       <section className="flex flex-col justify-center px-5 mt-12 w-full max-w-[1153px] max-md:mt-10 max-md:max-w-full mx-auto">

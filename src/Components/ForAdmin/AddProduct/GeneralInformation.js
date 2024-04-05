@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function GeneralInformation({ onGeneralInfoChange }) {
     const [generalInfo, setGeneralInfo] = useState({
-        in_stock_quantity: "",
+        on_hand_quantity: "",
         price: "",
         measurement: "",
         size:""
@@ -42,15 +42,15 @@ function GeneralInformation({ onGeneralInfoChange }) {
                 </div>
                 <div className="flex gap-5 items-start mt-5 max-md:flex-wrap max-md:mr-2">
                     <div className="flex flex-col flex-1">
-                        <label htmlFor="in_stock_quantity" className="text-sm font-bold text-black">
+                        <label htmlFor="on_hand_quantity" className="text-sm font-bold text-black">
                             in_stock_quantity
                         </label>
                         <div className="flex flex-col justify-center mt-3.5">
                             <input
                                 type="number"
-                                id="in_stock_quantity"
-                                name="in_stock_quantity"
-                                value={generalInfo.in_stock_quantity}
+                                id="on_hand_quantity"
+                                name="on_hand_quantity"
+                                value={generalInfo.on_hand_quantity}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />
