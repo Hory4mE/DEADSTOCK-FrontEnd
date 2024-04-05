@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-function GeneralInformation({ onGeneralInfoChange }) {
-    const [generalInfo, setGeneralInfo] = useState({
-        on_hand_quantity: "",
-        price: "",
-        measurement: "",
-        size:""
-    });
+function GeneralInformation({ setGeneralData }) {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setGeneralInfo((prevInfo) => ({
-            ...prevInfo,
+        setGeneralData((prevData) => ({
+            ...prevData,
             [name]: value
         }));
     };
-
-    useEffect(() => {
-        console.log("General information updated:", generalInfo);
-        // Call onGeneralInfoChange with the updated generalInfo
-        onGeneralInfoChange(generalInfo);
-    }, [generalInfo]); // Run this effect whenever generalInfo changes or onGeneralInfoChange changes
-
     return (
         <div className="flex flex-col pt-5 pb-12 mt-9 border border-solid border-zinc-200 max-md:max-w-full">
             <div className="flex gap-5 justify-between self-start ml-9 text-sm max-md:ml-2.5">
@@ -50,7 +37,6 @@ function GeneralInformation({ onGeneralInfoChange }) {
                                 type="number"
                                 id="on_hand_quantity"
                                 name="on_hand_quantity"
-                                value={generalInfo.on_hand_quantity}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />
@@ -65,7 +51,6 @@ function GeneralInformation({ onGeneralInfoChange }) {
                                 type="number"
                                 id="price"
                                 name="price"
-                                value={generalInfo.price}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />
@@ -80,7 +65,6 @@ function GeneralInformation({ onGeneralInfoChange }) {
                                 type="text"
                                 id="measurement"
                                 name="measurement"
-                                value={generalInfo.measurement}
                                 onChange={handleInputChange}
                                 className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                                 required />
@@ -95,7 +79,6 @@ function GeneralInformation({ onGeneralInfoChange }) {
                         <select
                             id="size"
                             name="size"
-                            value={generalInfo.size}
                             onChange={handleInputChange}
                             className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                             required

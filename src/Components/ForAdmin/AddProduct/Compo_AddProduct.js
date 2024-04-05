@@ -13,22 +13,8 @@ function Compo_addProduct() {
     measurement: "",
     on_hand_quantity: "",
     size: "",
-    productCategory: "",
-    product_type_id: ""
+    product_type_id: "1"
   });
-
-  const handleProductInfoChange = (e) => {
-    const { name , value} = e.target;
-    // Update the local state with the new information
-    setProductData((prevData) => ({
-      ...prevData,
-      [name] : value
-    }));
-    console.log(name , value);
-  };
-
-
-
 
 
   const handleSubmit = async (e) => {
@@ -63,9 +49,9 @@ function Compo_addProduct() {
           <div className="flex gap-5 max-md:flex-col max-md:gap-0 justify-center items-center">
             <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                <ProductInformation onProductInfoChange={handleProductInfoChange}/>
-                <ProductGallery onFileSelect={handleProductInfoChange} />
-                <GeneralInformation onGeneralInfoChange={handleProductInfoChange} />
+                <ProductInformation setProductData={setProductData}/>
+                <ProductGallery setGalleryData={setProductData} />
+                <GeneralInformation setGeneralData={setProductData} />
               </div>
             </div>
           </div>       

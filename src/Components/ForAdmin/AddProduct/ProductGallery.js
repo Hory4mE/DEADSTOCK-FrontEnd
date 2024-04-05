@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 
-function ProductGallery({ onFileSelect }) {
+function ProductGallery({ setGalleryData }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileName, setFileName] = useState("");
-    const [image_url, setUrl] = useState({
-        image_url: ""
-    });
 
 
     const handleFileChange = (e) => {
@@ -27,7 +24,7 @@ function ProductGallery({ onFileSelect }) {
         e.preventDefault();
         // Send the selected file to the parent component
         if (file) {
-            onFileSelect(file);
+            setGalleryData(file);
         } else {
             console.log("No file selected");
         }
@@ -38,17 +35,13 @@ function ProductGallery({ onFileSelect }) {
         setFileName("");
     };
 
-    const handleUrlChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUrl((prevInfo) => ({
-            ...prevInfo,
+        setGalleryData((prevData) => ({
+            ...prevData,
             [name]: value
         }));
-        onFileSelect({ image_url: value });;
     };
-
-
-
 
     return (
         <div className="flex flex-col px-8 pt-4 pb-8 mt-3.5 text-sm border border-solid border-zinc-200 max-md:px-5 max-md:max-w-full">
@@ -88,8 +81,7 @@ function ProductGallery({ onFileSelect }) {
                         type="text"
                         id="image_url"
                         name="image_url"
-                        value={image_url.image_url}
-                        onChange={handleUrlChange}
+                        onChange={handleInputChange}
                         className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300"
                         required />
                 </div>

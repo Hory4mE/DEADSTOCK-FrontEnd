@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-function ProductInformation({ onProductInfoChange }) {
-  const [productInfo, setProductInfo] = useState({
-    product_name: "",
-    description: "",
-    productCategory: ""
-  });
-
+function ProductInformation({ setProductData }) {
 
   const handleInputChange = (e) => {
-    e.preventDefault();
     const { name, value } = e.target;
-    setProductInfo((prevInfo) => ({
-      ...prevInfo,
+    setProductData((prevData) => ({
+      ...prevData,
       [name]: value
     }));
-    onProductInfoChange(productInfo);
-    console.log(name , value , productInfo)
   };
 
   return (
@@ -35,19 +26,19 @@ function ProductInformation({ onProductInfoChange }) {
             Product Title
           </label>
           <div className="flex flex-col justify-center mt-2.5 max-md:max-w-full">
-            <input type="text" id="product_name" name="product_name" value={productInfo.product_name} onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required/>
+            <input type="text" id="product_name" name="product_name" onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required />
           </div>
           <label htmlFor="description" className="mt-4 text-xs font-bold text-black max-md:max-w-full">
             Product Description
           </label>
           <div className="flex flex-col justify-center mt-2 max-md:max-w-full">
-            <textarea id="description" name="description" value={productInfo.description} onChange={handleInputChange} className="shrink-0 bg-white border-2 border-solid border-stone-300 h-[134px] max-md:max-w-full" required></textarea>
+            <textarea id="description" name="description" onChange={handleInputChange} className="shrink-0 bg-white border-2 border-solid border-stone-300 h-[134px] max-md:max-w-full" required></textarea>
           </div>
           <label htmlFor="productCategory" className="mt-3.5 text-xs font-bold text-black max-md:max-w-full">
             Product Category
           </label>
           <div className="flex flex-col justify-center mt-1.5 max-md:max-w-full">
-            <select id="productCategory" name="productCategory" value={productInfo.productCategory} onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required>
+            <select id="product_type_id" name="product_type_id" onChange={handleInputChange} className="shrink-0 h-9 bg-white border-2 border-solid border-stone-300 max-md:max-w-full" required>
               <option value="1">shoes</option>
               <option value="2">accessories</option>
               <option value="3">jacket</option>
