@@ -1,8 +1,9 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputField from './SmallComponents/InputField';
-import Checkbox from './SmallComponents/Checkbox';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
+
+import { handleInput, handleSearchInput } from '../../context/security';
 
 const DeliverySection = () => {
     const stripePromise = loadStripe('pk_test_51OyzLYJHd0FBaagmdsd179kXymr9MT5Dy9zyDFkJfqW3YXf9nPDWylE9la6qcUayOqImnI5We35gRz5e8zVaEDvI00tjbl3NBn');
@@ -30,7 +31,7 @@ const DeliverySection = () => {
 
 
 
-    
+
     const handleCompleteOrder = async () => {
         console.log({
             shippingAddressData: [shippingData],
@@ -41,12 +42,12 @@ const DeliverySection = () => {
             const response = await axios.post('http://localhost:5000/user/create-order', {
                 shippingAddressData: [shippingData],
                 billingAddressData: [billingData]
-            } ,
-            {
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                },
-            });
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                    },
+                });
             const session = response.data;
             console.log(session);
             const stripe = await stripePromise;
@@ -95,63 +96,82 @@ const DeliverySection = () => {
 
     useEffect(() => {
         const loadStripeJs = async () => {
-          await stripePromise;
+            await stripePromise;
         };
         loadStripeJs();
     }, []);
-  
+
+    // Function to handle input change while preventing non-alphanumeric characters
     const handleInputChange = (e, field) => {
-        const value = e.target.value;
+        let { value } = e.target;
+        const sanitizedValue = handleInput(value); // Call handleInput to sanitize and validate the input
+        if (sanitizedValue !== false) {
+            // If handleInput returns a valid sanitized value
             setShippingData(prevData => ({
                 ...prevData,
-                [field]: value
+                [field]: sanitizedValue  // Use the sanitized value
             }));
-        console.log('Check data shipping',shippingData);
+        } else {
+            // Remove non-alphanumeric characters from the input value
+            const alphanumericValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+            // Set the input value to the sanitized version
+            e.target.value = alphanumericValue;
+        }
     };
 
 
+
+    // Function to handle billing change while preventing non-alphanumeric characters
     const handleBillingChange = (e, field) => {
-        const value = e.target.value;
-            // For other fields, update normally
+        let { value } = e.target;
+        const sanitizedValue = handleInput(value); // Call handleInput to sanitize and validate the input
+        if (sanitizedValue !== false) {
+            // If handleInput returns a valid sanitized value
             setBillingData(prevData => ({
                 ...prevData,
-                [field]: value
+                [field]: sanitizedValue  // Use the sanitized value
             }));
-        console.log('Check data billing 1', billingData);
+        } else {
+            // Remove non-alphanumeric characters from the input value
+            const alphanumericValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+            // Set the input value to the sanitized version
+            e.target.value = alphanumericValue;
+        }
     };
 
-  
+
+
     return (
         <>
-        <div className="flex-3 mr-5">
-            <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Delivery</h2>
-            <InputField label="Recipient Name" value={shippingData.recipient_name} onChange={(e) => handleInputChange(e, 'recipient_name')} />
-            <InputField label="Address Line 1" value={shippingData.address_line1} onChange={(e) => handleInputChange(e, 'address_line1')} />
-            <InputField label="Address Line 2" value={shippingData.address_line2} onChange={(e) => handleInputChange(e, 'address_line2')} />
-            <InputField label="City" value={shippingData.city} onChange={(e) => handleInputChange(e, 'city')} />
-            <InputField label="Postal Code" value={shippingData.postal_code} onChange={(e) => handleInputChange(e, 'postal_code')} />
-            <InputField label="Country" value={shippingData.country} onChange={(e) => handleInputChange(e, 'country')} />
-            <InputField label="Phone Number" value={shippingData.phone_number} onChange={(e) => handleInputChange(e, 'phone_number')} />
+            <div className="flex-3 mr-5">
+                <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Delivery</h2>
+                <InputField label="Recipient Name" value={(shippingData.recipient_name)} onChange={(e) => handleInputChange(e, 'recipient_name')} />
+                <InputField label="Address Line 1" value={(shippingData.address_line1)} onChange={(e) => handleInputChange(e, 'address_line1')} />
+                <InputField label="Address Line 2" value={(shippingData.address_line2)} onChange={(e) => handleInputChange(e, 'address_line2')} />
+                <InputField label="City" value={(shippingData.city)} onChange={(e) => handleInputChange(e, 'city')} />
+                <InputField label="Postal Code" value={(shippingData.postal_code)} onChange={(e) => handleInputChange(e, 'postal_code')} />
+                <InputField label="Country" value={(shippingData.country)} onChange={(e) => handleInputChange(e, 'country')} />
+                <InputField label="Phone Number" value={(shippingData.phone_number)} onChange={(e) => handleInputChange(e, 'phone_number')} />
 
 
-            <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Billing</h2>
-            <InputField label="Recipient Name" onChange={(e) => handleBillingChange(e, 'recipient_name')} />
-            <InputField label="Address Line 1" onChange={(e) => handleBillingChange(e, 'address_line1')} />
-            <InputField label="Address Line 2" onChange={(e) => handleBillingChange(e, 'address_line2')} />
-            <InputField label="City" onChange={(e) => handleBillingChange(e, 'city')} />
-            <InputField label="Postal Code" onChange={(e) => handleBillingChange(e, 'postal_code')} />
-            <InputField label="Country" onChange={(e) => handleBillingChange(e, 'country')} />
-            <InputField label="Phone Number" onChange={(e) => handleBillingChange(e, 'phone_number')} />
-        </div>
-        <div className="flex-1">
-            <SummarySection />
-            <button onClick={handleCompleteOrder} className="justify-center items-center px-16 py-4 mt-20 ms-8 text-base tracking-wider text-white bg-black rounded-3xl max-md:px-5 max-md:mt-10 max-md:max-w-full">
-                Complete Order
-            </button>
-        </div>
+                <h2 className="mt-5 text-2xl font-medium tracking-wider text-black max-md:max-w-full">Billing</h2>
+                <InputField label="Recipient Name" value={(billingData.recipient_name)} onChange={(e) => handleBillingChange(e, 'recipient_name')} />
+                <InputField label="Address Line 1" value={(billingData.address_line1)} onChange={(e) => handleBillingChange(e, 'address_line1')} />
+                <InputField label="Address Line 2" value={(billingData.address_line2)} onChange={(e) => handleBillingChange(e, 'address_line2')} />
+                <InputField label="City" value={(billingData.city)} onChange={(e) => handleBillingChange(e, 'city')} />
+                <InputField label="Postal Code" value={(billingData.postal_code)} onChange={(e) => handleBillingChange(e, 'postal_code')} />
+                <InputField label="Country" value={(billingData.country)} onChange={(e) => handleBillingChange(e, 'country')} />
+                <InputField label="Phone Number" value={(billingData.phone_number)} onChange={(e) => handleBillingChange(e, 'phone_number')} />
+            </div>
+            <div className="flex-1">
+                <SummarySection />
+                <button onClick={handleCompleteOrder} className="justify-center items-center px-16 py-4 mt-20 ms-8 text-base tracking-wider text-white bg-black rounded-3xl max-md:px-5 max-md:mt-10 max-md:max-w-full">
+                    Complete Order
+                </button>
+            </div>
         </>
 
-       
+
     );
 }
 
@@ -169,17 +189,17 @@ const ProductItem = ({ product }) => {
                 </div>
             </div>
         </div>
-    );0
+    );
 };
 
 
 const SummarySection = () => {
-   
+
     const [products, setProducts] = useState([]);
     useEffect(() => {
         const fetchProduct = async () => {
             const accessToken = localStorage.getItem('access_token');
-    
+
             try {
                 const response = await axios.get(`http://localhost:5000/user/cart`, {
                     headers: {
@@ -196,6 +216,18 @@ const SummarySection = () => {
         };
         fetchProduct();
     }, []);
+
+    // Function to handle input change while preventing non-alphanumeric characters
+    const handleInputChange = (e) => {
+        let { value } = e.target;
+        const sanitizedValue = handleInput(value); // Call handleInput to sanitize and validate the input
+        if (sanitizedValue == false) {
+            // Remove non-alphanumeric characters from the input value
+            const alphanumericValue = value.replace(/[^a-zA-Z0-9\s]/g, '');
+            // Set the input value to the sanitized version
+            e.target.value = alphanumericValue;
+        }
+    };
     return (
         <div>
             <div style={{ position: 'relative' }}>
@@ -215,6 +247,7 @@ const SummarySection = () => {
                                 placeholder="Discount Code"
                                 aria-label="Discount Code"
                                 className="flex-1 px-3.5 py-4 bg-white rounded-3xl border border-black border-solid max-md:pr-5"
+                                onChange={handleInputChange}
                             />
                             <button type="submit" className="text-xl bg-zinc-300 px-7 py-4 rounded-xl max-md:px-5">
                                 Apply
@@ -245,7 +278,7 @@ const SummarySection = () => {
 }
 
 function PaymentForm() {
-  
+
     const [products, setProducts] = useState([]);
 
 
@@ -253,7 +286,7 @@ function PaymentForm() {
     useEffect(() => {
         const fetchProduct = async () => {
             const accessToken = localStorage.getItem('access_token');
-    
+
             try {
                 const response = await axios.get(`http://localhost:5000/user/cart`, {
                     headers: {
@@ -273,9 +306,9 @@ function PaymentForm() {
 
 
     return (
-        <div className="max-w-screen-lg mx-auto px-10 max-md:flex-wrap max-md:mt-15" style={{ marginTop:'55px' }}>
+        <div className="max-w-screen-lg mx-auto px-10 max-md:flex-wrap max-md:mt-15" style={{ marginTop: '55px' }}>
             <div className="flex justify-between items-start" style={{ width: '100%' }}>
-                <DeliverySection />            
+                <DeliverySection />
             </div>
         </div>
     );
