@@ -76,7 +76,7 @@ const SearchBar = () => {
           type="text"
           id="search"
           placeholder="Search"
-          className="my-auto input-without-border"
+          className="my-auto focus:outline-none"
           aria-label="Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

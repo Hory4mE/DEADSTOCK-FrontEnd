@@ -268,7 +268,6 @@ const SummarySection = () => {
                                 <div className="text-lg">Total</div>
                                 <div className="text-xl">{product.price.toFixed(2)} $</div>
                             </div>
-
                         </div>
                     ))}
                 </div>

@@ -62,6 +62,8 @@ function AccountDetails() {
             ...prevState,
             [field]: sanitizeInput(value)
         }));
+
+        console.log(sanitizeInput(value))
     };
 
    

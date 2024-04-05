@@ -16,10 +16,13 @@ import Account from "./Pages/Account";
 import Billing from "./Pages/Billing";
 import ManageProducts from "./Pages/ManageProducts";
 import AddProductPage from "./Pages/AddProductsPage";
+import Dashboard from "./Pages/Dashboard"
+import OrderStatus from "./Pages/OrderStatus";
 
 // useContext
 import { AuthProvider } from "./context/AuthContext";
 import ProtectRoute from "./hook/ProtectRoute";
+
 
 const root = document.getElementById("root");
 
@@ -66,6 +69,16 @@ createRoot(root).render(
                 <Billing />
               </ProtectRoute>
             }
+          />     
+        <Route
+            path="/dashboard"
+            element={
+              <ProtectRoute
+                requireRoles={["user_admin", "super_admin", "member"]}
+              >
+                <Dashboard />
+              </ProtectRoute>
+            }
           />
           <Route
             path="/ManageProducts"
@@ -73,7 +86,7 @@ createRoot(root).render(
               <ProtectRoute
                 requireRoles={["user_admin", "super_admin", "member"]}
               >
-                <ManageProducts />
+                <ManageProducts/>
               </ProtectRoute>
             }
           />
@@ -84,6 +97,16 @@ createRoot(root).render(
                 requireRoles={["user_admin", "super_admin", "member"]}
               >
                 <AddProductPage />
+              </ProtectRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectRoute
+                requireRoles={["user_admin", "super_admin", "member"]}
+              >
+                <OrderStatus />
               </ProtectRoute>
             }
           />
