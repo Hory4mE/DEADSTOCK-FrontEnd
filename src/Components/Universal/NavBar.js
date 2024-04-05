@@ -186,6 +186,7 @@ function Header() {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/ca9a5e45fd2df9e49e64483dc0f5a809255417ad46f565b20f629cbe90d5b1d4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
               alt="Clothing icon"
               dropdownItems={["Shirt", "Jacket"]}
+              onClick={DropDownIconButton}
             />
           </div>
           <NavItem alt="Shoes" to="/product?category=Shoes"> {/* Change href to to */}

@@ -54,7 +54,7 @@ const navigate = useNavigate();
           }
         );
 
-        console.log(response.data.products);
+        // console.log(response.data.products);
         if (response.data && response.data.products) {
           // Convert the received data into items format
           const productsData = response.data.products.map((product) => ({
@@ -66,7 +66,7 @@ const navigate = useNavigate();
             imageUrl: product.imageUrl,
           }));
           setItems(productsData);
-          console.log("Fetch all cart Products Success");
+          // console.log("Fetch all cart Products Success");
         } else {
           console.log("No data received from the API.");
         }
@@ -83,7 +83,7 @@ const navigate = useNavigate();
   const handleRemoveItem = async (itemId) => {
     // Send request to remove item from cart
     try {
-      console.log(itemId);
+      // console.log(itemId);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.delete(
         `http://localhost:5000/user/clear-cart/${itemId}`,
@@ -93,7 +93,7 @@ const navigate = useNavigate();
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       // If successful response, update the local items state
       const updatedCartItems = items.filter((item) => item.id !== itemId);
       setItems(updatedCartItems);
@@ -114,7 +114,7 @@ const navigate = useNavigate();
               },
             }
           );
-          console.log(response.data);
+          // console.log(response.data);
           // If successful response, update the local items state
           const updatedCartItems = items.filter((item) => item.id !== itemId);
           setItems(updatedCartItems);
@@ -160,7 +160,7 @@ const navigate = useNavigate();
                 key={item.id}
                 className="mt-4 text-lg text-black text-opacity-60 max-md:mt-3 flex items-center"
               >
-                {console.log(item)}
+                {/* {console.log(item)} */}
                 <img
                   loading="lazy"
                   src={item.imageUrl}

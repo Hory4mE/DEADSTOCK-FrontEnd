@@ -99,7 +99,7 @@ function RegisterForm() {
       );
 
       if (response.status === 201) {
-        console.log("Registration successful");
+        // console.log("Registration successful");
         setRegisComplete(true);
       }
     } catch (error) {

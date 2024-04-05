@@ -173,7 +173,7 @@ function ProductList() {
     };
 
     fetchDataByCategory();
-    console.log('work2');
+    // console.log('work2');
   }, [category]);
 
   const productsPerPage = 6;

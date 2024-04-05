@@ -32,9 +32,9 @@ function LoginForm() {
         formData
       );
       
-      console.log(response.status)
+      // console.log(response.status)
       if (response.data !== null )  {
-        console.log(response.data);
+        // console.log(response.data);
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
         setIsLoginModalOpen(true);
