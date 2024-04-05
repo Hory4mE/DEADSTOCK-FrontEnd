@@ -14,8 +14,14 @@ function Compo_dashboard() {
     useEffect(() => {
     const fetchData = async () => {
       try {
+        const accessToken = localStorage.getItem('access_token');
         const response = await axios.get(
-          "http://localhost:5000/user/get-dashboard"
+          "http://localhost:5000/user/get-dashboard" , 
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
         );
         
         console.log(response.data);

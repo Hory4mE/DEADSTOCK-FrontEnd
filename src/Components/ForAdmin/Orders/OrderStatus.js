@@ -31,7 +31,13 @@ function Com_OrderStatus() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/user/get-all-orders");
+      const accessToken = localStorage.getItem('access_token');
+      const response = await axios.get("http://localhost:5000/user/get-all-orders" ,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       if (response.data) {
         setOrders(response.data);
       } else {

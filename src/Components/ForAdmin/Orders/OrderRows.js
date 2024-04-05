@@ -16,8 +16,14 @@ const OrderRow = ({
 
   const updateOrderStatus = async (newStatus) => {
     try {
+      const accessToken = localStorage.getItem('access_token');
       const response = await axios.put(
         `http://localhost:5000/user/order/update-order/`,
+        {
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+        },
         { order_id: order_id, status: newStatus }
       );
       console.log("Order status updated:", response.data);
