@@ -11,10 +11,10 @@ export const AuthProvider = ({ children }) => {
         const access_token = localStorage.getItem('access_token');
         const refresh_token = localStorage.getItem('refresh_token');
         
-        console.log(access_token);
-        console.log(refresh_token);
+        // console.log(access_token);
+        // console.log(refresh_token);
 
-        console.log(isLoginModalOpen);
+        // console.log(isLoginModalOpen);
 
         if (!refresh_token || !access_token) {
           throw new Error('No tokens found');
@@ -36,12 +36,12 @@ export const AuthProvider = ({ children }) => {
         }    
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          console.log('Token expired');
+          // console.log('Token expired');
           localStorage.removeItem('access_token');
           await refresh_tokens();
         } else {
           setCurrentUser(null); 
-          console.log('No tokens found or other error');
+          // console.log('No tokens found or other error');
         }
       }
     };
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoginModalOpen(true);
       localStorage.setItem('access_token', response.data.access_token);
       localStorage.setItem('refresh_token', response.data.refresh_token);
-      console.log('Token refreshed successfully');
+      // console.log('Token refreshed successfully');
  
     } catch (error) {
       console.warn('Cannot refresh tokens:', error);

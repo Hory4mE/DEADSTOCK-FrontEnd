@@ -95,12 +95,12 @@ function WhatsNew() {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/product/get-all');
-        console.log(response.data.products);
+        // console.log(response.data.products);
         if (response.data) {
           setProducts(response.data.products);
-          console.log('Fetch all Products Success');
+          // console.log('Fetch all Products Success');
         } else {
-          console.log('No data received from the API.');
+          // console.log('No data received from the API.');
         }
       } catch (error) {
         console.error('Error fetching products:', error);
