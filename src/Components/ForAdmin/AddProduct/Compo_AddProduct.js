@@ -11,65 +11,41 @@ function Compo_addProduct() {
     price: "",
     image_url: "",
     measurement: "",
-    on_hand_quantity: "0",
-    reserved_quantity: "0",
-    in_stock_quantity: "",
+    on_hand_quantity: "",
     size: "",
     productCategory: "",
     product_type_id: ""
   });
 
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/category/get-all");
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  const handleProductInfoChange = (info) => {
+  const handleProductInfoChange = (e) => {
+    const { name , value} = e.target;
     // Update the local state with the new information
     setProductData((prevData) => ({
       ...prevData,
-      ...info,
+      [name] : value
     }));
+    console.log(name , value);
   };
+
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Product data submitted:", productData);
   
     try {
-      // Find the product_type_id based on the selected productCategory
-      const selectedCategory = categories.find(category => category.type_name === productData.productCategory);
-  
-      // If selectedCategory is not found, create a new category
-      if (!selectedCategory) {
-        // Send request to create a new category
-        const newCategoryResponse = await axios.post("http://localhost:5000/category/create-category", { type_name: productData.productCategory });
-        
-        // Set the product_type_id from the newly created category
-        productData.product_type_id = newCategoryResponse.data.id;
-      } else {
-        // Set the product_type_id from the existing category
-        productData.product_type_id = selectedCategory.product_type_id;
-      }
-  
       // Check if the product_type_id is properly set
-      if (!productData.product_type_id) {
-        throw new Error("Product type ID is missing.");
-      }
-      // console.log(productData)
-  
+      const accessToken = localStorage.getItem('access_token');
       // Send productData to the backend
-      const response = await axios.post("http://localhost:5000/product/create", productData);
+      const response = await axios.post("http://localhost:5000/product/create", productData , 
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       console.log("Product data saved to database:", response.data);
       // Optionally, you can handle success or show a message to the user
     } catch (error) {
@@ -77,7 +53,6 @@ function Compo_addProduct() {
       // Optionally, you can handle the error or show an error message to the user
     }
   };
-  
   
 
   return (
@@ -88,7 +63,7 @@ function Compo_addProduct() {
           <div className="flex gap-5 max-md:flex-col max-md:gap-0 justify-center items-center">
             <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                <ProductInformation onProductInfoChange={handleProductInfoChange} />
+                <ProductInformation onProductInfoChange={handleProductInfoChange}/>
                 <ProductGallery onFileSelect={handleProductInfoChange} />
                 <GeneralInformation onGeneralInfoChange={handleProductInfoChange} />
               </div>

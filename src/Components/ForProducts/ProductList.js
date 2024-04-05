@@ -3,78 +3,6 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-// /* BootStrap */
-// import { Spinner } from 'react-bootstrap'
-
-// const initialProducts = [
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/6a259e885fcf42171c345c322c7db06acc8ab6cea9804a402360ba0eef368d46?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "PUMA SWEATER (XXS)",
-//     price: "1950.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "ADIDAS JACKET (S)",
-//     price: "2250.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "NIKE TRACK PANTS (M)",
-//     price: "1875.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "REBOOK CLASSIC SHOES (8)",
-//     price: "1590.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/6fbd0d88eafb21e5bbcf6755f6312619716f5d090384ef718bc0947b107065ae?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "PUMA SWEATER (XXS)",
-//     price: "1950.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "ADIDAS JACKET (S)",
-//     price: "2250.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "NIKE TRACK PANTS (M)",
-//     price: "1875.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "REBOOK CLASSIC SHOES (8)",
-//     price: "1590.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/51c5ed47f82482e0d472498bcc1e725e6f0d4ff314415adfdb16af68e173ef86?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "ADIDAS JACKET (S)",
-//     price: "2250.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/3af186bee0e96b7e4e1ca0863a03ae08876653c347feeb5ff29b80be383e39dc?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "NIKE TRACK PANTS (M)",
-//     price: "1875.00 $",
-//   },
-//   {
-//     imageUrl:
-//       "https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&",
-//     description: "REBOOK CLASSIC SHOES (8)",
-//     price: "1590.00 $",
-//   },
-// ];
-
 function Product({ imageUrl, description, price , name, product_id }) {
   const productDetailsUrl = `/productDetails?product=${product_id}`;
 
@@ -98,13 +26,10 @@ function ProductList() {
   const [page, setPage] = useState(1);
   const [initialProducts, setInitialProducts] = useState([]);
   const location = useLocation();
-
   const searchParams = new URLSearchParams(location.search);
   const category = searchParams.get('category');
   const queryString = searchParams.get('search');
  
-
-  
   if(!category && !queryString) {
     useEffect(() => {
       const fetchData = async () => {
@@ -183,6 +108,10 @@ function ProductList() {
 
   const visibleProducts = initialProducts.slice(startIndex, endIndex);
   const totalPages = Math.ceil(initialProducts.length / productsPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const handleNextPage = () => {
     setPage(prevPage => Math.min(prevPage + 1, totalPages)); // Ensure next page doesn't exceed total pages
@@ -205,13 +134,6 @@ function ProductList() {
         <section>
           <div className="flex gap-5 justify-between self-center px-5 mt-16 w-full text-base max-w-[1153px] text-neutral-500 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
             <div className="flex gap-2.5 self-start whitespace-nowrap">
-              {/* <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4faec16c35582902258a584fee8e5da17a50d8e3a62b7f1055563fe7cb7874c4?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&"
-                alt="Filter icon"
-                className="shrink-0 self-start aspect-square w-[18px]"
-              />
-              <div className="grow">Filter and sort</div> */}
             </div>
             <div>{initialProducts.length} product</div>
           </div>
@@ -222,7 +144,6 @@ function ProductList() {
                   <Product
                     key={index}
                     imageUrl={product.image_url}
-                    // imageUrl={'https://cdn.builder.io/api/v1/image/assets/TEMP/703af5f1274bc534816388d4fced379db752bcd821fed8a54308c9a0f8f4fa71?apiKey=c3d84cbd0c3a42f4a1616e4ea278d805&'}
                     description={product.description}
                     price={product.price}
                     name={product.product_name}
