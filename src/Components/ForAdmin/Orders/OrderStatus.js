@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import AdminNav from "../NavBar/AdminNav";
+import AdminNav from "../AdminNav";
 import axios from "axios";
 import OrderRow from "./OrderRows";
 
