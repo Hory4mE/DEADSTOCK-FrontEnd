@@ -4,6 +4,8 @@ import ProductInformation from "./ProductInformation";
 import ProductGallery from "./ProductGallery";
 import GeneralInformation from "./GeneralInformation";
 
+import { config } from "../../../apiData/api";
+
 function Compo_addProduct() {
   const [productData, setProductData] = useState({
     product_name: "",
@@ -25,7 +27,7 @@ function Compo_addProduct() {
       // Check if the product_type_id is properly set
       const accessToken = localStorage.getItem('access_token');
       // Send productData to the backend
-      const response = await axios.post("http://localhost:5000/product/create", productData , 
+      const response = await axios.post(`${config.api}/product/create`, productData , 
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

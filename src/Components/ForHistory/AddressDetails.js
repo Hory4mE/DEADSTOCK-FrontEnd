@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import AddressInput from './AddressInput';
 
+import { config } from "../../apiData/api";
+
 
 function AccountDetails() {
     const [validate , setValidate] = useState(false);
@@ -28,7 +30,7 @@ function AccountDetails() {
             try {
                 const accessToken = localStorage.getItem("access_token");
                 const response = await axios.get(
-                    `http://localhost:5000/user/get-address`,
+                    `${config.api}/user/get-address`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -73,7 +75,7 @@ function AccountDetails() {
         try {
             const accessToken = localStorage.getItem("access_token");
             const response = await axios.put(
-                `http://localhost:5000/user/save-address`,
+                `${config.api}/user/save-address`,
                 formData,
                 {
                     headers: {

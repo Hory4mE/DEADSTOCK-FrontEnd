@@ -4,6 +4,8 @@ import AdminNav from "../AdminNav";
 import axios from "axios";
 import OrderRow from "./OrderRows";
 
+import { config } from "../../../apiData/api";
+
 const OrderCard = ({ title, value, borderColor, bgColor }) => (
   <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
     <div className="flex flex-col grow justify-center text-black max-md:mt-6">
@@ -32,7 +34,7 @@ function Com_OrderStatus() {
   const fetchOrders = async () => {
     try {
       const accessToken = localStorage.getItem('access_token');
-      const response = await axios.get("http://localhost:5000/user/get-all-orders" ,
+      const response = await axios.get(`${config.api}/user/get-all-orders` ,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

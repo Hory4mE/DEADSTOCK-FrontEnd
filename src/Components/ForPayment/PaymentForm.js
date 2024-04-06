@@ -3,6 +3,8 @@ import InputField from './SmallComponents/InputField';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 
+import { config } from '../../apiData/api';
+
 import { handleInput, handleSearchInput } from '../../context/security';
 
 const DeliverySection = () => {
@@ -39,7 +41,7 @@ const DeliverySection = () => {
         })
         try {
             const access_token = localStorage.getItem('access_token');
-            const response = await axios.post('http://localhost:5000/user/create-order', {
+            const response = await axios.post(`${config.api}/user/create-order`, {
                 shippingAddressData: [shippingData],
                 billingAddressData: [billingData]
             },
@@ -66,7 +68,7 @@ const DeliverySection = () => {
             try {
                 const accessToken = localStorage.getItem("access_token");
                 const response = await axios.get(
-                    `http://localhost:5000/user/get-address`,
+                    `${config.api}/user/get-address`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -201,7 +203,7 @@ const SummarySection = () => {
             const accessToken = localStorage.getItem('access_token');
 
             try {
-                const response = await axios.get(`http://localhost:5000/user/cart`, {
+                const response = await axios.get(`${config.api}/user/cart`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
@@ -287,7 +289,7 @@ function PaymentForm() {
             const accessToken = localStorage.getItem('access_token');
 
             try {
-                const response = await axios.get(`http://localhost:5000/user/cart`, {
+                const response = await axios.get(`${config.api}/user/cart`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },

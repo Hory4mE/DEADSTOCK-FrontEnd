@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import OrderItem from "./OrderItem"
 
+import { config } from "../../../apiData/api";
+
 
 function TableRecentOrder() {
   const [orders, setOrders] = useState([]);
@@ -14,7 +16,7 @@ function TableRecentOrder() {
       try {
         const accessToken = localStorage.getItem('access_token');
         const response = await axios.get(
-          "http://localhost:5000/user/get-all-orders" , 
+          `${config.api}/user/get-all-orders` , 
             {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,

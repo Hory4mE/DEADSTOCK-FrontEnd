@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import { config } from "../../apiData/api";
+
 function FilterSection() {
   const [categories, setCategories] = useState([]);
 
@@ -8,7 +10,7 @@ function FilterSection() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/category/get-all"
+          `${config.api}/category/get-all`
         );
         const types = response.data.map(({ type_name }) => type_name);
         console.log(types);

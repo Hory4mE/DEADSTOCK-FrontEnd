@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { config } from "../../apiData/api";
+
 function RegisterForm() {
   const [RegisComplete, setRegisComplete] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -94,7 +96,7 @@ function RegisterForm() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/user/register`,
+        `${config.api}/user/register`,
         formData
       );
 

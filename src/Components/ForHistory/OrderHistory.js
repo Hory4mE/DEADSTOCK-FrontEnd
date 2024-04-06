@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState , useEffect } from "react";
 
+import { config } from "../../apiData/api";
+
 
 function OrderHistory() {
 
@@ -11,7 +13,7 @@ function OrderHistory() {
     
             const accessToken = localStorage.getItem("access_token");
             const response = await axios.get(
-              `http://localhost:5000/user/get-order-by-user`,
+              `${config.api}/user/get-order-by-user`,
               {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,

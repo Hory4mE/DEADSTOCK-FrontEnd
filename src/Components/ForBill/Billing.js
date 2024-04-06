@@ -2,6 +2,8 @@ import axios from "axios";
 import React , {useState , useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 
+import { config } from "../../apiData/api";
+
 
 function Billing() {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ function Billing() {
         const accessToken = localStorage.getItem("access_token");
         console.log(orderId);
         const response = await axios.get(
-          `http://localhost:5000/user/get-order/${orderId}`,
+          `${config.api}/user/get-order/${orderId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,

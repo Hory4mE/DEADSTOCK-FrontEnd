@@ -2,6 +2,8 @@ import React, { useState , useEffect } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import { config } from "../../apiData/api";
+
 function ProductCard({ product }) {
   const productDetailsUrl = `/productDetails?product=${product.product_id}`;
   return (
@@ -28,7 +30,7 @@ function StyledWith() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/product/get-all');
+        const response = await axios.get(`${config.api}/product/get-all`);
         // console.log(response.data.products);
         if (response.data) {
           setStyledWithProducts(response.data.products);

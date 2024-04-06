@@ -4,6 +4,8 @@ import axios from "axios";
 import ProductItem from "./ProductItem";
 import AdminNav from "./AdminNav"
 
+import { config } from "../../apiData/api";
+
 function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,7 +15,7 @@ function ManageProducts() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/product/get-all"
+          `${config.api}/product/get-all`
         );
         console.log(response.data.products);
         if (response.data) {

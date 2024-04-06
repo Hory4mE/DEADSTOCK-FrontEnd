@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserData } from "../../context/AuthContext";
 
+import { config } from "../../apiData/api";
+
 function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isWrongData, setIsWrongData] = useState(false);
@@ -28,7 +30,7 @@ function LoginForm() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/user/login`,
+        `${config.api}/user/login`,
         formData
       );
       
@@ -64,8 +66,8 @@ function LoginForm() {
 
   const redirectToGoogleAuth = async () => {
     try {
-      if (validateURL("http://localhost:5000/user/google")) {
-        window.location.href = "http://localhost:5000/user/google";
+      if (validateURL(`${config.api}/user/google`)) {
+        window.location.href = `${config.api}/user/google`;
       }
     } catch (error) {
       console.error("Error while redirecting to Google Auth:", error);

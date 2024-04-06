@@ -3,6 +3,8 @@ import React , {useState , useEffect} from "react";
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
+import { config } from "../../apiData/api";
+
 
 function ProductDetails() {
   const [validated , setValidated] = useState(false);
@@ -17,7 +19,7 @@ function ProductDetails() {
       
       console.log(productId);
       try {
-        const response = await axios.get(`http://localhost:5000/product/get-id/${productId}`);
+        const response = await axios.get(`${config.api}/product/get-id/${productId}`);
         if (response.data) {
           setProduct(response.data);
           setValidated(true);
@@ -44,7 +46,7 @@ function ProductDetails() {
     try {
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.post(
-        'http://localhost:5000/user/add-cart',
+        `${config.api}/user/add-cart`,
         cartData,
         {
           headers: {

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import DeliveryStatus from "./EditOrder"; // Import the EditOrder modal component
 import axios from "axios";
 
+import { config } from "../../../apiData/api";
+
 const OrderRow = ({
   order_id,
   user_id,
@@ -18,7 +20,7 @@ const OrderRow = ({
     try {
       const accessToken = localStorage.getItem('access_token');
       const response = await axios.put(
-        `http://localhost:5000/user/order/update-order/`,
+        `${config.api}/user/order/update-order/`,
         {
           headers: {
             Authorization: `Bearer ${newAccessToken}`,

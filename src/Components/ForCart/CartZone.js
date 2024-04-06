@@ -3,6 +3,8 @@ import axios from "axios";
 import { useUserData } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+import { config } from "../../apiData/api";
+
 const CartZone = () => {
 const navigate = useNavigate();
   const [items , setItems] = useState(null);
@@ -46,7 +48,7 @@ const navigate = useNavigate();
 
         const accessToken = localStorage.getItem("access_token");
         const response = await axios.get(
-          `http://localhost:5000/user/cart`,
+          `${config.api}/user/cart`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -86,7 +88,7 @@ const navigate = useNavigate();
       // console.log(itemId);
       const accessToken = localStorage.getItem("access_token");
       const response = await axios.delete(
-        `http://localhost:5000/user/clear-cart/${itemId}`,
+        `${config.api}/user/clear-cart/${itemId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -107,7 +109,7 @@ const navigate = useNavigate();
         try {
           // Retry the request with the new access token
           const response = await axios.get(
-            `http://localhost:5000/user/clear-cart`,
+            `${config.api}/user/clear-cart`,
             {
               headers: {
                 Authorization: `Bearer ${newAccessToken}`,

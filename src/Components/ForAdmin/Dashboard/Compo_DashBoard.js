@@ -5,6 +5,8 @@ import AdminNav from "../AdminNav"
 import CustomerSatisfaction from "./CustomerSatisfaction";
 import axios from "axios";
 
+import { config } from "../../../apiData/api";
+
 function Compo_dashboard() {
     const [ total , setTotal ] = useState([]);
     const [ monthly , setMonthly ] = useState([]);
@@ -16,7 +18,7 @@ function Compo_dashboard() {
       try {
         const accessToken = localStorage.getItem('access_token');
         const response = await axios.get(
-          "http://localhost:5000/user/get-dashboard" , 
+          `${config.api}/user/get-dashboard` , 
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,

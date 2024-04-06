@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import { config } from "../../apiData/api";
+
 function Product({ imageUrl, description, price, name, product_id }) {
   const productDetailsUrl = `/productDetails?product=${product_id}`;
 
@@ -34,7 +36,7 @@ function ProductList() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('http://localhost:5000/product/get-all');
+          const response = await axios.get(`${config.api}/product/get-all`);
           // console.log(response.data.products);
           if (response.data) {
             setInitialProducts(response.data.products);
@@ -60,7 +62,7 @@ function ProductList() {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/product/search?search=${queryString}`);
+        const response = await axios.get(`${config.api}/product/search?search=${queryString}`);
 
         if (response.data) {
           setInitialProducts(response.data);
@@ -83,7 +85,7 @@ function ProductList() {
           return;
         }
         // console.log('5555', category)
-        const response = await axios.get(`http://localhost:5000/category/get-product-category?category=${category}`);
+        const response = await axios.get(`${config.api}/category/get-product-category?category=${category}`);
         if (response.data) {
           setInitialProducts(response.data);
           console.log('Fetch all Products Success');

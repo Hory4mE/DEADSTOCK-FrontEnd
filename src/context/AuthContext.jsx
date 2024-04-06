@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 const AuthContext = createContext()
 
+import { config } from '../apiData/api';
+
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -20,7 +22,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error('No tokens found');
         }
 
-        const response = await axios.get('http://localhost:5000/user/check-login', {
+        const response = await axios.get(`${config.api}/user/check-login`, {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },     
@@ -50,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   const refresh_tokens = async () => {
     try {
       const refresh_token = localStorage.getItem('refresh_token');
-      const response = await axios.post('http://localhost:5000/user/refresh', {}, {
+      const response = await axios.post(`${config.api}/user/refresh`, {}, {
         headers: {
           'Authorization': `Bearer ${refresh_token}`
         }
