@@ -20,13 +20,13 @@ const OrderRow = ({
     try {
       const accessToken = localStorage.getItem('access_token');
       const response = await axios.put(
-        `${config.api}/user/order/update-order/`,
+        `${config.api}/user/order/update-order`,
+        { order_id: order_id, status: newStatus }, // Correct payload structure
         {
           headers: {
-            Authorization: `Bearer ${newAccessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
-        },
-        { order_id: order_id, status: newStatus }
+        }
       );
       console.log("Order status updated:", response.data);
       // If needed, update the state with the updated order status
